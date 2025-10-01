@@ -1,4 +1,3 @@
-// Cloudflare Pages Function to handle chat requests securely
 interface CloudflareContext {
   request: Request;
   env: {
@@ -17,7 +16,6 @@ export async function onRequestPost(context: CloudflareContext) {
       });
     }
 
-    // Get the API key from Cloudflare environment variables
     const apiKey = context.env.GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -31,7 +29,6 @@ export async function onRequestPost(context: CloudflareContext) {
       );
     }
 
-    // Call Gemini API
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
