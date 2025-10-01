@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface Message {
   text: string;
   sender: "user" | "bot";
 }
-
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
 const useChatbot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -17,11 +14,21 @@ const useChatbot = () => {
     setLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-      const result = await model.generateContent(message);
-      const response = await result.response.text();
+      // Call our secure Cloudflare Function instead of using the API key directly
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
 
-      setMessages((prev) => [...prev, { text: response, sender: "bot" }]);
+      if (!response.ok) {
+        throw new Error("Failed to get response");
+      }
+
+      const data = await response.json();
+      setMessages((prev) => [...prev, { text: data.text, sender: "bot" }]);
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [
