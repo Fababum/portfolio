@@ -16,7 +16,7 @@
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s ease;
-  min-width: 120px;
+  min-width: 100px;
   text-align: center;
 }
 
@@ -25,6 +25,6 @@
 }
 
 .navLink.active {
-  background-color: #707070;
+  background-color: #000000;
   color: white;
 }
