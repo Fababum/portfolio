@@ -6,7 +6,12 @@ interface Message {
 }
 
 const useChatbot = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      text: "👋 Hello! I'm Fabian's AI assistant. Feel free to ask me anything about his skills, projects, or experience!",
+      sender: "bot",
+    },
+  ]);
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async (message: string) => {

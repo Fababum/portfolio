@@ -84,9 +84,7 @@ const ChatComponent: React.FC = () => {
           disabled={isSending || !input.trim()}
           aria-label="Send message"
         >
-          <span className="sending">
-            <img src="senden.png" className="send-img" alt="Send" />
-          </span>
+          Send
         </button>
       </div>
     </div>
