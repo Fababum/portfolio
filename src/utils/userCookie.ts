@@ -1,14 +1,16 @@
-// User Cookie Management
+// User Cookie Management with Privacy Protection
+import { AntiFingerprint } from './antiFingerprint';
+
 const COOKIE_NAME = "portfolio_user_id";
 const COOKIE_EXPIRY_DAYS = 365; // 1 year
 
 /**
- * Generates a unique user ID
+ * Generates a privacy-friendly user ID
+ * Uses session-based ID that changes per browser session
  */
 function generateUserId(): string {
-  const timestamp = Date.now().toString(36);
-  const randomPart = Math.random().toString(36).substring(2, 15);
-  return `user_${timestamp}_${randomPart}`;
+  // Use privacy-friendly session ID instead of persistent fingerprint
+  return AntiFingerprint.generatePrivacyFriendlyId();
 }
 
 /**

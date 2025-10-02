@@ -9,31 +9,38 @@ import Contact from "./components/contact/contact";
 import ChatComponent from "./components/chatBot/ChatComponent";
 import Admin from "./components/admin/admin";
 import BlockedBanner from "./components/BlockedBanner";
+import PrivacyNotice from "./components/PrivacyNotice";
 import { getUserId, isReturningUser } from "./utils/userCookie";
 
 function App() {
   useEffect(() => {
-    // Initialize user ID cookie on app load
-    const userId = getUserId();
-    const returning = isReturningUser();
+    // Only track if privacy notice was accepted
+    const privacyAccepted = localStorage.getItem('privacy_notice_accepted');
+    
+    if (privacyAccepted) {
+      // Initialize user ID cookie on app load
+      const userId = getUserId();
+      const returning = isReturningUser();
 
-    // Track visit
-    fetch("/api/admin/track-visit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, isReturning: returning }),
-    }).catch((err) => console.error("Failed to track visit:", err));
+      // Track visit
+      fetch("/api/admin/track-visit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, isReturning: returning }),
+      }).catch((err) => console.error("Failed to track visit:", err));
 
-    // Optional: Log to console
-    console.log("User initialized:", {
-      userId,
-      isReturning: returning,
-      timestamp: new Date().toISOString(),
-    });
+      // Optional: Log to console
+      console.log("User initialized:", {
+        userId,
+        isReturning: returning,
+        timestamp: new Date().toISOString(),
+      });
+    }
   }, []);
 
   return (
     <>
+      <PrivacyNotice />
       <NavBar />
       <BlockedBanner />
       <Routes>

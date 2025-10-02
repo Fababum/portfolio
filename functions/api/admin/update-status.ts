@@ -1,9 +1,16 @@
-// Update User Status API using Supabase
+// Update User Status API using Supabase with Security
 import { getSupabaseClient } from "../../utils/supabase";
+import {
+  RateLimiter,
+  validateOrigin,
+  getClientIdentifier,
+  unauthorizedResponse,
+} from "../../utils/security";
 
 interface Env {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
+  ALLOWED_ORIGINS?: string;
 }
 
 interface UpdateStatusRequest {
@@ -13,6 +20,23 @@ interface UpdateStatusRequest {
 
 export async function onRequestPost(context: { request: Request; env: Env }) {
   try {
+    // Security: Validate origin
+    const allowedOrigins = context.env.ALLOWED_ORIGINS
+      ? context.env.ALLOWED_ORIGINS.split(",")
+      : ["localhost", "pages.dev"];
+
+    if (!validateOrigin(context.request, allowedOrigins)) {
+      return unauthorizedResponse();
+    }
+
+    // Security: Rate limiting
+    const clientId = getClientIdentifier(context.request);
+    if (
+      RateLimiter.isRateLimited(clientId, { maxRequests: 5, windowMs: 60000 })
+    ) {
+      return RateLimiter.getRateLimitResponse();
+    }
+
     const body = (await context.request.json()) as UpdateStatusRequest;
     const { userId, status } = body;
 

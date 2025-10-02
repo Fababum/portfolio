@@ -1,9 +1,16 @@
-// Track User Visits API using Supabase
+// Track User Visits API using Supabase with Security
 import { getSupabaseClient } from "../../utils/supabase";
+import {
+  RateLimiter,
+  validateOrigin,
+  getClientIdentifier,
+  unauthorizedResponse,
+} from "../../utils/security";
 
 interface Env {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
+  ALLOWED_ORIGINS?: string; // Comma-separated list of allowed domains
 }
 
 interface TrackVisitRequest {
@@ -13,6 +20,25 @@ interface TrackVisitRequest {
 
 export async function onRequestPost(context: { request: Request; env: Env }) {
   try {
+    // Security: Validate origin to prevent curl abuse
+    const allowedOrigins = context.env.ALLOWED_ORIGINS
+      ? context.env.ALLOWED_ORIGINS.split(",")
+      : ["localhost", "pages.dev", "your-domain.com"]; // Add your actual domain
+
+    if (!validateOrigin(context.request, allowedOrigins)) {
+      console.warn("Blocked request from unauthorized origin");
+      return unauthorizedResponse();
+    }
+
+    // Security: Rate limiting to prevent abuse
+    const clientId = getClientIdentifier(context.request);
+    if (
+      RateLimiter.isRateLimited(clientId, { maxRequests: 20, windowMs: 60000 })
+    ) {
+      console.warn(`Rate limit exceeded for client: ${clientId}`);
+      return RateLimiter.getRateLimitResponse();
+    }
+
     const body = (await context.request.json()) as TrackVisitRequest;
     const { userId, isReturning } = body;
 

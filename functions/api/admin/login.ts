@@ -1,5 +1,6 @@
-// Admin Login API with password verification
+// Admin Login API with password verification and Security
 import { getSupabaseClient } from "../../utils/supabase";
+import { RateLimiter, getClientIdentifier } from "../../utils/security";
 
 interface Env {
   SUPABASE_URL: string;
@@ -22,6 +23,24 @@ async function hashPassword(password: string): Promise<string> {
 
 export async function onRequestPost(context: { request: Request; env: Env }) {
   try {
+    // Security: Strict rate limiting for login attempts (prevent brute force)
+    const clientId = getClientIdentifier(context.request);
+    if (
+      RateLimiter.isRateLimited(clientId, { maxRequests: 3, windowMs: 300000 })
+    ) {
+      // 3 attempts per 5 minutes
+      console.warn(`Login rate limit exceeded for: ${clientId}`);
+      return new Response(
+        JSON.stringify({
+          error: "Too many login attempts. Please try again in 5 minutes.",
+        }),
+        {
+          status: 429,
+          headers: { "Content-Type": "application/json", "Retry-After": "300" },
+        }
+      );
+    }
+
     const body = (await context.request.json()) as LoginRequest;
     const { username, password } = body;
 
