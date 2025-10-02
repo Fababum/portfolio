@@ -1,0 +1,51 @@
+# About Me
+
+**Name:** Fabian Spiri
+**Role:** Passionate Full-Stack Developer
+**Current Employer:** Swisscom
+
+I’m Fabian, a passionate full-stack developer who builds robust frontend and backend solutions for challenging projects at Swisscom.
+In my free time, I explore new technologies and continuously refine my skills.
+
+Outside of coding, I enjoy going to the gym and playing Souls-like games.
+
+---
+
+# Contact
+
+* Email: [fabian.spiri@gmx.ch](mailto:fabian.spiri@gmx.ch)
+* LinkedIn: [linkedin.com/in/fabian-spiri-221253363](https://www.linkedin.com/in/fabian-spiri-221253363/)
+* GitHub: [github.com/Fababum](https://github.com/Fababum)
+
+---
+
+# Projects
+
+
+### 1. Abuse
+
+**Date:** Aug 2024 – Feb 2025
+In the Abuse team at Swisscom Cyber Security, I gained many new skills in the areas of security and phishing and expanded my knowledge of **Java** and **Python**. I also learned how to detect spam effectively and how to design security measures to prevent it.
+**Tags:** Cybersecurity, Phishing Detection, Java, Python, Threat Analysis, Incident Response
+
+---
+
+### 2. CodemiX2
+
+**Date:** Feb 2025 – Aug 2025
+In this project, I learned the fundamentals of several programming languages. It helped me develop a strong understanding of programming principles and provided essential foundational skills for my future work.
+**Tags:** JavaScript, TypeScript, React, Java, HTML, CSS, Software Fundamentals
+
+---
+
+### 3. Apps Team
+
+**Date:** Aug 2025 – Feb 2026 *(ongoing)*
+Here, I was able to acquire many new skills, such as developing APIs with **NestJS**, connecting databases to projects, and learning **Prisma**. There is still much more to learn in this ongoing project.
+**Tags:** Full-Stack Development, API Design, NestJS, Prisma ORM, Database Integration, React
+
+---
+
+### 4. To Be Continued…
+
+---

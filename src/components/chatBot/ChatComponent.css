@@ -1,9 +1,77 @@
+.chat-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px 0;
+  background: black;
+  position: relative;
+  z-index: 1;
+}
+
+.chat-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-title {
+  font-size: 64px;
+  color: white;
+  font-weight: 400;
+  margin-bottom: 20px;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.4),
+      0 0 60px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.title-underline {
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  margin: 0 auto;
+  animation: underlineExpand 2s ease-out;
+}
+
+@keyframes underlineExpand {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100px;
+    opacity: 1;
+  }
+}
+
 .chat-container {
   display: flex;
   flex-direction: column;
-  max-width: 700px;
-  margin: 40px auto;
-  height: calc(100vh - 200px);
+  max-width: 800px;
+  width: 100%;
+  height: calc(100vh - 300px);
+  min-height: 500px;
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -11,6 +79,18 @@
   overflow: hidden;
   backdrop-filter: blur(20px);
   transition: all 0.3s ease;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .chat-container:hover {
@@ -222,4 +302,152 @@
 .sending {
   position: relative;
   z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .chat-wrapper {
+    padding: 40px 15px 0;
+  }
+
+  .chat-title {
+    font-size: 56px;
+  }
+
+  .chat-container {
+    max-width: 90%;
+    height: calc(100vh - 280px);
+  }
+
+  .chat-bubble {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-wrapper {
+    padding: 30px 15px 0;
+  }
+
+  .chat-header {
+    margin-bottom: 30px;
+  }
+
+  .chat-title {
+    font-size: 42px;
+  }
+
+  .chat-container {
+    height: calc(100vh - 250px);
+    min-height: 400px;
+  }
+
+  .chat-messages {
+    padding: 20px;
+    gap: 14px;
+  }
+
+  .chat-bubble {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .chat-input-container {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .chat-input {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .chat-send-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-wrapper {
+    padding: 20px 10px 0;
+  }
+
+  .chat-header {
+    margin-bottom: 25px;
+  }
+
+  .chat-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+
+  .title-underline {
+    width: 80px;
+  }
+
+  .chat-container {
+    height: calc(100vh - 220px);
+    min-height: 350px;
+    border-radius: 15px;
+  }
+
+  .chat-messages {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .chat-bubble {
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 15px;
+    max-width: 85%;
+  }
+
+  .chat-input-container {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .chat-input {
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 20px;
+  }
+
+  .chat-send-btn {
+    padding: 9px 14px;
+    font-size: 13px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .chat-title {
+    font-size: 28px;
+  }
+
+  .chat-container {
+    height: calc(100vh - 200px);
+    min-height: 300px;
+  }
+
+  .chat-messages {
+    padding: 12px;
+  }
+
+  .chat-bubble {
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+
+  .chat-input {
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+
+  .chat-send-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }

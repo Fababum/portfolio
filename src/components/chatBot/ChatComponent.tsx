@@ -48,44 +48,49 @@ const ChatComponent: React.FC = () => {
   };
 
   return (
-    <div className="chat-container">
-      <h2 className="title">Chatbot</h2>
-
-      <div ref={messagesEndRef} className="chat-messages">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-bubble ${
-              msg.sender === "user" ? "chat-bubble-user" : "chat-bubble-bot"
-            }`}
-          >
-            <Markdown remarkPlugins={[]}>{msg.text}</Markdown>
-          </div>
-        ))}
+    <div className="chat-wrapper">
+      <div className="chat-header">
+        <h1 className="chat-title">Chatbot</h1>
+        <div className="title-underline"></div>
       </div>
 
-      <div className="chat-input-container">
-        <input
-          ref={inputRef}
-          type="text"
-          className="chat-input"
-          placeholder="Type your message..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={isSending}
-          aria-label="Type your message"
-        />
-        <button
-          onClick={handleSend}
-          className={`chat-send-btn ${
-            isSending ? "chat-send-btn-disabled" : ""
-          }`}
-          disabled={isSending || !input.trim()}
-          aria-label="Send message"
-        >
-          Send
-        </button>
+      <div className="chat-container">
+        <div ref={messagesEndRef} className="chat-messages">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chat-bubble ${
+                msg.sender === "user" ? "chat-bubble-user" : "chat-bubble-bot"
+              }`}
+            >
+              <Markdown remarkPlugins={[]}>{msg.text}</Markdown>
+            </div>
+          ))}
+        </div>
+
+        <div className="chat-input-container">
+          <input
+            ref={inputRef}
+            type="text"
+            className="chat-input"
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isSending}
+            aria-label="Type your message"
+          />
+          <button
+            onClick={handleSend}
+            className={`chat-send-btn ${
+              isSending ? "chat-send-btn-disabled" : ""
+            }`}
+            disabled={isSending || !input.trim()}
+            aria-label="Send message"
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
