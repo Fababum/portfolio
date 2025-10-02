@@ -1,5 +1,5 @@
 // Update User Status API using Supabase
-import { getSupabaseClient } from '../../utils/supabase';
+import { getSupabaseClient } from "../../utils/supabase";
 
 interface Env {
   SUPABASE_URL: string;
@@ -8,7 +8,7 @@ interface Env {
 
 interface UpdateStatusRequest {
   userId: string;
-  status: 'active' | 'blacklisted' | 'whitelisted';
+  status: "active" | "blacklisted" | "whitelisted";
 }
 
 export async function onRequestPost(context: { request: Request; env: Env }) {
@@ -30,9 +30,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
 
     // Update user status
     const { data, error } = await supabase
-      .from('users')
+      .from("users")
       .update({ status })
-      .eq('user_id', userId)
+      .eq("user_id", userId)
       .select()
       .single();
 
@@ -47,9 +47,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
 
     return new Response(JSON.stringify({ success: true, user: data }), {
       status: 200,
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
       },
     });
   } catch (error) {

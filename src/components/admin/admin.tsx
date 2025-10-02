@@ -27,8 +27,7 @@ function Admin() {
     "all" | "active" | "blacklisted" | "whitelisted"
   >("all");
 
-  const ADMIN_PASSWORD = "admin1234";
-
+  admin1234;
   useEffect(() => {
     if (isAuthenticated) {
       loadData();
@@ -44,8 +43,25 @@ function Admin() {
       const response = await fetch("/api/admin/users");
       if (response.ok) {
         const data = await response.json();
-        setUsers(data.users || []);
-        setVisits(data.visits || []);
+
+        // Map snake_case from Supabase to camelCase for frontend
+        const mappedUsers = (data.users || []).map((user: any) => ({
+          userId: user.user_id,
+          visitCount: user.visit_count,
+          firstVisit: user.first_visit,
+          lastVisit: user.last_visit,
+          status: user.status,
+        }));
+
+        const mappedVisits = (data.visits || []).map((visit: any) => ({
+          userId: visit.user_id,
+          timestamp: visit.timestamp,
+          isReturning: visit.is_returning,
+          ipAddress: visit.ip_address,
+        }));
+
+        setUsers(mappedUsers);
+        setVisits(mappedVisits);
       }
     } catch (error) {
       console.error("Error loading admin data:", error);
