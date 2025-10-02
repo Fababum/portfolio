@@ -62,10 +62,6 @@ function Admin() {
       if (response.ok) {
         const data = await response.json();
 
-        console.log("Raw data from API:", data);
-        console.log("First user:", data.users?.[0]);
-        console.log("First visit:", data.visits?.[0]);
-
         // Map snake_case from Supabase to camelCase for frontend
         const mappedUsers = (data.users || []).map((user: SupabaseUser) => ({
           userId: user.user_id,
@@ -83,9 +79,6 @@ function Admin() {
             ipAddress: visit.ip_address,
           })
         );
-
-        console.log("Mapped users:", mappedUsers);
-        console.log("Mapped visits:", mappedVisits);
 
         setUsers(mappedUsers);
         setVisits(mappedVisits);
