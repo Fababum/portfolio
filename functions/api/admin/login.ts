@@ -78,6 +78,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       );
     }
 
+    // Reset rate limit on successful login
+    RateLimiter.resetLimit(clientId);
+
     // Update last login time
     await supabase
       .from("admin_users")

@@ -61,6 +61,13 @@ export class RateLimiter {
   }
 
   /**
+   * Reset rate limit for a specific identifier (e.g., after successful login)
+   */
+  static resetLimit(identifier: string): void {
+    this.limits.delete(identifier);
+  }
+
+  /**
    * Get rate limit response
    */
   static getRateLimitResponse(): Response {
