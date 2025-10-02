@@ -38,13 +38,21 @@ function Admin() {
   const [users, setUsers] = useState<UserStats[]>([]);
   const [visits, setVisits] = useState<UserVisit[]>([]);
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginError, setLoginError] = useState("");
   const [filter, setFilter] = useState<
     "all" | "active" | "blacklisted" | "whitelisted"
   >("all");
 
-  const ADMIN_PASSWORD = "admin1234";
+  // Check if user is already authenticated on mount
+  useEffect(() => {
+    const sessionToken = localStorage.getItem("adminSessionToken");
+    if (sessionToken) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -90,20 +98,38 @@ function Admin() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      localStorage.setItem("adminAuthenticated", "true"); // Save login state
-      setPassword("");
-    } else {
-      alert("Incorrect password!");
+    setLoginError("");
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsAuthenticated(true);
+        localStorage.setItem("adminSessionToken", data.sessionToken);
+        localStorage.setItem("adminUsername", data.username);
+        setUsername("");
+        setPassword("");
+      } else {
+        const error = await response.json();
+        setLoginError(error.error || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("Login failed. Please try again.");
     }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem("adminAuthenticated"); // Clear login state
+    localStorage.removeItem("adminSessionToken");
+    localStorage.removeItem("adminUsername");
   };
 
   const updateUserStatus = async (
@@ -137,13 +163,23 @@ function Admin() {
           <h1>Admin Login</h1>
           <form onSubmit={handleLogin}>
             <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="login-input"
+              autoFocus
+              required
+            />
+            <input
               type="password"
-              placeholder="Enter admin password"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
-              autoFocus
+              required
             />
+            {loginError && <div className="login-error">{loginError}</div>}
             <button type="submit" className="login-btn">
               Login
             </button>

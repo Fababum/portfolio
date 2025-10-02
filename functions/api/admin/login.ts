@@ -1,0 +1,107 @@
+// Admin Login API with password verification
+import { getSupabaseClient } from "../../utils/supabase";
+
+interface Env {
+  SUPABASE_URL: string;
+  SUPABASE_ANON_KEY: string;
+}
+
+interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+// Simple password hashing using Web Crypto API
+async function hashPassword(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+export async function onRequestPost(context: { request: Request; env: Env }) {
+  try {
+    const body = (await context.request.json()) as LoginRequest;
+    const { username, password } = body;
+
+    if (!username || !password) {
+      return new Response(
+        JSON.stringify({ error: "Username and password are required" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const supabase = getSupabaseClient(context.env);
+
+    // Hash the provided password
+    const passwordHash = await hashPassword(password);
+
+    // Check if user exists with matching password
+    const { data: admin, error } = await supabase
+      .from("admin_users")
+      .select("id, username, is_active, last_login")
+      .eq("username", username)
+      .eq("password_hash", passwordHash)
+      .eq("is_active", true)
+      .single();
+
+    if (error || !admin) {
+      return new Response(
+        JSON.stringify({ error: "Invalid username or password" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // Update last login time
+    await supabase
+      .from("admin_users")
+      .update({ last_login: new Date().toISOString() })
+      .eq("id", admin.id);
+
+    // Generate a session token (simple approach)
+    const sessionToken = await hashPassword(
+      `${admin.id}-${Date.now()}-${Math.random()}`
+    );
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        username: admin.username,
+        sessionToken,
+        lastLogin: admin.last_login,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Login error:", error);
+    return new Response(JSON.stringify({ error: "Login failed" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+// Handle OPTIONS for CORS
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
+  });
+}
