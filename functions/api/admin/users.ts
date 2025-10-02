@@ -6,21 +6,6 @@ interface Env {
   SUPABASE_ANON_KEY: string;
 }
 
-interface UserStats {
-  user_id: string;
-  visit_count: number;
-  first_visit: string;
-  last_visit: string;
-  status: "active" | "blacklisted" | "whitelisted";
-}
-
-interface UserVisit {
-  user_id: string;
-  timestamp: string;
-  is_returning: boolean;
-  ip_address?: string;
-}
-
 export async function onRequestGet(context: { env: Env }) {
   try {
     const supabase = getSupabaseClient(context.env);

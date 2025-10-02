@@ -2,6 +2,23 @@
 import { useState, useEffect } from "react";
 import "./admin.css";
 
+// Supabase response types (snake_case)
+interface SupabaseUser {
+  user_id: string;
+  visit_count: number;
+  first_visit: string;
+  last_visit: string;
+  status: "active" | "blacklisted" | "whitelisted";
+}
+
+interface SupabaseVisit {
+  user_id: string;
+  timestamp: string;
+  is_returning: boolean;
+  ip_address?: string;
+}
+
+// Frontend types (camelCase)
 interface UserVisit {
   userId: string;
   timestamp: string;
@@ -27,7 +44,8 @@ function Admin() {
     "all" | "active" | "blacklisted" | "whitelisted"
   >("all");
 
-  admin1234;
+  const ADMIN_PASSWORD = "admin1234";
+
   useEffect(() => {
     if (isAuthenticated) {
       loadData();
@@ -43,9 +61,13 @@ function Admin() {
       const response = await fetch("/api/admin/users");
       if (response.ok) {
         const data = await response.json();
+        
+        console.log("Raw data from API:", data);
+        console.log("First user:", data.users?.[0]);
+        console.log("First visit:", data.visits?.[0]);
 
         // Map snake_case from Supabase to camelCase for frontend
-        const mappedUsers = (data.users || []).map((user: any) => ({
+        const mappedUsers = (data.users || []).map((user: SupabaseUser) => ({
           userId: user.user_id,
           visitCount: user.visit_count,
           firstVisit: user.first_visit,
@@ -53,12 +75,17 @@ function Admin() {
           status: user.status,
         }));
 
-        const mappedVisits = (data.visits || []).map((visit: any) => ({
-          userId: visit.user_id,
-          timestamp: visit.timestamp,
-          isReturning: visit.is_returning,
-          ipAddress: visit.ip_address,
-        }));
+        const mappedVisits = (data.visits || []).map(
+          (visit: SupabaseVisit) => ({
+            userId: visit.user_id,
+            timestamp: visit.timestamp,
+            isReturning: visit.is_returning,
+            ipAddress: visit.ip_address,
+          })
+        );
+        
+        console.log("Mapped users:", mappedUsers);
+        console.log("Mapped visits:", mappedVisits);
 
         setUsers(mappedUsers);
         setVisits(mappedVisits);
