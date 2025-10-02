@@ -94,10 +94,16 @@ function Admin() {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
+      localStorage.setItem("adminAuthenticated", "true"); // Save login state
       setPassword("");
     } else {
       alert("Incorrect password!");
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("adminAuthenticated"); // Clear login state
   };
 
   const updateUserStatus = async (
@@ -151,10 +157,7 @@ function Admin() {
     <div className="admin-container">
       <div className="admin-header">
         <h1>Admin Dashboard</h1>
-        <button
-          onClick={() => setIsAuthenticated(false)}
-          className="logout-btn"
-        >
+        <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
       </div>
