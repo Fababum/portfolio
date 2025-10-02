@@ -6,6 +6,7 @@ import {
   getClientIdentifier,
   unauthorizedResponse,
 } from "../../utils/security";
+import { validateSessionToken } from "../../utils/session";
 
 interface Env {
   SUPABASE_URL: string;
@@ -39,6 +40,20 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
     if (!sessionToken) {
       return new Response(
         JSON.stringify({ error: "Authentication required" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const sessionValidation = await validateSessionToken(
+      sessionToken,
+      context.env
+    );
+    if (!sessionValidation.valid) {
+      return new Response(
+        JSON.stringify({ error: sessionValidation.error || "Invalid session" }),
         {
           status: 401,
           headers: { "Content-Type": "application/json" },

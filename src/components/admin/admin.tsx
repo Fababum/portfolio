@@ -54,7 +54,23 @@ function Admin() {
     }
   }, []);
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
+    const sessionToken = localStorage.getItem("adminSessionToken");
+
+    // Call logout API to invalidate session in database
+    if (sessionToken) {
+      try {
+        await fetch("/api/admin/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionToken }),
+        });
+      } catch (error) {
+        console.error("Logout API error:", error);
+      }
+    }
+
+    // Clear local state regardless of API result
     setIsAuthenticated(false);
     localStorage.removeItem("adminSessionToken");
     localStorage.removeItem("adminUsername");

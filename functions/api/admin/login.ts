@@ -26,9 +26,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     // Security: Strict rate limiting for login attempts (prevent brute force)
     const clientId = getClientIdentifier(context.request);
     if (
-      RateLimiter.isRateLimited(clientId, { maxRequests: 3, windowMs: 300000 })
+      RateLimiter.isRateLimited(clientId, { maxRequests: 10, windowMs: 300000 })
     ) {
-      // 3 attempts per 5 minutes
+      // 10 attempts per 5 minutes
       console.warn(`Login rate limit exceeded for: ${clientId}`);
       return new Response(
         JSON.stringify({
@@ -87,10 +87,40 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       .update({ last_login: new Date().toISOString() })
       .eq("id", admin.id);
 
-    // Generate a session token (simple approach)
+    // Generate a session token
     const sessionToken = await hashPassword(
       `${admin.id}-${Date.now()}-${Math.random()}`
     );
+
+    // Store session token in database with 24-hour expiration
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
+
+    // Get client info for session tracking
+    const ipAddress =
+      context.request.headers.get("CF-Connecting-IP") || "unknown";
+    const userAgent = context.request.headers.get("User-Agent") || "unknown";
+
+    const { error: sessionError } = await supabase
+      .from("admin_sessions")
+      .insert({
+        admin_id: admin.id,
+        session_token: sessionToken,
+        expires_at: expiresAt.toISOString(),
+        ip_address: ipAddress,
+        user_agent: userAgent,
+      });
+
+    if (sessionError) {
+      console.error("Failed to create session:", sessionError);
+      return new Response(
+        JSON.stringify({ error: "Failed to create session" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
 
     return new Response(
       JSON.stringify({
