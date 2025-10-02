@@ -10,6 +10,7 @@ function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [textFading, setTextFading] = useState(false);
   const [showExplosion, setShowExplosion] = useState(false);
+  const [showYouTubeMessage, setShowYouTubeMessage] = useState(false);
 
   const handleMouseEnter = () => {
     if (isLocked) return;
@@ -42,17 +43,25 @@ function Home() {
               setTextFading(false);
               // Trigger explosion instantly when welcome text appears
               setShowExplosion(true);
-
-              // After explosion completes (2 seconds), fade back to original
+              // Show YouTube message after explosion starts
               setTimeout(() => {
-                setTextFading(true);
+                setShowYouTubeMessage(true);
+                // After 20 seconds, fade everything back to original
                 setTimeout(() => {
-                  setShowWelcome(false);
-                  setTextFading(false);
-                  setShowExplosion(false);
-                  // Reset to unlocked state so it can be triggered again
-                  setIsLocked(false);
-                }, 500);
+                  setShowYouTubeMessage(false);
+                  setTextFading(true);
+                  setTimeout(() => {
+                    setShowWelcome(false);
+                    setTextFading(false);
+                    setIsLocked(false); // Allow triggering again
+                  }, 500);
+                }, 20000);
+              }, 500);
+
+              // After explosion completes (2 seconds), just hide explosion effects
+              setTimeout(() => {
+                setShowExplosion(false);
+                // Keep welcome text and locked state temporarily
               }, 2000);
             }, 500);
           }, 300);
@@ -123,15 +132,15 @@ function Home() {
       )}
       {showExplosion && (
         <>
-          {[...Array(30)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <div
               key={i}
               className="particle"
               style={
                 {
-                  "--angle": `${(360 / 30) * i}deg`,
-                  "--delay": `${Math.random() * 0.3}s`,
-                  "--distance": `${300 + Math.random() * 200}px`,
+                  "--angle": `${(360 / 20) * i}deg`,
+                  "--delay": `${Math.random() * 0.2}s`,
+                  "--distance": `${250 + Math.random() * 150}px`,
                 } as React.CSSProperties
               }
             />
@@ -139,6 +148,19 @@ function Home() {
           <div className="shockwave" />
           <div className="screen-flash" />
         </>
+      )}
+      {showYouTubeMessage && (
+        <div className="youtube-message">
+          <p>Pwease follow me 🥺</p>
+          <a
+            href="https://www.youtube.com/@Fababum"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="youtube-link"
+          >
+            https://www.youtube.com/@Fababum
+          </a>
+        </div>
       )}
     </div>
   );

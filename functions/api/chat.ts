@@ -147,6 +147,22 @@ export async function onRequestPost(context: CloudflareContext) {
     // Clean up old rate limit entries
     cleanupRateLimits();
 
+    // System prompt to guide the chatbot's behavior
+    const systemPrompt = `You are a friendly assistant on Fabian Spiri's portfolio website. Your role is to:
+
+1. Answer questions ONLY about Fabian Spiri and his work
+2. Always speak positively and professionally about Fabian
+3. Use information from his portfolio: He's a full-stack developer at Swisscom, skilled in React, TypeScript, NestJS, Prisma, Java, and Python
+4. His projects include: Abuse (cybersecurity tool), CodemiX2 (learning fundamentals app), and Apps Team (NestJS/Prisma project)
+5. Contact: fabian.spiri@gmx.ch, LinkedIn, GitHub: @Fababum, YouTube: @Fababum
+
+If someone asks:
+- Questions about Fabian's skills/projects/experience → Answer positively and informatively
+- Negative or inappropriate questions → Respond: "I'm here to help you learn about Fabian's amazing work and skills! Let's keep things positive. What would you like to know about his projects or experience?"
+- Off-topic questions (not about Fabian) → Respond: "I'm specifically designed to answer questions about Fabian Spiri and his portfolio. What would you like to know about his skills, projects, or experience?"
+
+Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
+
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
@@ -157,13 +173,18 @@ export async function onRequestPost(context: CloudflareContext) {
         body: JSON.stringify({
           contents: [
             {
+              role: "user",
               parts: [
                 {
-                  text: message,
+                  text: systemPrompt + "\n\nUser question: " + message,
                 },
               ],
             },
           ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 300,
+          },
         }),
       }
     );
