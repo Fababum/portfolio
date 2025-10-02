@@ -26,20 +26,31 @@ const BlockedBanner = () => {
     }
   };
 
-  if (isChecking || !isBlocked) {
-    return null;
+  if (isChecking) {
+    return null; // Show nothing while checking
   }
 
+  if (!isBlocked) {
+    return null; // User is not blocked
+  }
+
+  // Full-page block for blacklisted users
   return (
-    <div className="blocked-banner">
-      <div className="blocked-content">
-        <span className="blocked-icon">🚫</span>
-        <div className="blocked-text">
-          <h3>Access Restricted</h3>
-          <p>
-            Your account has been restricted by the administrator. Some features
-            may be unavailable.
-          </p>
+    <div className="blocked-page">
+      <div className="blocked-container">
+        <div className="blocked-icon-large">🚫</div>
+        <h1 className="blocked-title">403</h1>
+        <h2 className="blocked-subtitle">ACCESS DENIED</h2>
+        <p className="blocked-message">
+          Your access to this website has been restricted by the administrator.
+        </p>
+        <p className="blocked-reason">
+          If you believe this is an error, please contact the site
+          administrator.
+        </p>
+        <div className="blocked-footer">
+          <p>Error Code: BLACKLISTED_USER</p>
+          <p>Request ID: {getUserId().substring(0, 8)}</p>
         </div>
       </div>
     </div>
