@@ -7,6 +7,7 @@ import About from "./components/about/about";
 import Projects from "./components/projects/projects";
 import Contact from "./components/contact/contact";
 import ChatComponent from "./components/chatBot/ChatComponent";
+import Admin from "./components/admin/admin";
 import { getUserId, isReturningUser } from "./utils/userCookie";
 
 function App() {
@@ -14,12 +15,19 @@ function App() {
     // Initialize user ID cookie on app load
     const userId = getUserId();
     const returning = isReturningUser();
-    
-    // Optional: Log to console or send analytics
-    console.log('User initialized:', {
+
+    // Track visit
+    fetch("/api/admin/track-visit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, isReturning: returning }),
+    }).catch((err) => console.error("Failed to track visit:", err));
+
+    // Optional: Log to console
+    console.log("User initialized:", {
       userId,
       isReturning: returning,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }, []);
 
@@ -32,6 +40,7 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/chatBot" element={<ChatComponent />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </>
   );

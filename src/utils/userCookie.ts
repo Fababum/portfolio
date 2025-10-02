@@ -1,5 +1,5 @@
 // User Cookie Management
-const COOKIE_NAME = 'portfolio_user_id';
+const COOKIE_NAME = "portfolio_user_id";
 const COOKIE_EXPIRY_DAYS = 365; // 1 year
 
 /**
@@ -25,12 +25,12 @@ function setCookie(name: string, value: string, days: number): void {
  * Gets a cookie value by name
  */
 function getCookie(name: string): string | null {
-  const nameEQ = name + '=';
-  const cookies = document.cookie.split(';');
-  
+  const nameEQ = name + "=";
+  const cookies = document.cookie.split(";");
+
   for (let i = 0; i < cookies.length; i++) {
     let cookie = cookies[i];
-    while (cookie.charAt(0) === ' ') {
+    while (cookie.charAt(0) === " ") {
       cookie = cookie.substring(1, cookie.length);
     }
     if (cookie.indexOf(nameEQ) === 0) {
@@ -47,15 +47,15 @@ function getCookie(name: string): string | null {
  */
 export function getUserId(): string {
   let userId = getCookie(COOKIE_NAME);
-  
+
   if (!userId) {
     userId = generateUserId();
     setCookie(COOKIE_NAME, userId, COOKIE_EXPIRY_DAYS);
-    console.log('New user detected. Assigned ID:', userId);
+    console.log("New user detected. Assigned ID:", userId);
   } else {
-    console.log('Returning user. ID:', userId);
+    console.log("Returning user. ID:", userId);
   }
-  
+
   return userId;
 }
 
@@ -71,5 +71,5 @@ export function isReturningUser(): boolean {
  */
 export function deleteUserCookie(): void {
   document.cookie = `${COOKIE_NAME}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-  console.log('User cookie deleted');
+  console.log("User cookie deleted");
 }
