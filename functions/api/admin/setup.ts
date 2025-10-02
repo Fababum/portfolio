@@ -27,7 +27,7 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     const { username, password, setupKey } = body;
 
     // Verify setup key (you should set this in Cloudflare env variables)
-    const SETUP_KEY = "FabianSetup2025"; // Change this!
+    const SETUP_KEY = "Sigma1234";
     if (setupKey !== SETUP_KEY) {
       return new Response(JSON.stringify({ error: "Invalid setup key" }), {
         status: 403,
@@ -75,6 +75,12 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     });
 
     if (error) throw error;
+
+    // Mark setup as complete
+    await supabase
+      .from("setup_config")
+      .update({ is_setup_complete: true })
+      .eq("id", 1);
 
     return new Response(
       JSON.stringify({
