@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getUserId } from "../utils/userCookie";
 
 interface Message {
   text: string;
@@ -19,27 +20,31 @@ const useChatbot = () => {
     setLoading(true);
 
     try {
-      // Call our secure Cloudflare Function instead of using the API key directly
+      const userId = getUserId(); // Get user's cookie ID
+
+      // Call our secure Cloudflare Function with userId
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, userId }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to get response");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to get response");
       }
 
       const data = await response.json();
       setMessages((prev) => [...prev, { text: data.text, sender: "bot" }]);
     } catch (error) {
       console.error("Error:", error);
-      setMessages((prev) => [
-        ...prev,
-        { text: "Something went wrong. Try again.", sender: "bot" },
-      ]);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Try again.";
+      setMessages((prev) => [...prev, { text: errorMessage, sender: "bot" }]);
     } finally {
       setLoading(false);
     }

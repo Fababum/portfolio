@@ -8,6 +8,7 @@ import Projects from "./components/projects/projects";
 import Contact from "./components/contact/contact";
 import ChatComponent from "./components/chatBot/ChatComponent";
 import Admin from "./components/admin/admin";
+import BlockedBanner from "./components/BlockedBanner";
 import { getUserId, isReturningUser } from "./utils/userCookie";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
   return (
     <>
       <NavBar />
+      <BlockedBanner />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

@@ -39,6 +39,20 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       .eq("user_id", userId)
       .single();
 
+    // Don't track visits from blacklisted users
+    if (existingUser?.status === "blacklisted") {
+      return new Response(
+        JSON.stringify({ success: false, message: "User is blacklisted" }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    }
+
     if (existingUser) {
       // Update existing user
       const { error: updateError } = await supabase

@@ -3,6 +3,8 @@ interface CloudflareContext {
   env: {
     GEMINI_API_KEY: string;
     GEMINI_API_KEY2: string;
+    SUPABASE_URL: string;
+    SUPABASE_ANON_KEY: string;
   };
 }
 
@@ -91,7 +93,47 @@ export async function onRequestPost(context: CloudflareContext) {
       });
     }
 
-    const { message } = await context.request.json();
+    const { message, userId } = await context.request.json();
+
+    if (!message || typeof message !== "string") {
+      return new Response(JSON.stringify({ error: "Invalid message" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Check if user is blacklisted
+    if (userId && context.env.SUPABASE_URL && context.env.SUPABASE_ANON_KEY) {
+      try {
+        const { createClient } = await import("@supabase/supabase-js");
+        const supabase = createClient(
+          context.env.SUPABASE_URL,
+          context.env.SUPABASE_ANON_KEY
+        );
+
+        const { data: user } = await supabase
+          .from("users")
+          .select("status")
+          .eq("user_id", userId)
+          .single();
+
+        if (user?.status === "blacklisted") {
+          return new Response(
+            JSON.stringify({
+              error:
+                "Access denied. Your account has been restricted. Please contact the administrator if you believe this is an error.",
+            }),
+            {
+              status: 403,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+        }
+      } catch (dbError) {
+        console.error("Error checking user status:", dbError);
+        // Continue if database check fails (don't block legitimate users)
+      }
+    }
 
     if (!message || typeof message !== "string") {
       return new Response(JSON.stringify({ error: "Invalid message" }), {

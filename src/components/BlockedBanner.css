@@ -1,0 +1,67 @@
+.blocked-banner {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.blocked-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.blocked-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.blocked-text h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.blocked-text p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .blocked-banner {
+    top: 60px;
+    padding: 12px 15px;
+  }
+
+  .blocked-icon {
+    font-size: 24px;
+  }
+
+  .blocked-text h3 {
+    font-size: 16px;
+  }
+
+  .blocked-text p {
+    font-size: 13px;
+  }
+}
