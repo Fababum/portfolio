@@ -61,7 +61,7 @@ function Admin() {
       const response = await fetch("/api/admin/users");
       if (response.ok) {
         const data = await response.json();
-        
+
         console.log("Raw data from API:", data);
         console.log("First user:", data.users?.[0]);
         console.log("First visit:", data.visits?.[0]);
@@ -83,7 +83,7 @@ function Admin() {
             ipAddress: visit.ip_address,
           })
         );
-        
+
         console.log("Mapped users:", mappedUsers);
         console.log("Mapped visits:", mappedVisits);
 
