@@ -1,5 +1,5 @@
 // Admin Dashboard Component
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./admin.css";
 
 // Supabase response types (snake_case)
@@ -54,19 +54,32 @@ function Admin() {
     }
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadData();
-      // Refresh data every 30 seconds
-      const interval = setInterval(loadData, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [isAuthenticated]);
+  const handleLogout = useCallback(() => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("adminSessionToken");
+    localStorage.removeItem("adminUsername");
+  }, []);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/users");
+      const sessionToken = localStorage.getItem("adminSessionToken");
+
+      if (!sessionToken) {
+        handleLogout();
+        return;
+      }
+
+      const response = await fetch(
+        `/api/admin/users?sessionToken=${encodeURIComponent(sessionToken)}`
+      );
+
+      if (response.status === 401) {
+        alert("Session expired. Please log in again.");
+        handleLogout();
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
 
@@ -96,7 +109,16 @@ function Admin() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [handleLogout]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadData();
+      // Refresh data every 30 seconds
+      const interval = setInterval(loadData, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated, loadData]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,28 +148,37 @@ function Admin() {
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("adminSessionToken");
-    localStorage.removeItem("adminUsername");
-  };
-
   const updateUserStatus = async (
     userId: string,
     status: "active" | "blacklisted" | "whitelisted"
   ) => {
     try {
+      const sessionToken = localStorage.getItem("adminSessionToken");
+
+      if (!sessionToken) {
+        alert("Session expired. Please log in again.");
+        handleLogout();
+        return;
+      }
+
       const response = await fetch("/api/admin/update-status", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, status }),
+        body: JSON.stringify({ userId, status, sessionToken }),
       });
 
       if (response.ok) {
         loadData(); // Reload data after update
+      } else if (response.status === 401) {
+        alert("Authentication failed. Please log in again.");
+        handleLogout();
+      } else {
+        const error = await response.json();
+        alert(`Failed to update user: ${error.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error updating user status:", error);
+      alert("Error updating user status. Please try again.");
     }
   };
 

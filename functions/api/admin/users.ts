@@ -32,6 +32,20 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
       return RateLimiter.getRateLimitResponse();
     }
 
+    // Security: Validate session token
+    const url = new URL(context.request.url);
+    const sessionToken = url.searchParams.get("sessionToken");
+
+    if (!sessionToken) {
+      return new Response(
+        JSON.stringify({ error: "Authentication required" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     const supabase = getSupabaseClient(context.env);
 
     // Get all users

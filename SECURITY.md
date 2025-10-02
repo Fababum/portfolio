@@ -6,7 +6,33 @@ This portfolio implements multiple security layers to prevent unauthorized API a
 
 ## 🔒 Implemented Protections
 
-### 1. Origin Validation
+### 1. Session Token Authentication
+
+**Prevents**: Unauthorized access to admin endpoints, curl abuse
+**How it works**:
+
+- Login generates a secure session token (SHA-256 hash)
+- Token stored in localStorage and sent with each admin request
+- All admin endpoints validate the session token
+- Invalid/missing token returns 401 Unauthorized
+
+**Protected Endpoints**:
+
+- `/api/admin/users` - Requires `sessionToken` in query params
+- `/api/admin/update-status` - Requires `sessionToken` in request body
+- `/api/admin/track-visit` - Origin validation only
+
+**Example blocked request**:
+
+```bash
+# Curl without session token
+curl -X POST https://your-site.pages.dev/api/admin/update-status \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"test","status":"whitelisted"}'
+# ❌ Returns 401: Authentication required
+```
+
+### 2. Origin Validation
 
 **Prevents**: Direct curl requests, unauthorized domains
 **How it works**:
@@ -110,14 +136,14 @@ curl -X POST https://your-site.pages.dev/api/admin/track-visit \
 
 ## 📊 Protected Endpoints
 
-| Endpoint                   | Rate Limit | Origin Check | Notes                     |
-| -------------------------- | ---------- | ------------ | ------------------------- |
-| `/api/admin/login`         | 3/5min     | ❌           | Strict login protection   |
-| `/api/admin/users`         | 10/min     | ✅           | Requires origin           |
-| `/api/admin/update-status` | 5/min      | ✅           | Requires origin           |
-| `/api/admin/track-visit`   | 20/min     | ✅           | Requires origin           |
-| `/api/admin/check-status`  | 15/min     | ✅           | Requires origin           |
-| `/api/chat`                | 10/min     | ❌           | Public API (rate limited) |
+| Endpoint                   | Rate Limit | Origin Check | Auth Required | Notes                     |
+| -------------------------- | ---------- | ------------ | ------------- | ------------------------- |
+| `/api/admin/login`         | 3/5min     | ❌           | ❌            | Generates session token   |
+| `/api/admin/users`         | 10/min     | ✅           | ✅            | Requires sessionToken     |
+| `/api/admin/update-status` | 5/min      | ✅           | ✅            | Requires sessionToken     |
+| `/api/admin/track-visit`   | 20/min     | ✅           | ❌            | Origin validation only    |
+| `/api/admin/check-status`  | 15/min     | ✅           | ❌            | Origin validation only    |
+| `/api/chat`                | 10/min     | ❌           | ❌            | Public API (rate limited) |
 
 ## 🚨 Response Codes
 
