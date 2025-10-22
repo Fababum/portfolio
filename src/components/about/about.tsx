@@ -20,7 +20,7 @@ function About() {
           <div className="about-card">
             <h2 className="section-title">Who I Am</h2>
             <p className="about-text">
-              Hi, I'm Fabian Spiri - a passionate full-stack developer currently
+              Hi, I'm Fabian Spiri, a passionate full-stack developer currently
               working at Swisscom, where I build robust frontend and backend
               solutions for challenging projects. I love exploring new
               technologies and continuously refining my skills to stay at the
