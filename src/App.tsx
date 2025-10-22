@@ -7,7 +7,6 @@ import About from "./components/about/about";
 import Projects from "./components/projects/projects";
 import Contact from "./components/contact/contact";
 import ChatComponent from "./components/chatBot/ChatComponent";
-import Admin from "./components/admin/admin";
 import BlockedBanner from "./components/BlockedBanner";
 import { getUserId, isReturningUser } from "./utils/userCookie";
 
@@ -42,7 +41,6 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/chatBot" element={<ChatComponent />} />
-        <Route path="/admin" element={<Admin />} />
       </Routes>
     </>
   );
