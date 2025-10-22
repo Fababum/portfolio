@@ -50,7 +50,7 @@ function About() {
               <div className="skill-tag">TypeScript</div>
               <div className="skill-tag">JavaScript</div>
               <div className="skill-tag">NestJS</div>
-              <div className="skill-tag">Prisma</div>
+              <div className="skill-tag">SQL</div>
               <div className="skill-tag">Java</div>
               <div className="skill-tag">Python</div>
               <div className="skill-tag">HTML/CSS</div>
