@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getUserId } from "../utils/userCookie";
 
 interface Message {
   text: string;
@@ -20,15 +19,12 @@ const useChatbot = () => {
     setLoading(true);
 
     try {
-      const userId = getUserId(); // Get user's cookie ID
-
-      // Call our secure Cloudflare Function with userId
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message, userId }),
+        body: JSON.stringify({ message }),
       });
 
       if (!response.ok) {

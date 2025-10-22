@@ -3,7 +3,7 @@ import "./projects.css";
 function Projects() {
   const projects = [
     {
-      title: "Abuse",
+      title: "Abuse Team",
       date: "Aug 2024 – Feb 2025",
       description:
         "In the Abuse team at Swisscom Cyber Security, I gained many new skills in the areas of security and phishing and expanded my knowledge of Java and Python. I also learned how to detect spam effectively and how to design security measures to prevent it.",
