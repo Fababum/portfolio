@@ -61,6 +61,13 @@ function NavBar() {
         >
           Chat Bot
         </NavLink>
+        <NavLink
+          to="/calendarai"
+          className={({ isActive }) => "navLink " + (isActive ? "active" : "")}
+          onClick={closeMenu}
+        >
+          CalendarAI
+        </NavLink>
       </div>
     </nav>
   );
