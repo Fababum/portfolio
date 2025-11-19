@@ -24,6 +24,12 @@ function CalendarAI() {
 
   // Check if user has an active session
   const checkSession = async () => {
+    // Only allow sessions on production domain
+    if (!window.location.href.includes("spiri.pages.dev")) {
+      await supabase.auth.signOut();
+      return;
+    }
+
     const { data } = await supabase.auth.getSession();
     if (data.session) {
       setIsLoggedIn(true);
@@ -49,6 +55,14 @@ function CalendarAI() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event: unknown, session: unknown) => {
+      // Only allow sessions on production domain
+      if (!window.location.href.includes("spiri.pages.dev")) {
+        supabase.auth.signOut();
+        setIsLoggedIn(false);
+        setUserEmail("");
+        return;
+      }
+
       if (
         session &&
         typeof session === "object" &&
