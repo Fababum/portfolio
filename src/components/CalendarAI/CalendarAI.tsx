@@ -174,11 +174,15 @@ function CalendarAI() {
   return (
     <div className="calendar-ai-container">
       <div className="calendar-ai-content">
+        <div className="calendar-header">
+          <h1 className="calendar-title">CalendarAI Chat</h1>
+          <div className="title-underline"></div>
+        </div>
+
         <div className="chat-section">
           <div className="chat-header">
             <div className="header-content">
-              <h1>CalendarAI Chat</h1>
-              {userEmail && <span className="user-email">{userEmail}</span>}
+              <span className="user-email">{userEmail}</span>
             </div>
             <button className="logout-button" onClick={handleLogout}>
               Sign Out
