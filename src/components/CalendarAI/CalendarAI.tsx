@@ -26,7 +26,15 @@ function CalendarAI() {
   const checkSession = async () => {
     // Only allow sessions on production domain
     if (!window.location.href.includes("spiri.pages.dev")) {
+      // Clear all Supabase data from localStorage
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith("sb-")) {
+          localStorage.removeItem(key);
+        }
+      });
       await supabase.auth.signOut();
+      setIsLoggedIn(false);
+      setUserEmail("");
       return;
     }
 
