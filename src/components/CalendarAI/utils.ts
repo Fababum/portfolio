@@ -18,7 +18,7 @@ export async function loginWithGoogle() {
         access_type: "offline", // Get refresh token
         prompt: "consent", // Force consent screen
       },
-      redirectTo: `${window.location.origin}/calendarai`,
+      redirectTo: "https://spiri.pages.dev/calendarai",
     },
   });
 
