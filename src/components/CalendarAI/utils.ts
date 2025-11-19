@@ -8,15 +8,15 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     storageKey: `sb-${window.location.hostname}`,
-    persistSession: window.location.hostname === 'spiri.pages.dev',
-  }
+    persistSession: window.location.hostname === "spiri.pages.dev",
+  },
 });
 
 // Google OAuth login
 export async function loginWithGoogle() {
   // Force clear any existing sessions first
   await supabase.auth.signOut();
-  
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
