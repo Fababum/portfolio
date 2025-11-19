@@ -1,4 +1,4 @@
-/* Chat Bot Container */
+/* Chat Component Container */
 .chat-wrapper {
   min-height: 100vh;
   height: 100%;
@@ -32,17 +32,7 @@
   }
 }
 
-@keyframes titleGlow {
-  0%,
-  100% {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-  }
-  50% {
-    text-shadow: 0 0 40px rgba(255, 255, 255, 0.4),
-      0 0 60px rgba(255, 255, 255, 0.2);
-  }
-}
-
+/* Chat Header */
 .chat-header {
   text-align: center;
   margin-bottom: 60px;
@@ -58,23 +48,27 @@
   animation: titleGlow 3s ease-in-out infinite;
 }
 
-.title-underline {
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, white, transparent);
-  margin: 0 auto;
-  animation: underlineExpand 2s ease-out;
+@keyframes titleGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.4),
+      0 0 60px rgba(255, 255, 255, 0.2);
+  }
 }
 
-@keyframes underlineExpand {
-  from {
-    width: 0;
-    opacity: 0;
-  }
-  to {
-    width: 100px;
-    opacity: 1;
-  }
+.title-underline {
+  height: 2px;
+  width: 80px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  margin: 0 auto;
 }
 
 /* Chat Container */
@@ -160,8 +154,6 @@
   max-width: 80%;
   word-wrap: break-word;
   animation: fadeIn 0.3s ease;
-  font-size: 15px;
-  line-height: 1.6;
 }
 
 @keyframes fadeIn {
@@ -210,7 +202,36 @@
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Chat Input */
+/* Message Text Styling */
+.chat-bubble p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+}
+
+.chat-bubble code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+}
+
+.chat-bubble pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.chat-bubble pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Chat Input Container */
 .chat-input-container {
   padding: 16px 20px;
   background: rgba(255, 255, 255, 0.03);
@@ -224,7 +245,7 @@
   flex: 1;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
@@ -244,12 +265,17 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.chat-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Send Button */
 .chat-send-btn {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 24px;
+  padding: 12px 28px;
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: 12px;
@@ -261,6 +287,7 @@
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .chat-send-btn::before {
@@ -307,50 +334,49 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .chat-wrapper {
-    padding: 30px 15px 20px;
-  }
-
   .chat-content {
     max-width: 100%;
   }
 
-  .chat-header {
-    margin-bottom: 40px;
+  .chat-container {
+    height: calc(100vh - 150px);
+    border-radius: 16px;
   }
 
   .chat-title {
     font-size: 48px;
   }
 
-  .chat-container {
-    height: calc(100vh - 240px);
-    border-radius: 16px;
-  }
-
   .chat-bubble {
     max-width: 85%;
+  }
+
+  .chat-input-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .chat-send-btn {
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .chat-wrapper {
-    padding: 20px 10px 20px;
-  }
-
-  .chat-header {
-    margin-bottom: 30px;
-  }
-
   .chat-title {
     font-size: 36px;
   }
 
   .chat-container {
     border-radius: 12px;
+    min-height: 500px;
   }
 
   .chat-bubble {
     max-width: 90%;
+    font-size: 0.9rem;
+  }
+
+  .chat-input {
+    font-size: 0.9rem;
   }
 }
