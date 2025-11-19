@@ -151,7 +151,7 @@ function Home() {
       )}
       {showYouTubeMessage && (
         <div className="youtube-message">
-          <p>Pwease follow me 🥺</p>
+          <p>Please Follow me!</p>
           <a
             href="https://www.youtube.com/@Fababum"
             target="_blank"

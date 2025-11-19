@@ -50,7 +50,7 @@ const ChatComponent: React.FC = () => {
   return (
     <div className="chat-wrapper">
       <div className="chat-header">
-        <h1 className="chat-title">Chatbot</h1>
+        <h1 className="chat-title">Chat Bot</h1>
         <div className="title-underline"></div>
       </div>
 
