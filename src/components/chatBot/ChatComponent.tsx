@@ -7,7 +7,7 @@ import "./ChatComponent.css";
 const ChatComponent: React.FC = () => {
   const [input, setInput] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
-  const { messages, sendMessage } = useChatbot();
+  const { messages, sendMessage, loading } = useChatbot();
   const messagesEndRef = useChatScroll(messages);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -51,22 +51,89 @@ const ChatComponent: React.FC = () => {
     <div className="chat-wrapper">
       <div className="chat-content">
         <div className="chat-header">
-          <h1 className="chat-title">Chat Bot</h1>
+          <h1 className="chat-title">AI Assistant</h1>
           <div className="title-underline"></div>
+          <p className="chat-subtitle">
+            Ask me anything about Fabian's skills, projects, and experience
+          </p>
         </div>
 
         <div className="chat-container">
-          <div ref={messagesEndRef} className="chat-messages">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`chat-bubble ${
-                  msg.sender === "user" ? "chat-bubble-user" : "chat-bubble-bot"
-                }`}
-              >
-                <Markdown remarkPlugins={[]}>{msg.text}</Markdown>
+          <div className="chat-messages">
+            {messages.length === 0 ? (
+              <div className="welcome-message">
+                <div className="welcome-icon">💬</div>
+                <h2>Welcome to the AI Assistant</h2>
+                <p>
+                  Start a conversation by typing a message below. I can help you
+                  learn more about Fabian's expertise, projects, and
+                  professional background.
+                </p>
+                <div className="suggestion-chips">
+                  <button
+                    className="suggestion-chip"
+                    onClick={() => {
+                      setInput("What are Fabian's main skills?");
+                      inputRef.current?.focus();
+                    }}
+                  >
+                    💡 Main Skills
+                  </button>
+                  <button
+                    className="suggestion-chip"
+                    onClick={() => {
+                      setInput("Tell me about Fabian's projects");
+                      inputRef.current?.focus();
+                    }}
+                  >
+                    🚀 Projects
+                  </button>
+                  <button
+                    className="suggestion-chip"
+                    onClick={() => {
+                      setInput("What is Fabian's experience?");
+                      inputRef.current?.focus();
+                    }}
+                  >
+                    💼 Experience
+                  </button>
+                </div>
               </div>
-            ))}
+            ) : (
+              <>
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`chat-bubble ${
+                      msg.sender === "user"
+                        ? "chat-bubble-user"
+                        : "chat-bubble-bot"
+                    }`}
+                  >
+                    {msg.sender === "bot" && (
+                      <div className="message-avatar">🤖</div>
+                    )}
+                    <div className="message-content">
+                      <Markdown remarkPlugins={[]}>{msg.text}</Markdown>
+                    </div>
+                    {msg.sender === "user" && (
+                      <div className="message-avatar">👤</div>
+                    )}
+                  </div>
+                ))}
+                {loading && (
+                  <div className="chat-bubble chat-bubble-bot typing-indicator">
+                    <div className="message-avatar">🤖</div>
+                    <div className="typing-dots">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="chat-input-container">
@@ -89,7 +156,31 @@ const ChatComponent: React.FC = () => {
               disabled={isSending || !input.trim()}
               aria-label="Send message"
             >
-              Send
+              {isSending ? (
+                <span className="btn-loading">
+                  <span className="spinner"></span>
+                  Sending...
+                </span>
+              ) : (
+                <span className="btn-text">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15 1L7 9M15 1L10 15L7 9M15 1L1 6L7 9"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Send
+                </span>
+              )}
             </button>
           </div>
         </div>
