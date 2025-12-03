@@ -73,7 +73,6 @@
   flex-direction: column;
   max-width: 900px;
   width: 100%;
-  height: calc(100vh - 260px);
   max-height: 700px;
   min-height: 500px;
   background: rgba(20, 20, 20, 0.6);
@@ -673,7 +672,7 @@
 /* Mobile Portrait */
 @media (max-width: 480px) {
   .chat-wrapper {
-    padding: 15px 8px 30px;
+    padding: 15px 8px 0;
   }
 
   .chat-header {
@@ -691,8 +690,8 @@
 
   .chat-container {
     border-radius: 12px;
+    max-height: 600px;
     min-height: 450px;
-    height: calc(100vh - 110px);
   }
 
   .chat-container:hover {
@@ -785,12 +784,23 @@
 
 /* Small Mobile Devices */
 @media (max-width: 360px) {
+  .chat-wrapper {
+    padding: 10px 8px 0;
+  }
+
   .chat-title {
     font-size: 28px;
   }
 
+  .title-underline {
+    width: 60px;
+    margin-bottom: 25px;
+  }
+
   .chat-container {
+    max-height: 550px;
     min-height: 400px;
+    border-radius: 10px;
   }
 
   .chat-bubble {
@@ -822,24 +832,23 @@
 }
 
 /* Landscape Mode for Mobile */
-@media (max-height: 600px) and (orientation: landscape) {
+@media (max-height: 700px) and (orientation: landscape) {
   .chat-wrapper {
-    padding: 15px 10px 25px;
-  }
-
-  .chat-header {
-    margin-bottom: 15px;
+    padding: 20px 20px 0;
   }
 
   .chat-title {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+
+  .title-underline {
+    margin-bottom: 30px;
   }
 
   .chat-container {
-    height: calc(100vh - 100px);
-    min-height: auto;
-    max-height: none;
+    max-height: 400px;
+    min-height: 300px;
   }
 
   .chat-messages {

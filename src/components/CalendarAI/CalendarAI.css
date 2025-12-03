@@ -643,14 +643,6 @@
     padding: 15px 10px 0;
   }
 
-  .calendar-header-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 0 0 15px 0;
-    margin-bottom: 15px;
-  }
-
   .chat-section {
     max-height: 500px;
     min-height: 350px;
