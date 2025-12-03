@@ -138,7 +138,6 @@
   flex-direction: column;
   max-width: 900px;
   width: 100%;
-  height: calc(100vh - 260px);
   max-height: 700px;
   min-height: 500px;
   background: rgba(20, 20, 20, 0.6);
@@ -543,13 +542,36 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .calendar-ai-container {
+    padding: 40px 20px 0;
+  }
+
+  .calendar-ai-content {
+    max-width: 800px;
+  }
+
+  .chat-section {
+    max-height: 650px;
+  }
+
+  .calendar-title {
+    font-size: 56px;
+  }
+}
+
 @media (max-width: 768px) {
+  .calendar-ai-container {
+    padding: 30px 16px 0;
+  }
+
   .calendar-ai-content {
     max-width: 100%;
   }
 
   .chat-section {
-    height: calc(100vh - 150px);
+    max-height: 600px;
+    min-height: 450px;
     border-radius: 16px;
   }
 
@@ -557,33 +579,209 @@
     padding: 40px 24px;
   }
 
-  .login-section h1 {
+  .login-section h1,
+  .calendar-title {
     font-size: 48px;
   }
 
   .message {
     max-width: 85%;
+    padding: 14px 18px;
+  }
+
+  .chat-input-container {
+    padding: 14px 16px;
+  }
+
+  .chat-send-btn {
+    padding: 10px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .calendar-ai-container {
+    padding: 20px 12px 0;
+  }
+
+  .chat-section {
+    max-height: 550px;
+    min-height: 400px;
+    border-radius: 14px;
+  }
+
+  .calendar-title {
+    font-size: 40px;
+  }
+
+  .title-underline {
+    width: 80px;
+  }
+
+  .message {
+    max-width: 88%;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  .chat-messages {
+    padding: 20px;
+  }
+
+  .chat-input {
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+
+  .chat-send-btn {
+    padding: 10px 20px;
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
-  .login-section h1 {
-    font-size: 36px;
+  .calendar-ai-container {
+    padding: 15px 10px 0;
   }
 
-  .login-section p {
-    font-size: 1rem;
-  }
-
-  .chat-header h1 {
-    font-size: 1.25rem;
+  .calendar-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 0 15px 0;
+    margin-bottom: 15px;
   }
 
   .chat-section {
+    max-height: 500px;
+    min-height: 350px;
     border-radius: 12px;
+  }
+
+  .login-section h1,
+  .calendar-title {
+    font-size: 32px;
+  }
+
+  .login-section p {
+    font-size: 0.95rem;
+  }
+
+  .title-underline {
+    width: 70px;
+    margin-bottom: 40px;
   }
 
   .message {
     max-width: 90%;
+    padding: 10px 14px;
+  }
+
+  .message-avatar {
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+
+  .chat-input-container {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .chat-input {
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+
+  .chat-send-btn {
+    padding: 10px 16px;
+    font-size: 0.8rem;
+  }
+
+  .btn-text svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .calendar-ai-container {
+    padding: 10px 8px 0;
+  }
+
+  .chat-section {
+    max-height: 450px;
+    min-height: 320px;
+    border-radius: 10px;
+  }
+
+  .calendar-title {
+    font-size: 28px;
+  }
+
+  .title-underline {
+    width: 60px;
+    margin-bottom: 30px;
+  }
+
+  .message {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .message-avatar {
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .chat-messages {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .chat-input-container {
+    padding: 10px;
+  }
+
+  .chat-input {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .chat-send-btn {
+    padding: 8px 14px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+  .calendar-ai-container {
+    padding: 20px 20px 0;
+  }
+
+  .chat-section {
+    max-height: 400px;
+    min-height: 300px;
+  }
+
+  .calendar-title {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+
+  .title-underline {
+    margin-bottom: 30px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+
+  .message {
+    padding: 10px 14px;
   }
 }
