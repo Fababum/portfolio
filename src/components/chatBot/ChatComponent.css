@@ -1,24 +1,19 @@
 /* Chat Component Container */
 .chat-wrapper {
   min-height: 100vh;
-  height: 100%;
-  width: 100%;
-  background: black;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 50px 20px 20px;
+  padding: 50px 20px 0;
+  background: black;
   position: relative;
   z-index: 1;
-  overflow: hidden;
 }
 
 .chat-content {
-  max-width: 900px;
+  max-width: 1200px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 @keyframes fadeInUp {
@@ -32,18 +27,12 @@
   }
 }
 
-/* Chat Header */
-.chat-header {
-  text-align: center;
-  margin-bottom: 60px;
-  width: 100%;
-}
-
 .chat-title {
   font-size: 64px;
   color: white;
   font-weight: 400;
   margin-bottom: 20px;
+  text-align: center;
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
   animation: titleGlow 3s ease-in-out infinite;
 }
@@ -60,23 +49,22 @@
 }
 
 .title-underline {
-  height: 2px;
-  width: 80px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
-  margin: 0 auto 24px;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  margin: 0 auto 60px;
+  animation: underlineExpand 2s ease-out;
 }
 
-.chat-subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 300;
-  letter-spacing: 0.5px;
-  margin: 0;
+@keyframes underlineExpand {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100px;
+    opacity: 1;
+  }
 }
 
 /* Chat Container */
@@ -86,8 +74,8 @@
   max-width: 900px;
   width: 100%;
   height: calc(100vh - 260px);
-  max-height: 800px;
-  min-height: 600px;
+  max-height: 700px;
+  min-height: 500px;
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -97,6 +85,7 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   animation: fadeInUp 0.8s ease-out;
   position: relative;
+  margin: 0 auto 20px;
 }
 
 .chat-container::before {
@@ -548,7 +537,7 @@
 /* Tablets */
 @media (max-width: 768px) {
   .chat-wrapper {
-    padding: 30px 15px 15px;
+    padding: 30px 15px 40px;
   }
 
   .chat-content {
@@ -556,7 +545,7 @@
   }
 
   .chat-header {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
   .chat-container {
@@ -569,10 +558,6 @@
   .chat-title {
     font-size: 48px;
     margin-bottom: 16px;
-  }
-
-  .chat-subtitle {
-    font-size: 1rem;
   }
 
   .chat-messages {
@@ -631,20 +616,15 @@
 /* Mobile Landscape and Small Tablets */
 @media (max-width: 640px) {
   .chat-wrapper {
-    padding: 20px 10px 10px;
+    padding: 20px 10px 30px;
   }
 
   .chat-header {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .chat-title {
     font-size: 40px;
-  }
-
-  .chat-subtitle {
-    font-size: 0.95rem;
-    padding: 0 10px;
   }
 
   .chat-container {
@@ -693,11 +673,11 @@
 /* Mobile Portrait */
 @media (max-width: 480px) {
   .chat-wrapper {
-    padding: 15px 8px 8px;
+    padding: 15px 8px 30px;
   }
 
   .chat-header {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .chat-title {
@@ -706,13 +686,7 @@
   }
 
   .title-underline {
-    width: 60px;
-    margin-bottom: 16px;
-  }
-
-  .chat-subtitle {
-    font-size: 0.85rem;
-    padding: 0 15px;
+    width: 80px;
   }
 
   .chat-container {
@@ -815,10 +789,6 @@
     font-size: 28px;
   }
 
-  .chat-subtitle {
-    font-size: 0.8rem;
-  }
-
   .chat-container {
     min-height: 400px;
   }
@@ -854,20 +824,16 @@
 /* Landscape Mode for Mobile */
 @media (max-height: 600px) and (orientation: landscape) {
   .chat-wrapper {
-    padding: 15px 10px;
+    padding: 15px 10px 25px;
   }
 
   .chat-header {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 
   .chat-title {
     font-size: 32px;
     margin-bottom: 10px;
-  }
-
-  .chat-subtitle {
-    font-size: 0.85rem;
   }
 
   .chat-container {

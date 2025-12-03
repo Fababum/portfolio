@@ -1,5 +1,6 @@
 .projects-container {
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -7,6 +8,7 @@
   background: black;
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 .projects-content {

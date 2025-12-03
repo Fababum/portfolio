@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import useChatScroll from "../../hooks/useChatScroll";
 import "./ChatComponent.css";
 
-const ChatComponent: React.FC = () => {
+function ChatComponent() {
   const [input, setInput] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const { messages, sendMessage, loading } = useChatbot();
@@ -50,13 +50,8 @@ const ChatComponent: React.FC = () => {
   return (
     <div className="chat-wrapper">
       <div className="chat-content">
-        <div className="chat-header">
-          <h1 className="chat-title">AI Assistant</h1>
-          <div className="title-underline"></div>
-          <p className="chat-subtitle">
-            Ask me anything about Fabian's skills, projects, and experience
-          </p>
-        </div>
+        <h1 className="chat-title">Chat Bot</h1>
+        <div className="title-underline"></div>
 
         <div className="chat-container">
           <div className="chat-messages">
@@ -187,6 +182,6 @@ const ChatComponent: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ChatComponent;
