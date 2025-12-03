@@ -174,10 +174,8 @@ function CalendarAI() {
   return (
     <div className="calendar-ai-container">
       <div className="calendar-ai-content">
-        <div className="calendar-header">
-          <h1 className="calendar-title">CalendarAI Chat</h1>
-          <div className="title-underline"></div>
-        </div>
+        <h1 className="calendar-title">CalendarAI</h1>
+        <div className="title-underline"></div>
 
         <div className="chat-section">
           <div className="chat-header">
