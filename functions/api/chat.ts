@@ -73,37 +73,6 @@ export async function onRequestPost(context: CloudflareContext) {
       );
     }
 
-    // Verify Origin header to prevent direct API calls
-    const origin = context.request.headers.get("Origin");
-    const referer = context.request.headers.get("Referer");
-
-    // Get allowed origins from environment variable or use defaults
-    const allowedOriginsEnv =
-      context.env.ALLOWED_ORIGINS || "localhost,pages.dev";
-    const allowedOrigins = allowedOriginsEnv
-      .split(",")
-      .map((domain: string) => {
-        if (domain.includes("localhost")) {
-          return [`http://localhost:5173`, `http://localhost:4173`];
-        }
-        return [`https://${domain}`, `http://${domain}`];
-      })
-      .flat();
-
-    const isValidOrigin =
-      origin &&
-      allowedOrigins.some((allowed: string) => origin.startsWith(allowed));
-    const isValidReferer =
-      referer &&
-      allowedOrigins.some((allowed: string) => referer.startsWith(allowed));
-
-    if (!isValidOrigin && !isValidReferer) {
-      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
-        status: 403,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
     const { message, userId } = await context.request.json();
 
     if (!message || typeof message !== "string") {
