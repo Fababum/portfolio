@@ -174,19 +174,17 @@ function CalendarAI() {
   return (
     <div className="calendar-ai-container">
       <div className="calendar-ai-content">
+        <div className="calendar-header-top">
+          <span className="user-email">{userEmail}</span>
+          <button className="logout-button" onClick={handleLogout}>
+            Sign Out
+          </button>
+        </div>
+
         <h1 className="calendar-title">CalendarAI</h1>
         <div className="title-underline"></div>
 
         <div className="chat-section">
-          <div className="chat-header">
-            <div className="header-content">
-              <span className="user-email">{userEmail}</span>
-            </div>
-            <button className="logout-button" onClick={handleLogout}>
-              Sign Out
-            </button>
-          </div>
-
           <div className="chat-messages">
             {chatHistory.length === 0 && (
               <div className="welcome-message">
@@ -199,34 +197,69 @@ function CalendarAI() {
             )}
             {chatHistory.map((msg, index) => (
               <div key={index} className={`message ${msg.role}`}>
-                <div className="message-label">
-                  {msg.role === "user" ? "You" : "AI"}
+                <div className="message-avatar">
+                  {msg.role === "user" ? "👤" : "🤖"}
                 </div>
                 <div className="message-text">{msg.message}</div>
               </div>
             ))}
-            {isLoading && <div className="loading">AI is typing...</div>}
+            {isLoading && (
+              <div className="loading">
+                <div className="message-avatar">🤖</div>
+                <div className="typing-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="chat-input">
-            <textarea
+          <div className="chat-input-container">
+            <input
+              type="text"
+              className="chat-input"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask about your calendar, create events, or get schedule info..."
-              rows={3}
+              placeholder="Type your message..."
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   handleSendMessage();
                 }
               }}
+              disabled={isLoading}
             />
             <button
-              className="send-button"
+              className="chat-send-btn"
               onClick={handleSendMessage}
               disabled={isLoading || !inputText.trim()}
             >
-              {isLoading ? "Sending..." : "Send"}
+              {isLoading ? (
+                <span className="btn-loading">
+                  <span className="spinner"></span>
+                  Sending...
+                </span>
+              ) : (
+                <span className="btn-text">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15 1L7 9M15 1L10 15L7 9M15 1L1 6L7 9"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Send
+                </span>
+              )}
             </button>
           </div>
         </div>
