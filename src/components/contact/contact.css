@@ -15,6 +15,12 @@
   animation: fadeInUp 0.8s ease-out;
 }
 
+.contact-content::after {
+  content: "";
+  display: block;
+  height: 60px;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

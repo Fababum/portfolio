@@ -1,6 +1,5 @@
 .projects-container {
   min-height: 100vh;
-  max-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -8,13 +7,18 @@
   background: black;
   position: relative;
   z-index: 1;
-  overflow: hidden;
 }
 
 .projects-content {
   max-width: 1200px;
   width: 100%;
   animation: fadeInUp 0.8s ease-out;
+}
+
+.projects-content::after {
+  content: "";
+  display: block;
+  height: 60px;
 }
 
 @keyframes fadeInUp {
