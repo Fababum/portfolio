@@ -529,84 +529,372 @@
 }
 
 /* Responsive Design */
+
+/* Large Tablets and Small Desktops */
+@media (max-width: 1024px) {
+  .chat-content {
+    max-width: 95%;
+  }
+
+  .chat-container {
+    max-height: 700px;
+  }
+
+  .chat-title {
+    font-size: 56px;
+  }
+}
+
+/* Tablets */
 @media (max-width: 768px) {
+  .chat-wrapper {
+    padding: 30px 15px 15px;
+  }
+
   .chat-content {
     max-width: 100%;
   }
 
+  .chat-header {
+    margin-bottom: 40px;
+  }
+
   .chat-container {
     height: calc(100vh - 150px);
+    max-height: none;
+    min-height: 500px;
     border-radius: 16px;
   }
 
   .chat-title {
     font-size: 48px;
+    margin-bottom: 16px;
   }
 
   .chat-subtitle {
     font-size: 1rem;
   }
 
+  .chat-messages {
+    padding: 20px 16px;
+  }
+
   .chat-bubble {
     max-width: 85%;
+    padding: 14px 18px;
   }
 
   .chat-input-container {
-    flex-direction: row;
+    padding: 14px 16px;
     gap: 10px;
+  }
+
+  .chat-input {
+    padding: 11px 14px;
+    font-size: 0.95rem;
   }
 
   .chat-send-btn {
     padding: 12px 20px;
-  }
-
-  .suggestion-chips {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .suggestion-chip {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .chat-title {
-    font-size: 36px;
-  }
-
-  .chat-subtitle {
-    font-size: 0.9rem;
-  }
-
-  .chat-container {
-    border-radius: 12px;
-    min-height: 500px;
-  }
-
-  .chat-bubble {
-    max-width: 90%;
-    font-size: 0.9rem;
-  }
-
-  .chat-input {
-    font-size: 0.9rem;
-  }
-
-  .chat-send-btn {
-    padding: 12px 16px;
     font-size: 0.85rem;
   }
 
+  .suggestion-chips {
+    gap: 10px;
+  }
+
+  .suggestion-chip {
+    padding: 9px 18px;
+    font-size: 0.85rem;
+  }
+
+  .welcome-message {
+    padding: 40px 20px;
+  }
+
   .welcome-icon {
-    font-size: 48px;
+    font-size: 56px;
+    margin-bottom: 20px;
   }
 
   .welcome-message h2 {
     font-size: 1.5rem;
   }
 
-  .welcome-message p {
+  .message-avatar {
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Mobile Landscape and Small Tablets */
+@media (max-width: 640px) {
+  .chat-wrapper {
+    padding: 20px 10px 10px;
+  }
+
+  .chat-header {
+    margin-bottom: 30px;
+  }
+
+  .chat-title {
+    font-size: 40px;
+  }
+
+  .chat-subtitle {
+    font-size: 0.95rem;
+    padding: 0 10px;
+  }
+
+  .chat-container {
+    border-radius: 14px;
+    height: calc(100vh - 130px);
+  }
+
+  .chat-messages {
+    padding: 16px 12px;
+    gap: 14px;
+  }
+
+  .chat-bubble {
+    max-width: 88%;
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+
+  .chat-input-container {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .chat-input {
+    padding: 10px 12px;
     font-size: 0.9rem;
+    border-radius: 10px;
+  }
+
+  .chat-send-btn {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+
+  .suggestion-chips {
+    gap: 8px;
+  }
+
+  .suggestion-chip {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .chat-wrapper {
+    padding: 15px 8px 8px;
+  }
+
+  .chat-header {
+    margin-bottom: 24px;
+  }
+
+  .chat-title {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .title-underline {
+    width: 60px;
+    margin-bottom: 16px;
+  }
+
+  .chat-subtitle {
+    font-size: 0.85rem;
+    padding: 0 15px;
+  }
+
+  .chat-container {
+    border-radius: 12px;
+    min-height: 450px;
+    height: calc(100vh - 110px);
+  }
+
+  .chat-container:hover {
+    transform: none;
+  }
+
+  .chat-messages {
+    padding: 14px 10px;
+    gap: 12px;
+  }
+
+  .chat-bubble {
+    max-width: 90%;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .chat-bubble:hover {
+    transform: none;
+  }
+
+  .message-avatar {
+    font-size: 18px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .message-content p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .chat-input-container {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .chat-input {
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .chat-send-btn {
+    padding: 9px 14px;
+    font-size: 0.75rem;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .chat-send-btn:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .welcome-message {
+    padding: 30px 15px;
+  }
+
+  .welcome-icon {
+    font-size: 44px;
+    margin-bottom: 16px;
+  }
+
+  .welcome-message h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+
+  .welcome-message p {
+    font-size: 0.85rem;
+    padding: 0 10px;
+  }
+
+  .suggestion-chips {
+    gap: 8px;
+  }
+
+  .suggestion-chip {
+    padding: 8px 14px;
+    font-size: 0.75rem;
+    border-radius: 16px;
+  }
+
+  .suggestion-chip:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 360px) {
+  .chat-title {
+    font-size: 28px;
+  }
+
+  .chat-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .chat-container {
+    min-height: 400px;
+  }
+
+  .chat-bubble {
+    max-width: 92%;
+    padding: 9px 12px;
+  }
+
+  .chat-input {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .chat-send-btn {
+    padding: 8px 12px;
+    font-size: 0.7rem;
+  }
+
+  .welcome-icon {
+    font-size: 40px;
+  }
+
+  .welcome-message h2 {
+    font-size: 1.15rem;
+  }
+
+  .welcome-message p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Landscape Mode for Mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .chat-wrapper {
+    padding: 15px 10px;
+  }
+
+  .chat-header {
+    margin-bottom: 20px;
+  }
+
+  .chat-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .chat-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .chat-container {
+    height: calc(100vh - 100px);
+    min-height: auto;
+    max-height: none;
+  }
+
+  .chat-messages {
+    padding: 12px;
+  }
+
+  .welcome-message {
+    padding: 20px 15px;
+  }
+
+  .welcome-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .welcome-message h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .welcome-message p {
+    font-size: 0.85rem;
   }
 }
