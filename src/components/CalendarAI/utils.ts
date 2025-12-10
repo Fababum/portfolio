@@ -116,7 +116,7 @@ export async function sendToN8n(
     };
 
     const response = await fetch(
-      "https://n8n.apps-team.icp.swisscom.com/webhook/calendarai/chat",
+      "vhttps://n8n.julianschwab.dev/webhook/calendarai/chat",
       {
         method: "POST",
         headers: {
