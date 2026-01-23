@@ -193,7 +193,7 @@ If someone asks:
 Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
@@ -220,9 +220,17 @@ Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error("Gemini API error:", errorData);
+      console.error("Gemini API error:", response.status, errorData);
+      const errorMessage =
+        response.status === 429
+          ? "AI provider rate limit reached. Please try again shortly."
+          : "Failed to get response from AI";
       return new Response(
-        JSON.stringify({ error: "Failed to get response from AI" }),
+        JSON.stringify({
+          error: errorMessage,
+          source: "provider",
+          providerStatus: response.status,
+        }),
         {
           status: response.status,
           headers: { "Content-Type": "application/json" },
