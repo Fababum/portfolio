@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { loginWithGoogle, saveGoogleTokens, sendToN8n } from "./utils.ts";
 import { createClient } from "@supabase/supabase-js";
-import "./CalendarAI.css";
-
 // Initialize Supabase client for authentication
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -21,6 +19,179 @@ function CalendarAI() {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [sessionId] = useState(() => crypto.randomUUID()); // Unique session ID for this chat
   const [userEmail, setUserEmail] = useState<string>(""); // Logged-in user's email
+
+  const styles = {
+    page: {
+      minHeight: "100vh",
+      color: "var(--text)",
+      padding: "10px 16px 40px",
+    },
+    shell: {
+      maxWidth: "980px",
+      margin: "0 auto",
+      display: "grid",
+      gap: "20px",
+    },
+    header: {
+      textAlign: "center" as const,
+      display: "grid",
+      gap: "8px",
+      marginTop: "10px",
+    },
+    title: {
+      margin: 0,
+      textShadow: "var(--title-shadow)",
+    },
+    subtitle: {
+      margin: 0,
+      opacity: 0.75,
+    },
+    card: {
+      border: "1px solid var(--card-border)",
+      borderRadius: "18px",
+      background: "var(--card-bg)",
+      boxShadow: "var(--card-shadow)",
+      padding: "22px",
+      display: "grid",
+      gap: "14px",
+    },
+    loginButton: {
+      border: "1px solid var(--chip-border)",
+      background: "var(--chip-bg)",
+      color: "var(--text)",
+      borderRadius: "999px",
+      padding: "10px 16px",
+      cursor: "pointer",
+      fontWeight: 600,
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "8px",
+      width: "fit-content",
+    },
+    loginFootnote: {
+      margin: 0,
+      opacity: 0.7,
+      fontSize: "13px",
+      lineHeight: 1.6,
+    },
+    chatCard: {
+      border: "1px solid var(--card-border)",
+      borderRadius: "18px",
+      background: "var(--card-bg)",
+      boxShadow: "var(--card-shadow)",
+      overflow: "hidden",
+      display: "grid",
+      gridTemplateRows: "auto 1fr auto",
+      minHeight: "55vh",
+    },
+    userBar: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "14px 18px",
+      borderBottom: "1px solid var(--card-border)",
+      gap: "12px",
+      flexWrap: "wrap" as const,
+    },
+    userChip: {
+      border: "1px solid var(--chip-border)",
+      background: "var(--chip-bg)",
+      padding: "6px 12px",
+      borderRadius: "999px",
+      fontSize: "12px",
+      opacity: 0.8,
+    },
+    signOut: {
+      border: "1px solid var(--chip-border)",
+      background: "var(--chip-bg)",
+      color: "var(--text)",
+      borderRadius: "999px",
+      padding: "8px 12px",
+      cursor: "pointer",
+      fontWeight: 600,
+    },
+    messages: {
+      padding: "18px",
+      display: "flex",
+      flexDirection: "column" as const,
+      gap: "12px",
+      overflowY: "auto" as const,
+      maxHeight: "45vh",
+    },
+    emptyState: {
+      border: "1px dashed var(--chip-border)",
+      borderRadius: "16px",
+      padding: "18px",
+      display: "grid",
+      gap: "10px",
+      background: "var(--chip-bg)",
+    },
+    emptyTitle: {
+      margin: 0,
+      fontSize: "22px",
+    },
+    emptyText: {
+      margin: 0,
+      opacity: 0.8,
+      lineHeight: 1.6,
+    },
+    bubbleRow: {
+      display: "flex",
+      alignItems: "flex-start",
+      gap: "8px",
+    },
+    bubble: {
+      maxWidth: "78%",
+      padding: "8px 10px",
+      borderRadius: "16px",
+      border: "1px solid var(--card-border)",
+      background: "var(--chip-bg)",
+      lineHeight: 1.5,
+      fontSize: "14px",
+    },
+    bubbleUser: {
+      marginLeft: "auto",
+      background: "var(--card-bg)",
+    },
+    bubbleBot: {
+      marginRight: "auto",
+    },
+    sender: {
+      fontSize: "12px",
+    },
+    inputBar: {
+      borderTop: "1px solid var(--card-border)",
+      padding: "12px",
+      display: "flex",
+      gap: "10px",
+      alignItems: "center",
+    },
+    input: {
+      flex: 1,
+      borderRadius: "999px",
+      border: "1px solid var(--chip-border)",
+      background: "var(--chip-bg)",
+      color: "var(--text)",
+      padding: "10px 14px",
+      outline: "none",
+    },
+    sendButton: {
+      border: "1px solid var(--chip-border)",
+      background: "var(--chip-bg)",
+      color: "var(--text)",
+      borderRadius: "999px",
+      padding: "10px 16px",
+      cursor: "pointer",
+      fontWeight: 600,
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "8px",
+    },
+    sendDisabled: {
+      opacity: 0.5,
+      cursor: "not-allowed",
+    },
+  };
 
   // Check if user has an active session
   const checkSession = async () => {
@@ -127,14 +298,21 @@ function CalendarAI() {
   // Login Screen
   if (!isLoggedIn) {
     return (
-      <div className="calendar-ai-container">
-        <div className="calendar-ai-content">
-          <div className="login-section">
-            <h1>CalendarAI</h1>
-            <p>
-              Sign in with your Google account to manage your calendar with AI
+      <div style={styles.page}>
+        <div style={styles.shell}>
+          <div style={styles.header}>
+            <h1 style={styles.title}>CalendarAI</h1>
+            <p style={styles.subtitle}>
+              Sign in with Google to manage your calendar with AI.
             </p>
-            <button className="login-button" onClick={loginWithGoogle}>
+          </div>
+
+          <div style={styles.card}>
+            <p style={{ margin: 0, opacity: 0.8, lineHeight: 1.6 }}>
+              CalendarAI can read your calendar to suggest schedules, create
+              events, and answer questions about your availability.
+            </p>
+            <button style={styles.loginButton} onClick={loginWithGoogle}>
               <svg
                 width="18"
                 height="18"
@@ -160,9 +338,9 @@ function CalendarAI() {
               </svg>
               Sign in with Google
             </button>
-            <p className="login-disclaimer">
-              By signing in, you agree to allow CalendarAI to access your Google
-              Calendar
+            <p style={styles.loginFootnote}>
+              By signing in, you allow CalendarAI to access your Google
+              Calendar.
             </p>
           </div>
         </div>
@@ -172,53 +350,70 @@ function CalendarAI() {
 
   // Chat Interface
   return (
-    <div className="calendar-ai-container">
-      <div className="calendar-ai-content">
-        <div className="calendar-header-top">
-          <span className="user-email">{userEmail}</span>
-          <button className="logout-button" onClick={handleLogout}>
-            Sign Out
-          </button>
+    <div style={styles.page}>
+      <div style={styles.shell}>
+        <div style={styles.header}>
+          <h1 style={styles.title}>CalendarAI</h1>
+          <p style={styles.subtitle}>
+            Create events, check availability, and manage your schedule.
+          </p>
         </div>
 
-        <h1 className="calendar-title">CalendarAI</h1>
-        <div className="title-underline"></div>
+        <div style={styles.chatCard}>
+          <div style={styles.userBar}>
+            <span style={styles.userChip}>{userEmail}</span>
+            <button style={styles.signOut} onClick={handleLogout}>
+              Sign Out
+            </button>
+          </div>
 
-        <div className="chat-section">
-          <div className="chat-messages">
+          <div style={styles.messages}>
             {chatHistory.length === 0 && (
-              <div className="welcome-message">
-                <h2>Welcome to CalendarAI!</h2>
-                <p>
+              <div style={styles.emptyState}>
+                <h2 style={styles.emptyTitle}>Welcome to CalendarAI!</h2>
+                <p style={styles.emptyText}>
                   Ask me anything about your calendar, create events, or get
                   schedule information.
                 </p>
               </div>
             )}
             {chatHistory.map((msg, index) => (
-              <div key={index} className={`message ${msg.role}`}>
-                <div className="message-avatar">
-                  {msg.role === "user" ? "👤" : "🤖"}
+              <div
+                key={index}
+                style={{
+                  ...styles.bubbleRow,
+                  justifyContent:
+                    msg.role === "user" ? "flex-end" : "flex-start",
+                }}
+              >
+                <div
+                  style={{
+                    ...styles.bubble,
+                    ...(msg.role === "user"
+                      ? styles.bubbleUser
+                      : styles.bubbleBot),
+                  }}
+                >
+                  <div style={styles.sender}>
+                    {msg.role === "user" ? "You" : "CalendarAI"}
+                  </div>
+                  <div>{msg.message}</div>
                 </div>
-                <div className="message-text">{msg.message}</div>
               </div>
             ))}
             {isLoading && (
-              <div className="loading">
-                <div className="message-avatar">🤖</div>
-                <div className="typing-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+              <div style={styles.bubbleRow}>
+                <div style={{ ...styles.bubble, ...styles.bubbleBot }}>
+                  <div style={styles.sender}>CalendarAI</div>
+                  <div>Loading...</div>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="chat-input-container">
+          <div style={styles.inputBar}>
             <input
               type="text"
-              className="chat-input"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Type your message..."
@@ -229,19 +424,20 @@ function CalendarAI() {
                 }
               }}
               disabled={isLoading}
+              style={styles.input}
             />
             <button
-              className="chat-send-btn"
               onClick={handleSendMessage}
               disabled={isLoading || !inputText.trim()}
+              style={{
+                ...styles.sendButton,
+                ...(isLoading || !inputText.trim() ? styles.sendDisabled : {}),
+              }}
             >
               {isLoading ? (
-                <span className="btn-loading">
-                  <span className="spinner"></span>
-                  Sending...
-                </span>
+                <span>Sending...</span>
               ) : (
-                <span className="btn-text">
+                <span style={{ display: "inline-flex", alignItems: "center" }}>
                   <svg
                     width="16"
                     height="16"

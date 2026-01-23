@@ -8,7 +8,7 @@ interface Message {
 const useChatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      text: "👋 Hello! I'm Fabian's AI assistant. Feel free to ask me anything about his skills, projects, or experience!",
+      text: "Hello! I'm Fabian's AI assistant. Feel free to ask me anything about his skills, projects, or experience!",
       sender: "bot",
     },
   ]);

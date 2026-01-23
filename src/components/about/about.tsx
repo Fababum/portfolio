@@ -1,40 +1,76 @@
-import "./about.css";
-
 function About() {
   return (
-    <div className="about-container">
-      <div className="about-content">
-        <div className="about-header">
-          <div className="profile-image-container">
+    <div
+      style={{
+        minHeight: "100vh",
+        color: "var(--text)",
+        padding: "10px 16px 40px",
+      }}
+    >
+      <div style={{ maxWidth: "980px", margin: "0 auto" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            gap: "12px",
+            marginBottom: "24px",
+          }}
+        >
+          <div
+            style={{
+              width: "120px",
+              height: "120px",
+              borderRadius: "999px",
+              overflow: "hidden",
+              border: "1px solid var(--card-border)",
+              boxShadow: "var(--card-shadow)",
+            }}
+          >
             <img
               src="/PB_Fabian.png"
               alt="Fabian Profile"
-              className="profile-image"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           </div>
-          <h1 className="about-title">About Me</h1>
-          <div className="title-underline"></div>
+          <div>
+            <h1 style={{ margin: 0, textShadow: "var(--title-shadow)" }}>
+              About Me
+            </h1>
+            <p style={{ margin: "6px 0 0", opacity: 0.75 }}>
+              Full‑stack developer with a focus on practical, secure solutions.
+            </p>
+          </div>
         </div>
 
-        <div className="about-section">
-          <div className="about-card">
-            <h2 className="section-title">Who I Am</h2>
-            <p className="about-text">
+        <div style={{ display: "grid", gap: "20px" }}>
+          <div>
+            <h2 style={{ margin: "0 0 8px" }}>Who I Am</h2>
+            <p style={{ margin: "0 0 10px", lineHeight: 1.7, opacity: 0.85 }}>
               Hi, I'm Fabian Spiri, a passionate full-stack developer currently
               working at Swisscom, where I build robust frontend and backend
               solutions for challenging projects. I love exploring new
               technologies and continuously refining my skills to stay at the
               cutting edge of development.
             </p>
-            <p className="about-text" style={{ marginTop: "15px" }}>
+            <p style={{ margin: 0, lineHeight: 1.7, opacity: 0.85 }}>
               Outside of coding, I enjoy going to the gym and playing Souls-like
               games.
             </p>
           </div>
 
-          <div className="about-card">
-            <h2 className="section-title">What I Do</h2>
-            <p className="about-text">
+          <div
+            style={{
+              height: "1px",
+              background: "var(--card-border)",
+              width: "100%",
+            }}
+          />
+
+          <div>
+            <h2 style={{ margin: "0 0 8px" }}>What I Do</h2>
+            <p style={{ margin: 0, lineHeight: 1.7, opacity: 0.85 }}>
               As a full-stack developer at Swisscom, I work on complex projects
               ranging from cybersecurity and phishing detection to API
               development and database integration. I specialize in building
@@ -43,21 +79,50 @@ function About() {
             </p>
           </div>
 
-          <div className="about-card">
-            <h2 className="section-title">Skills & Technologies</h2>
-            <div className="skills-grid">
-              <div className="skill-tag">React</div>
-              <div className="skill-tag">TypeScript</div>
-              <div className="skill-tag">JavaScript</div>
-              <div className="skill-tag">NestJS</div>
-              <div className="skill-tag">SQL</div>
-              <div className="skill-tag">Java</div>
-              <div className="skill-tag">Python</div>
-              <div className="skill-tag">HTML/CSS</div>
-              <div className="skill-tag">Node.js</div>
-              <div className="skill-tag">Git</div>
-              <div className="skill-tag">API Design</div>
-              <div className="skill-tag">Cybersecurity</div>
+          <div
+            style={{
+              height: "1px",
+              background: "var(--card-border)",
+              width: "100%",
+            }}
+          />
+
+          <div>
+            <h2 style={{ margin: "0 0 12px" }}>Skills & Technologies</h2>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "10px",
+              }}
+            >
+              {[
+                "React",
+                "TypeScript",
+                "JavaScript",
+                "NestJS",
+                "SQL",
+                "Java",
+                "Python",
+                "HTML/CSS",
+                "Node.js",
+                "Git",
+                "API Design",
+                "Cybersecurity",
+              ].map((skill) => (
+                <span
+                  key={skill}
+                  style={{
+                    border: "1px solid var(--chip-border)",
+                    borderRadius: "999px",
+                    padding: "4px 10px",
+                    fontSize: "12px",
+                    background: "var(--chip-bg)",
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
         </div>
