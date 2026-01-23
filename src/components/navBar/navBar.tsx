@@ -56,7 +56,6 @@ const navItems = [
 
 function NavBar() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
-
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved === "light" || saved === "dark") {

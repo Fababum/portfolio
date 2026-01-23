@@ -34,8 +34,8 @@ function checkRateLimit(key: string): boolean {
     return true;
   }
 
-  if (limit.count >= 5) {
-    // Max 5 requests per minute
+  if (limit.count >= 20) {
+    // Max 20 requests per minute
     return false;
   }
 

@@ -19,20 +19,44 @@ const useChatbot = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const baseUrl =
+        (import.meta.env.VITE_CHAT_API_URL as string | undefined) ?? "";
+      const response = await fetch(`${baseUrl}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({ message }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to get response");
+        let errorText = `Request failed (${response.status})`;
+        try {
+          const errorData = await response.json();
+          if (typeof errorData?.error === "string") {
+            errorText = errorData.error;
+          }
+        } catch {
+          const fallback = await response.text();
+          if (fallback) {
+            errorText = fallback;
+          }
+        }
+        throw new Error(errorText);
       }
 
-      const data = await response.json();
+      let data: { text?: string } | null = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
+      if (!data?.text) {
+        throw new Error("Chat service returned an empty response.");
+      }
+
       setMessages((prev) => [...prev, { text: data.text, sender: "bot" }]);
     } catch (error) {
       console.error("Error:", error);
