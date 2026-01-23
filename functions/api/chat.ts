@@ -17,17 +17,19 @@ function getRateLimitKey(request: Request): string | null {
     request.headers.get("CF-Connecting-IP") ||
     request.headers.get("X-Forwarded-For") ||
     request.headers.get("X-Real-IP");
+  const userAgent = request.headers.get("User-Agent") || "";
 
   if (!ip) {
     return null;
   }
 
-  return ip;
+  return `${ip}:${userAgent}`;
 }
 
 function checkRateLimit(key: string): boolean {
   const now = Date.now();
   const limit = rateLimitMap.get(key);
+  const maxRequests = 120;
 
   if (!limit) {
     rateLimitMap.set(key, { count: 1, resetTime: now + 60000 }); // 1 minute window
@@ -39,8 +41,8 @@ function checkRateLimit(key: string): boolean {
     return true;
   }
 
-  if (limit.count >= 20) {
-    // Max 20 requests per minute
+  if (limit.count >= maxRequests) {
+    // Max requests per minute
     return false;
   }
 
