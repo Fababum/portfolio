@@ -56,7 +56,6 @@ function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [, setTextFading] = useState(false);
   const [showExplosion, setShowExplosion] = useState(false);
-  const [showYouTubeMessage, setShowYouTubeMessage] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [titleShrunk, setTitleShrunk] = useState(false);
   const projectsRef = useRef<HTMLDivElement | null>(null);
@@ -93,20 +92,15 @@ function Home() {
               setTextFading(false);
               // Trigger explosion instantly when welcome text appears
               setShowExplosion(true);
-              // Show YouTube message after explosion starts
+              // After 20 seconds, fade everything back to original
               setTimeout(() => {
-                setShowYouTubeMessage(true);
-                // After 20 seconds, fade everything back to original
+                setTextFading(true);
                 setTimeout(() => {
-                  setShowYouTubeMessage(false);
-                  setTextFading(true);
-                  setTimeout(() => {
-                    setShowWelcome(false);
-                    setTextFading(false);
-                    setIsLocked(false); // Allow triggering again
-                  }, 500);
-                }, 20000);
-              }, 500);
+                  setShowWelcome(false);
+                  setTextFading(false);
+                  setIsLocked(false); // Allow triggering again
+                }, 500);
+              }, 20500);
 
               // After explosion completes (2 seconds), just hide explosion effects
               setTimeout(() => {
@@ -256,19 +250,6 @@ function Home() {
           <div />
         </>
       )}
-      {showYouTubeMessage && (
-        <div>
-          <p>Please Follow me!</p>
-          <a
-            href="https://www.youtube.com/@Fababum"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://www.youtube.com/@Fababum
-          </a>
-        </div>
-      )}
-
       <div
         id="projects"
         ref={projectsRef}
