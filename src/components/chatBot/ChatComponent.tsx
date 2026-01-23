@@ -160,7 +160,7 @@ function ChatComponent() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    if (cooldownSeconds > 0) return;
+    if (cooldownSeconds > 0 || isSending || loading) return;
 
     setIsSending(true);
     await sendMessage(input.trim());

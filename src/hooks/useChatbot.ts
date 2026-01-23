@@ -45,6 +45,9 @@ const useChatbot = () => {
   }, []);
 
   const sendMessage = async (message: string) => {
+    if (loading || cooldownSeconds > 0) {
+      return;
+    }
     setMessages((prev) => [...prev, { text: message, sender: "user" }]);
     setLoading(true);
 
