@@ -38,22 +38,37 @@ export async function loginWithGoogle() {
 }
 
 // Save Google access & refresh tokens to database
-export async function saveGoogleTokens() {
+type SupabaseSession = {
+  user: { id: string; email?: string | null };
+  provider_token?: string | null;
+  provider_refresh_token?: string | null;
+  expires_in?: number | null;
+};
+
+export async function saveGoogleTokens(sessionOverride?: SupabaseSession | null) {
   try {
     // Get current session from Supabase Auth
-    const session = await supabase.auth.getSession();
+    const sessionData =
+      sessionOverride ?? (await supabase.auth.getSession()).data.session;
 
     // Check if user is logged in
-    if (!session.data.session) {
+    if (!sessionData) {
       console.error("No session found");
       return;
     }
 
     // Extract user data and tokens from session
-    const user = session.data.session.user;
-    const accessToken = session.data.session.provider_token; // Google Access Token
-    const refreshToken = session.data.session.provider_refresh_token; // Google Refresh Token
-    const expiresIn = session.data.session.expires_in || 3600; // Token expires in 1h
+    const user = sessionData.user;
+    const accessToken = sessionData.provider_token; // Google Access Token
+    const refreshToken = sessionData.provider_refresh_token; // Google Refresh Token
+    const expiresIn = sessionData.expires_in || 3600; // Token expires in 1h
+
+    if (!accessToken) {
+      console.warn(
+        "Google access token missing in session. Skipping token save."
+      );
+      return;
+    }
 
     // Calculate token expiration time
     const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
@@ -68,16 +83,21 @@ export async function saveGoogleTokens() {
     ];
 
     // Save tokens to user_google_tokens table (upsert = insert or update)
+    const payload: Record<string, unknown> = {
+      user_id: user.id,
+      email: user.email,
+      access_token: accessToken,
+      token_expires_at: expiresAt,
+      scopes: scopes,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (refreshToken) {
+      payload.refresh_token = refreshToken;
+    }
+
     const { error } = await supabase.from("user_google_tokens").upsert(
-      {
-        user_id: user.id,
-        email: user.email,
-        access_token: accessToken,
-        refresh_token: refreshToken,
-        token_expires_at: expiresAt,
-        scopes: scopes,
-        updated_at: new Date().toISOString(),
-      },
+      payload,
       {
         onConflict: "user_id", // Update if user_id already exists
       }

@@ -53,11 +53,16 @@ const useChatbot = () => {
         data = null;
       }
 
-      if (!data?.text) {
+      const botText =
+        typeof data?.text === "string" && data.text.trim().length > 0
+          ? data.text
+          : null;
+
+      if (!botText) {
         throw new Error("Chat service returned an empty response.");
       }
 
-      setMessages((prev) => [...prev, { text: data.text, sender: "bot" }]);
+      setMessages((prev) => [...prev, { text: botText, sender: "bot" }]);
     } catch (error) {
       console.error("Error:", error);
       const errorMessage =

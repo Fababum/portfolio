@@ -214,7 +214,7 @@ function CalendarAI() {
       setIsLoggedIn(true);
       setUserEmail(data.session.user.email || "");
       // Save Google tokens to database if not already saved
-      await saveGoogleTokens();
+      await saveGoogleTokens(data.session);
     }
   };
 
@@ -248,10 +248,15 @@ function CalendarAI() {
         session !== null &&
         "user" in session
       ) {
-        const typedSession = session as { user: { email?: string } };
+        const typedSession = session as {
+          user: { email?: string; id: string };
+          provider_token?: string | null;
+          provider_refresh_token?: string | null;
+          expires_in?: number | null;
+        };
         setIsLoggedIn(true);
         setUserEmail(typedSession.user.email || "");
-        saveGoogleTokens();
+        saveGoogleTokens(typedSession);
       } else {
         setIsLoggedIn(false);
         setUserEmail("");
