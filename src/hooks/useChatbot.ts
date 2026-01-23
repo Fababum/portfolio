@@ -43,6 +43,12 @@ const useChatbot = () => {
             errorText = fallback;
           }
         }
+        if (response.status === 429) {
+          const retryAfter = response.headers.get("Retry-After");
+          if (retryAfter) {
+            errorText = `${errorText} Try again in ${retryAfter}s.`;
+          }
+        }
         throw new Error(errorText);
       }
 

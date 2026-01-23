@@ -12,11 +12,16 @@ interface CloudflareContext {
 // Simple rate limiting using IP-based tracking
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
-function getRateLimitKey(request: Request): string {
+function getRateLimitKey(request: Request): string | null {
   const ip =
     request.headers.get("CF-Connecting-IP") ||
     request.headers.get("X-Forwarded-For") ||
-    "unknown";
+    request.headers.get("X-Real-IP");
+
+  if (!ip) {
+    return null;
+  }
+
   return ip;
 }
 
@@ -57,8 +62,8 @@ export async function onRequestPost(context: CloudflareContext) {
   try {
     const clientIP = getRateLimitKey(context.request);
 
-    // Check rate limit
-    if (!checkRateLimit(clientIP)) {
+    // Check rate limit only if we can identify the client
+    if (clientIP && !checkRateLimit(clientIP)) {
       return new Response(
         JSON.stringify({
           error: "Too many requests. Please wait a minute before trying again.",
