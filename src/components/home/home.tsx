@@ -225,7 +225,6 @@ function Home() {
           position: "fixed",
           left: "50%",
           bottom: "20px",
-          transform: "translateX(-50%)",
           border: "1px solid var(--arrow-border)",
           background: "var(--arrow-bg)",
           color: "var(--text)",
