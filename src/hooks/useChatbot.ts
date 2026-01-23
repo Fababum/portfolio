@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Message {
   text: string;
@@ -13,6 +13,36 @@ const useChatbot = () => {
     },
   ]);
   const [loading, setLoading] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const cooldownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startCooldown = (seconds: number) => {
+    const duration = Math.max(1, Math.floor(seconds));
+    setCooldownSeconds(duration);
+    if (cooldownTimerRef.current) {
+      clearInterval(cooldownTimerRef.current);
+    }
+    cooldownTimerRef.current = setInterval(() => {
+      setCooldownSeconds((prev) => {
+        if (prev <= 1) {
+          if (cooldownTimerRef.current) {
+            clearInterval(cooldownTimerRef.current);
+            cooldownTimerRef.current = null;
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (cooldownTimerRef.current) {
+        clearInterval(cooldownTimerRef.current);
+      }
+    };
+  }, []);
 
   const sendMessage = async (message: string) => {
     setMessages((prev) => [...prev, { text: message, sender: "user" }]);
@@ -32,6 +62,7 @@ const useChatbot = () => {
 
       if (!response.ok) {
         let errorText = `Request failed (${response.status})`;
+        let retryAfterSeconds: number | null = null;
         try {
           const errorData = await response.json();
           if (typeof errorData?.error === "string") {
@@ -47,7 +78,13 @@ const useChatbot = () => {
           const retryAfter = response.headers.get("Retry-After");
           if (retryAfter) {
             errorText = `${errorText} Try again in ${retryAfter}s.`;
+            const parsed = Number.parseInt(retryAfter, 10);
+            retryAfterSeconds = Number.isFinite(parsed) ? parsed : null;
           }
+          if (!retryAfterSeconds) {
+            retryAfterSeconds = 60;
+          }
+          startCooldown(retryAfterSeconds);
         }
         throw new Error(errorText);
       }
@@ -81,7 +118,7 @@ const useChatbot = () => {
     }
   };
 
-  return { messages, sendMessage, loading };
+  return { messages, sendMessage, loading, cooldownSeconds };
 };
 
 export default useChatbot;

@@ -6,7 +6,7 @@ import useChatScroll from "../../hooks/useChatScroll";
 function ChatComponent() {
   const [input, setInput] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
-  const { messages, sendMessage, loading } = useChatbot();
+  const { messages, sendMessage, loading, cooldownSeconds } = useChatbot();
   const messagesEndRef = useChatScroll(messages);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -152,10 +152,15 @@ function ChatComponent() {
       opacity: 0.5,
       cursor: "not-allowed",
     },
+    cooldownNotice: {
+      fontSize: "12px",
+      opacity: 0.7,
+    },
   };
 
   const handleSend = async () => {
     if (!input.trim()) return;
+    if (cooldownSeconds > 0) return;
 
     setIsSending(true);
     await sendMessage(input.trim());
@@ -269,17 +274,19 @@ function ChatComponent() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              disabled={isSending}
+              disabled={isSending || cooldownSeconds > 0}
               aria-label="Type your message"
               style={styles.input}
             />
             <button
               onClick={handleSend}
-              disabled={isSending || !input.trim()}
+              disabled={isSending || !input.trim() || cooldownSeconds > 0}
               aria-label="Send message"
               style={{
                 ...styles.sendButton,
-                ...(isSending || !input.trim() ? styles.sendDisabled : {}),
+                ...(isSending || !input.trim() || cooldownSeconds > 0
+                  ? styles.sendDisabled
+                  : {}),
               }}
             >
               {isSending ? (
@@ -305,6 +312,11 @@ function ChatComponent() {
                 </span>
               )}
             </button>
+            {cooldownSeconds > 0 && (
+              <span style={styles.cooldownNotice}>
+                Too many requests. Try again in {cooldownSeconds}s.
+              </span>
+            )}
           </div>
         </div>
       </div>
