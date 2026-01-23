@@ -345,12 +345,11 @@ function CalendarAI() {
                 </svg>
                 Sign in with Google
               </button>
-              <p style={styles.loginFootnote}>
-                By signing in, you allow CalendarAI to access your Google
-                Calendar.
-              </p>
             </div>
           </div>
+          <p style={styles.loginFootnote}>
+            By signing in, you allow CalendarAI to access your Google Calendar.
+          </p>
         </div>
       </div>
     );
