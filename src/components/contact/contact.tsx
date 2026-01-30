@@ -27,9 +27,7 @@ function Contact() {
           <h1 style={{ margin: 0, textShadow: "var(--title-shadow)" }}>
             Get In Touch
           </h1>
-          <p style={{ margin: 0, opacity: 0.75 }}>
-            Let&apos;s build something
-          </p>
+          <p style={{ margin: 0, opacity: 0.75 }}>Let&apos;s build something</p>
           <p style={{ margin: "0 auto", maxWidth: "620px", opacity: 0.75 }}>
             Reach out for collaborations, opportunities, or a quick friendly
             chat. I usually reply within a day.
@@ -84,7 +82,7 @@ function Contact() {
               gap: "8px",
               transition: "transform 200ms ease, border-color 200ms ease",
             }}
-            href="https://www.linkedin.com/in/fabian-spiri-221253363/"
+            href="www.linkedin.com/in/fabian-spiri"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -138,7 +136,9 @@ function Contact() {
               gap: "10px",
             }}
           >
-            <h2 style={{ margin: 0, fontSize: "22px" }}>What I can help with</h2>
+            <h2 style={{ margin: 0, fontSize: "22px" }}>
+              What I can help with
+            </h2>
             <p style={{ margin: 0, opacity: 0.8, lineHeight: 1.6 }}>
               Web apps, APIs, security-focused features, and polishing existing
               products. If it&apos;s a tricky problem, I&apos;m interested.
