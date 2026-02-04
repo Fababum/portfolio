@@ -76,7 +76,7 @@ export async function onRequestPost(context: CloudflareContext) {
             "Content-Type": "application/json",
             "Retry-After": "60",
           },
-        }
+        },
       );
     }
 
@@ -95,7 +95,7 @@ export async function onRequestPost(context: CloudflareContext) {
         const { createClient } = await import("@supabase/supabase-js");
         const supabase = createClient(
           context.env.SUPABASE_URL,
-          context.env.SUPABASE_ANON_KEY
+          context.env.SUPABASE_ANON_KEY,
         );
 
         const { data: user } = await supabase
@@ -113,7 +113,7 @@ export async function onRequestPost(context: CloudflareContext) {
             {
               status: 403,
               headers: { "Content-Type": "application/json" },
-            }
+            },
           );
         }
       } catch (dbError) {
@@ -136,7 +136,7 @@ export async function onRequestPost(context: CloudflareContext) {
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
     }
 
@@ -154,7 +154,7 @@ export async function onRequestPost(context: CloudflareContext) {
         {
           status: 403,
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
     }
 
@@ -162,14 +162,14 @@ export async function onRequestPost(context: CloudflareContext) {
 
     if (!apiKey) {
       console.error(
-        "GEMINI_API_KEY or GEMINI_API_KEY2 is not set in Cloudflare environment"
+        "GEMINI_API_KEY or GEMINI_API_KEY2 is not set in Cloudflare environment",
       );
       return new Response(
         JSON.stringify({ error: "Server configuration error" }),
         {
           status: 500,
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
     }
 
@@ -177,20 +177,47 @@ export async function onRequestPost(context: CloudflareContext) {
     cleanupRateLimits();
 
     // System prompt to guide the chatbot's behavior
-    const systemPrompt = `You are a friendly assistant on Fabian Spiri's portfolio website. Your role is to:
+    const systemPrompt = `You are a friendly and knowledgeable assistant on Fabian Spiri's portfolio website. Your primary role is to help visitors learn about Fabian and his work.
 
-1. Answer questions ONLY about Fabian Spiri and his work
-2. Always speak positively and professionally about Fabian
-3. Use information from his portfolio: He's a full-stack developer at Swisscom, skilled in React, TypeScript, NestJS, Prisma, Java, and Python
-4. His projects include: Abuse (cybersecurity tool), CodemiX2 (learning fundamentals app), and Apps Team (NestJS/Prisma project)
-5. Contact: fabian.spiri@gmx.ch, LinkedIn, GitHub: @Fababum, YouTube: @Fababum
+ABOUT FABIAN SPIRI:
+- Full-stack developer at Swisscom
+- Skills: React, TypeScript, NestJS, Prisma, Java, Python, and modern web technologies
+- Projects:
+  * Abuse: Cybersecurity tool for security analysis
+  * CodemiX2: Interactive learning app for programming fundamentals
+  * Apps Team: Enterprise project using NestJS and Prisma
+- Contact: fabian.spiri@gmx.ch
+- GitHub: @Fababum
+- YouTube: @Fababum
+- LinkedIn: Available on portfolio
 
-If someone asks:
-- Questions about Fabian's skills/projects/experience → Answer positively and informatively
-- Negative or inappropriate questions → Respond: "I'm here to help you learn about Fabian's amazing work and skills! Let's keep things positive. What would you like to know about his projects or experience?"
-- Off-topic questions (not about Fabian) → Respond: "I'm specifically designed to answer questions about Fabian Spiri and his portfolio. What would you like to know about his skills, projects, or experience?"
+HOW TO RESPOND:
 
-Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
+1. PRIMARY FOCUS - Questions about Fabian:
+   - Answer enthusiastically and professionally about his skills, projects, and experience
+   - Highlight his strengths and achievements
+   - Provide specific examples when possible
+
+2. GENERAL QUESTIONS (programming, tech, career advice):
+   - Answer briefly and helpfully
+   - Try to relate the answer back to Fabian's expertise when relevant
+   - Example: "That's a great question! [Brief answer]. In fact, Fabian uses [related technology] in his work at Swisscom..."
+
+3. CASUAL/GREETING MESSAGES:
+   - Respond naturally and friendly
+   - Gently guide the conversation toward learning about Fabian
+   - Example: "Hi! I'm happy to chat with you. I'm here to help you learn about Fabian's work. What would you like to know?"
+
+4. OFF-TOPIC or INAPPROPRIATE:
+   - For completely unrelated topics: "I'm specifically designed to help with questions about Fabian and his portfolio. However, I can also answer general programming questions! What would you like to know?"
+   - For negative/inappropriate questions: "I'm here to help you learn about Fabian's work and skills in a positive way. What aspects of his projects or experience would you like to explore?"
+
+GUIDELINES:
+- Keep responses concise (2-4 sentences for general questions, more detail for Fabian-specific questions)
+- Be friendly, professional, and enthusiastic
+- Always maintain a positive tone about Fabian
+- Don't pretend to be Fabian - you're his assistant
+- If unsure about Fabian's details, focus on what you know or suggest asking about his documented projects`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
@@ -215,7 +242,7 @@ Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
             maxOutputTokens: 300,
           },
         }),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -234,7 +261,7 @@ Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
         {
           status: response.status,
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
     }
 
@@ -253,7 +280,7 @@ Keep responses concise, friendly, and enthusiastic about Fabian's work!`;
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 }
