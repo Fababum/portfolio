@@ -1,34 +1,42 @@
 const skills = [
-  { category: "Frontend", items: ["React", "TypeScript", "JavaScript", "HTML/CSS"] },
-  { category: "Backend", items: ["NestJS", "Node.js", "Java", "Python"] },
-  { category: "Datenbanken & Tools", items: ["Prisma ORM", "SQL", "Git", "API Design"] },
-  { category: "Security", items: ["Cybersecurity", "Phishing Detection", "Threat Analysis"] },
+  { category: "Frontend",       items: ["React", "TypeScript", "JavaScript", "HTML/CSS"] },
+  { category: "Backend",        items: ["NestJS", "Node.js", "Java", "Python"] },
+  { category: "Datenbanken",    items: ["Prisma ORM", "PostgreSQL", "SQL"] },
+  { category: "Tools",          items: ["Git", "REST APIs", "Agile / Scrum"] },
+  { category: "Security",       items: ["Cybersecurity", "Phishing Detection", "Threat Analysis"] },
 ];
 
 const timeline = [
   {
+    period: "Feb 2026 – heute",
+    role: "Halo",
+    company: "Swisscom",
+    description: "Entwicklung interner Web-Applikationen mit React und TypeScript. Fokus auf moderne Frontend-Architektur und kollaborative agile Prozesse.",
+    isOngoing: true,
+  },
+  {
     period: "Aug 2025 – Feb 2026",
-    role: "Apps Team – Full-Stack Developer",
+    role: "Apps Team",
     company: "Swisscom",
     description: "API-Entwicklung mit NestJS, Datenbankintegration via Prisma ORM und React-Frontend.",
   },
   {
     period: "Feb 2025 – Aug 2025",
-    role: "CodemiX2 – Software Developer",
+    role: "CodemiX2",
     company: "Swisscom",
     description: "Vertiefung in JavaScript, TypeScript, React und Software-Engineering-Grundlagen.",
   },
   {
     period: "Aug 2024 – Feb 2025",
-    role: "Abuse Team – Cyber Security Developer",
+    role: "Abuse Team",
     company: "Swisscom Cyber Security",
     description: "Spam- und Phishing-Erkennung, Sicherheitsmassnahmen, Java und Python.",
   },
   {
     period: "Aug 2024",
-    role: "Start Berufslehre Informatik",
+    role: "Start Berufslehre Informatik EFZ",
     company: "Swisscom",
-    description: "Beginn der vierjährigen Ausbildung zum Informatiker EFZ bei Swisscom.",
+    description: "Beginn der vierjährigen Ausbildung zum Informatiker EFZ.",
   },
 ];
 
@@ -38,10 +46,10 @@ function About() {
       style={{
         minHeight: "100vh",
         color: "var(--text)",
-        padding: "10px 20px 60px",
+        padding: "40px 24px 80px",
       }}
     >
-      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "780px", margin: "0 auto" }}>
 
         {/* ── Profile header ── */}
         <div
@@ -50,14 +58,14 @@ function About() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
-            gap: "14px",
-            marginBottom: "40px",
+            gap: "18px",
+            marginBottom: "52px",
           }}
         >
           <div
             style={{
-              width: "110px",
-              height: "110px",
+              width: "96px",
+              height: "96px",
               borderRadius: "50%",
               overflow: "hidden",
               border: "2px solid var(--card-border)",
@@ -72,78 +80,85 @@ function About() {
             />
           </div>
           <div>
-            <h1 style={{ margin: "0 0 4px", textShadow: "var(--title-shadow)" }}>
+            <h1
+              style={{
+                fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+                marginBottom: "6px",
+                textShadow: "var(--title-shadow)",
+              }}
+            >
               Fabian Spiri
             </h1>
-            <p style={{ margin: "0 0 6px", color: "var(--text-muted)", fontWeight: 500, fontSize: "1.05rem" }}>
-              Full-Stack Developer · Swisscom
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontWeight: 500,
+                fontSize: "1rem",
+                marginBottom: "4px",
+              }}
+            >
+              Full-Stack Developer in Ausbildung · Swisscom
             </p>
-            <p style={{ margin: 0, color: "var(--text-muted)", fontSize: "0.9rem" }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>
               Zürich, Schweiz
             </p>
           </div>
         </div>
 
-        <div style={{ display: "grid", gap: "24px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
-          {/* ── Who I Am ── */}
-          <div
+          {/* ── Bio ── */}
+          <section
             className="card-hover"
             style={{
               border: "1px solid var(--card-border)",
-              borderRadius: "18px",
+              borderRadius: "14px",
               padding: "24px",
               background: "var(--card-bg)",
               boxShadow: "var(--card-shadow)",
             }}
           >
-            <h2 style={{ margin: "0 0 12px" }}>Über mich</h2>
-            <p style={{ lineHeight: 1.75, color: "var(--text)", opacity: 0.85, marginBottom: "10px" }}>
-              Ich bin Fabian Spiri, ein leidenschaftlicher Full-Stack-Entwickler in der Ausbildung bei
-              Swisscom. Ich baue robuste Frontend- und Backend-Lösungen für anspruchsvolle Projekte und
-              liebe es, neue Technologien zu erkunden und meine Fähigkeiten kontinuierlich weiterzuentwickeln.
+            <SectionLabel>Über mich</SectionLabel>
+            <p style={{ lineHeight: 1.8, color: "var(--text-secondary)", marginBottom: "12px", fontSize: "0.95rem" }}>
+              Ich bin Fabian Spiri, leidenschaftlicher Full-Stack-Entwickler in der Ausbildung bei Swisscom.
+              Ich baue robuste Frontend- und Backend-Lösungen und erkunde kontinuierlich neue Technologien.
             </p>
-            <p style={{ lineHeight: 1.75, color: "var(--text)", opacity: 0.85 }}>
-              Ausserhalb des Codings gehe ich regelmässig ins Gym und spiele gerne Souls-like Games.
+            <p style={{ lineHeight: 1.8, color: "var(--text-secondary)", fontSize: "0.95rem" }}>
+              Ausserhalb der Arbeit gehe ich regelmässig ins Gym und spiele gerne Souls-like Games.
             </p>
-          </div>
-
-          {/* ── What I Do ── */}
-          <div
-            className="card-hover"
-            style={{
-              border: "1px solid var(--card-border)",
-              borderRadius: "18px",
-              padding: "24px",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-            }}
-          >
-            <h2 style={{ margin: "0 0 12px" }}>Was ich mache</h2>
-            <p style={{ lineHeight: 1.75, color: "var(--text)", opacity: 0.85 }}>
-              Als Full-Stack-Entwickler bei Swisscom arbeite ich an komplexen Projekten – von Cybersecurity
-              und Phishing-Erkennung bis hin zu API-Entwicklung und Datenbankintegration. Ich spezialisiere
-              mich auf die Entwicklung skalierbarer, sicherer und benutzerfreundlicher Applikationen mit
-              modernen Technologien.
-            </p>
-          </div>
+          </section>
 
           {/* ── Skills ── */}
-          <div
+          <section
             className="card-hover"
             style={{
               border: "1px solid var(--card-border)",
-              borderRadius: "18px",
+              borderRadius: "14px",
               padding: "24px",
               background: "var(--card-bg)",
               boxShadow: "var(--card-shadow)",
             }}
           >
-            <h2 style={{ margin: "0 0 16px" }}>Skills & Technologien</h2>
-            <div style={{ display: "grid", gap: "16px", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
+            <SectionLabel>Skills & Technologien</SectionLabel>
+            <div
+              style={{
+                display: "grid",
+                gap: "20px",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+              }}
+            >
               {skills.map((group) => (
                 <div key={group.category}>
-                  <p style={{ margin: "0 0 8px", fontSize: "0.8rem", fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                  <p
+                    style={{
+                      margin: "0 0 10px",
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      color: "var(--accent)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.09em",
+                    }}
+                  >
                     {group.category}
                   </p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -152,11 +167,12 @@ function About() {
                         key={skill}
                         style={{
                           border: "1px solid var(--chip-border)",
-                          borderRadius: "999px",
-                          padding: "4px 11px",
-                          fontSize: "0.8rem",
+                          borderRadius: "6px",
+                          padding: "3px 10px",
+                          fontSize: "0.78rem",
                           background: "var(--chip-bg)",
                           fontWeight: 500,
+                          color: "var(--text-secondary)",
                         }}
                       >
                         {skill}
@@ -166,41 +182,42 @@ function About() {
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
           {/* ── Timeline ── */}
-          <div
+          <section
             className="card-hover"
             style={{
               border: "1px solid var(--card-border)",
-              borderRadius: "18px",
+              borderRadius: "14px",
               padding: "24px",
               background: "var(--card-bg)",
               boxShadow: "var(--card-shadow)",
             }}
           >
-            <h2 style={{ margin: "0 0 20px" }}>Erfahrung & Ausbildung</h2>
-            <div style={{ display: "grid", gap: "0" }}>
+            <SectionLabel>Erfahrung & Ausbildung</SectionLabel>
+            <div>
               {timeline.map((item, i) => (
                 <div
                   key={i}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "20px 1fr",
-                    gap: "0 14px",
+                    gridTemplateColumns: "16px 1fr",
+                    gap: "0 16px",
                   }}
                 >
-                  {/* Line + dot */}
+                  {/* Dot + line */}
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div
                       style={{
-                        width: "10px",
-                        height: "10px",
+                        width: "9px",
+                        height: "9px",
                         borderRadius: "50%",
-                        border: "2px solid var(--card-border-hover)",
-                        background: "var(--chip-bg)",
+                        border: `2px solid ${item.isOngoing ? "var(--badge-dot)" : "var(--chip-border)"}`,
+                        background: item.isOngoing ? "var(--badge-dot)" : "transparent",
                         flexShrink: 0,
-                        marginTop: "5px",
+                        marginTop: "6px",
+                        boxShadow: item.isOngoing ? "0 0 8px var(--badge-dot)" : "none",
                       }}
                     />
                     {i < timeline.length - 1 && (
@@ -209,34 +226,88 @@ function About() {
                           width: "1px",
                           flex: 1,
                           background: "var(--divider)",
-                          minHeight: "32px",
-                          margin: "4px 0",
+                          minHeight: "28px",
+                          margin: "5px 0",
                         }}
                       />
                     )}
                   </div>
 
                   {/* Content */}
-                  <div style={{ paddingBottom: i < timeline.length - 1 ? "20px" : 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "2px" }}>
-                      <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{item.role}</span>
-
+                  <div style={{ paddingBottom: i < timeline.length - 1 ? "22px" : 0 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        flexWrap: "wrap",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      <span style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text)" }}>
+                        {item.role}
+                      </span>
+                      {item.isOngoing && (
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            fontSize: "10px",
+                            fontWeight: 600,
+                            padding: "2px 8px",
+                            borderRadius: "999px",
+                            border: "1px solid var(--badge-ongoing-border)",
+                            background: "var(--badge-ongoing-bg)",
+                            color: "var(--badge-ongoing-color)",
+                            letterSpacing: "0.04em",
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: "5px",
+                              height: "5px",
+                              borderRadius: "50%",
+                              background: "var(--badge-dot)",
+                              boxShadow: "0 0 4px var(--badge-dot)",
+                            }}
+                          />
+                          Aktuell
+                        </span>
+                      )}
                     </div>
-                    <p style={{ margin: "0 0 2px", fontSize: "0.83rem", color: "var(--text-muted)" }}>
+                    <p style={{ margin: "0 0 4px", fontSize: "0.78rem", color: "var(--text-muted)" }}>
                       {item.company} · {item.period}
                     </p>
-                    <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--text)", opacity: 0.75, lineHeight: 1.6 }}>
+                    <p style={{ fontSize: "0.86rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>
                       {item.description}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
         </div>
       </div>
     </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      style={{
+        fontSize: "0.72rem",
+        fontWeight: 700,
+        letterSpacing: "0.09em",
+        textTransform: "uppercase",
+        color: "var(--accent)",
+        marginBottom: "16px",
+      }}
+    >
+      {children}
+    </p>
   );
 }
 
