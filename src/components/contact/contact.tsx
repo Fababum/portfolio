@@ -1,3 +1,79 @@
+import { useState } from "react";
+
+const contactCards = [
+  {
+    title: "Email",
+    description: (
+      <>
+        Swisscom / Geschäftlich: fabian.spiri@swisscom.com
+        <br />
+        Privat: fabian.spiri@gmx.ch
+      </>
+    ),
+    cta: "Nachricht senden →",
+    href: "mailto:fabian.spiri@gmx.ch",
+  },
+  {
+    title: "LinkedIn",
+    description: "Fabian Spiri",
+    cta: "Vernetzen →",
+    href: "https://www.linkedin.com/in/fabian-spiri",
+  },
+  {
+    title: "GitHub",
+    description: "@Fababum",
+    cta: "Projekte ansehen →",
+    href: "https://github.com/Fababum",
+  },
+];
+
+const helpTags = ["Frontend", "Backend", "APIs", "Security", "UI Polish"];
+const availabilityTags = [
+  "Kurzzeitprojekte",
+  "Langfristige Arbeit",
+  "Produkt-Verbesserungen",
+  "Security Features",
+];
+
+function ContactCard({
+  title,
+  description,
+  cta,
+  href,
+}: {
+  title: string;
+  description: React.ReactNode;
+  cta: string;
+  href: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="card-hover"
+      style={{
+        textDecoration: "none",
+        color: "inherit",
+        padding: "18px",
+        borderRadius: "16px",
+        border: `1px solid ${hovered ? "var(--card-border-hover)" : "var(--card-border)"}`,
+        background: "var(--card-bg)",
+        boxShadow: "var(--card-shadow)",
+        display: "grid",
+        gap: "8px",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <h2 style={{ margin: "4px 0 0", fontSize: "22px" }}>{title}</h2>
+      <p style={{ margin: 0, opacity: 0.75 }}>{description}</p>
+      <div style={{ marginTop: "10px", fontWeight: 600 }}>{cta}</div>
+    </a>
+  );
+}
+
 function Contact() {
   return (
     <div
@@ -16,6 +92,7 @@ function Contact() {
           gap: "24px",
         }}
       >
+        {/* ── Header ── */}
         <div
           style={{
             display: "grid",
@@ -25,15 +102,16 @@ function Contact() {
           }}
         >
           <h1 style={{ margin: 0, textShadow: "var(--title-shadow)" }}>
-            Get In Touch
+            Kontakt aufnehmen
           </h1>
-          <p style={{ margin: 0, opacity: 0.75 }}>Let&apos;s build something</p>
+          <p style={{ margin: 0, opacity: 0.75 }}>Lass uns etwas aufbauen</p>
           <p style={{ margin: "0 auto", maxWidth: "620px", opacity: 0.75 }}>
-            Reach out for collaborations, opportunities, or a quick friendly
-            chat. I usually reply within a day.
+            Melde dich für Kollaborationen, Projekte oder ein kurzes Gespräch.
+            Ich antworte in der Regel innerhalb eines Tages.
           </p>
         </div>
 
+        {/* ── Contact cards ── */}
         <div
           style={{
             display: "grid",
@@ -41,83 +119,12 @@ function Contact() {
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
           }}
         >
-          <a
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              padding: "18px",
-              borderRadius: "16px",
-              border: "1px solid var(--card-border)",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-              display: "grid",
-              gap: "8px",
-              transition: "transform 200ms ease, border-color 200ms ease",
-            }}
-            href="mailto:fabian.spiri@gmx.ch"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 style={{ margin: "4px 0 0", fontSize: "22px" }}>Email</h2>
-            <p style={{ margin: 0, opacity: 0.75 }}>
-              Swisscom / Business: fabian.spiri@swisscom.com
-              <br />
-              Privat: fabian.spiri@gmx.ch
-            </p>
-            <div style={{ marginTop: "10px", fontWeight: 600 }}>
-              Send a message →
-            </div>
-          </a>
-
-          <a
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              padding: "18px",
-              borderRadius: "16px",
-              border: "1px solid var(--card-border)",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-              display: "grid",
-              gap: "8px",
-              transition: "transform 200ms ease, border-color 200ms ease",
-            }}
-            href="www.linkedin.com/in/fabian-spiri"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 style={{ margin: "4px 0 0", fontSize: "22px" }}>LinkedIn</h2>
-            <p style={{ margin: 0, opacity: 0.75 }}>Fabian Spiri</p>
-            <div style={{ marginTop: "10px", fontWeight: 600 }}>
-              Connect with me →
-            </div>
-          </a>
-
-          <a
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              padding: "18px",
-              borderRadius: "16px",
-              border: "1px solid var(--card-border)",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-              display: "grid",
-              gap: "8px",
-              transition: "transform 200ms ease, border-color 200ms ease",
-            }}
-            href="https://github.com/Fababum"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 style={{ margin: "4px 0 0", fontSize: "22px" }}>GitHub</h2>
-            <p style={{ margin: 0, opacity: 0.75 }}>@Fababum</p>
-            <div style={{ marginTop: "10px", fontWeight: 600 }}>
-              See my projects →
-            </div>
-          </a>
+          {contactCards.map((card) => (
+            <ContactCard key={card.title} {...card} />
+          ))}
         </div>
 
+        {/* ── Info cards ── */}
         <div
           style={{
             display: "grid",
@@ -126,6 +133,7 @@ function Contact() {
           }}
         >
           <div
+            className="card-hover"
             style={{
               padding: "20px",
               borderRadius: "16px",
@@ -136,12 +144,11 @@ function Contact() {
               gap: "10px",
             }}
           >
-            <h2 style={{ margin: 0, fontSize: "22px" }}>
-              What I can help with
-            </h2>
+            <h2 style={{ margin: 0, fontSize: "22px" }}>Womit ich helfen kann</h2>
             <p style={{ margin: 0, opacity: 0.8, lineHeight: 1.6 }}>
-              Web apps, APIs, security-focused features, and polishing existing
-              products. If it&apos;s a tricky problem, I&apos;m interested.
+              Web-Apps, APIs, sicherheitsorientierte Features und die
+              Verbesserung bestehender Produkte. Knifflige Probleme interessieren
+              mich besonders.
             </p>
             <div
               style={{
@@ -151,26 +158,25 @@ function Contact() {
                 marginTop: "4px",
               }}
             >
-              {["Frontend", "Backend", "APIs", "Security", "UI Polish"].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      border: "1px solid var(--chip-border)",
-                      borderRadius: "999px",
-                      padding: "4px 10px",
-                      fontSize: "12px",
-                      background: "var(--chip-bg)",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ),
-              )}
+              {helpTags.map((tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    border: "1px solid var(--chip-border)",
+                    borderRadius: "999px",
+                    padding: "4px 10px",
+                    fontSize: "12px",
+                    background: "var(--chip-bg)",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
 
           <div
+            className="card-hover"
             style={{
               padding: "20px",
               borderRadius: "16px",
@@ -181,10 +187,10 @@ function Contact() {
               gap: "10px",
             }}
           >
-            <h2 style={{ margin: 0, fontSize: "22px" }}>Availability</h2>
+            <h2 style={{ margin: 0, fontSize: "22px" }}>Verfügbarkeit</h2>
             <p style={{ margin: 0, opacity: 0.8, lineHeight: 1.6 }}>
-              Available every day for business between 07:00–15:00. For private
-              matters, I am available from 18:00–22:00.
+              Werktags erreichbar von 07:00–15:00 Uhr. Für private Angelegenheiten
+              bin ich ab 18:00–22:00 Uhr verfügbar.
             </p>
             <div
               style={{
@@ -194,12 +200,7 @@ function Contact() {
                 marginTop: "4px",
               }}
             >
-              {[
-                "Short engagements",
-                "Long-term work",
-                "Product polish",
-                "Security features",
-              ].map((tag) => (
+              {availabilityTags.map((tag) => (
                 <span
                   key={tag}
                   style={{
@@ -217,7 +218,9 @@ function Contact() {
           </div>
         </div>
 
+        {/* ── CTA banner ── */}
         <div
+          className="card-hover"
           style={{
             padding: "22px",
             borderRadius: "18px",
@@ -233,10 +236,10 @@ function Contact() {
         >
           <div>
             <h2 style={{ margin: 0, fontSize: "22px" }}>
-              Ready to start a project?
+              Bereit, ein Projekt zu starten?
             </h2>
             <p style={{ margin: "6px 0 0", opacity: 0.75 }}>
-              I&apos;m open to new opportunities and collaborations.
+              Ich bin offen für neue Projekte und Kooperationen.
             </p>
           </div>
           <a
@@ -251,7 +254,7 @@ function Contact() {
               fontWeight: 600,
             }}
           >
-            Email me →
+            E-Mail senden →
           </a>
         </div>
       </div>
