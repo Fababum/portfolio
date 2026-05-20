@@ -1,4 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { ChevronDown, ArrowDown } from "lucide-react";
 
 const projects = [
   {
@@ -79,187 +85,77 @@ function Home() {
     if (!heroRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => setShowProjects(!entry.isIntersecting),
-      { threshold: 0.35 },
+      { threshold: 0.35 }
     );
     observer.observe(heroRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", color: "var(--text)" }}>
+    <div className="min-h-screen text-foreground">
 
       {/* ── Hero ── */}
       <div
         ref={heroRef}
-        style={{
-          minHeight: "88vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          padding: "60px 24px 80px",
-          position: "relative",
-          overflow: "hidden",
-        }}
+        className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6 pb-20 pt-16 overflow-hidden"
       >
         {/* Background glow */}
         <div
           aria-hidden="true"
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none"
           style={{
-            position: "absolute",
-            top: "20%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "700px",
-            height: "400px",
-            background: "var(--hero-glow)",
-            borderRadius: "50%",
+            background: "var(--hero-glow, rgba(99,102,241,0.08))",
             filter: "blur(100px)",
-            pointerEvents: "none",
           }}
         />
 
         {/* Status pill */}
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "7px",
-            padding: "5px 14px 5px 10px",
-            borderRadius: "999px",
-            border: "1px solid var(--badge-ongoing-border)",
-            background: "var(--badge-ongoing-bg)",
-            fontSize: "12px",
-            fontWeight: 500,
-            color: "var(--badge-ongoing-color)",
-            marginBottom: "32px",
-            letterSpacing: "0.01em",
-          }}
-        >
-          <span
-            style={{
-              width: "7px",
-              height: "7px",
-              borderRadius: "50%",
-              background: "var(--badge-dot)",
-              flexShrink: 0,
-              boxShadow: "0 0 6px var(--badge-dot)",
-            }}
-          />
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 dark:text-green-400 text-xs font-medium mb-8">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_6px_#22c55e]" />
           Verfügbar für neue Projekte
         </div>
 
         {/* Name */}
-        <h1
-          style={{
-            marginBottom: "16px",
-            color: "var(--text)",
-            textShadow: "var(--title-shadow)",
-          }}
-        >
+        <h1 className="mb-4 text-foreground" style={{ textShadow: "var(--title-shadow)" }}>
           Fabian Spiri
         </h1>
 
         {/* Typed subtitle */}
-        <p
-          style={{
-            fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
-            color: "var(--text-secondary)",
-            marginBottom: "20px",
-            minHeight: "1.6em",
-            fontWeight: 500,
-            letterSpacing: "-0.01em",
-          }}
-        >
+        <p className="text-lg text-muted-foreground mb-5 min-h-[1.6em] font-medium tracking-tight">
           {typedRole}
           <span
-            style={{
-              display: "inline-block",
-              width: "2px",
-              height: "1em",
-              background: "var(--accent)",
-              marginLeft: "3px",
-              verticalAlign: "middle",
-              borderRadius: "1px",
-              animation: "blink 1s step-end infinite",
-            }}
+            className="inline-block w-0.5 h-[1em] bg-primary ml-0.5 align-middle rounded-sm"
+            style={{ animation: "blink 1s step-end infinite" }}
           />
         </p>
 
         {/* Bio */}
-        <p
-          style={{
-            maxWidth: "480px",
-            color: "var(--text-muted)",
-            lineHeight: 1.75,
-            marginBottom: "40px",
-            fontSize: "0.95rem",
-          }}
-        >
+        <p className="max-w-md text-muted-foreground leading-7 mb-10 text-sm">
           Lernender Full-Stack-Entwickler bei{" "}
-          <strong style={{ color: "var(--text-secondary)", fontWeight: 600 }}>
-            Swisscom
-          </strong>
-          . Ich baue robuste Web-Applikationen mit modernen Technologien.
+          <strong className="text-foreground font-semibold">Swisscom</strong>.
+          Ich baue robuste Web-Applikationen mit modernen Technologien.
         </p>
 
         {/* CTAs */}
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center" }}>
+        <div className="flex gap-3 flex-wrap justify-center">
           <a
             href="#contact"
-            onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-            style={{
-              textDecoration: "none",
-              color: "#fff",
-              background: "var(--accent)",
-              border: "1px solid var(--accent)",
-              padding: "11px 26px",
-              borderRadius: "10px",
-              fontWeight: 600,
-              fontSize: "0.9rem",
-              letterSpacing: "0.01em",
-              transition: "opacity 180ms ease, transform 180ms ease",
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+              e.preventDefault();
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = "0.85";
-              e.currentTarget.style.transform = "translateY(-1px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = "1";
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
+            className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition-opacity hover:opacity-85"
           >
             Kontakt aufnehmen
           </a>
-          <button
-            type="button"
+          <Button
+            variant="outline"
+            size="lg"
             onClick={() => projectsRef.current?.scrollIntoView({ behavior: "smooth" })}
-            style={{
-              background: "transparent",
-              border: "1px solid var(--card-border)",
-              color: "var(--text-secondary)",
-              padding: "11px 26px",
-              borderRadius: "10px",
-              fontWeight: 500,
-              fontSize: "0.9rem",
-              cursor: "pointer",
-              letterSpacing: "0.01em",
-              transition: "border-color 180ms ease, color 180ms ease, transform 180ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "var(--card-border-hover)";
-              e.currentTarget.style.color = "var(--text)";
-              e.currentTarget.style.transform = "translateY(-1px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "var(--card-border)";
-              e.currentTarget.style.color = "var(--text-secondary)";
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
           >
-            Projekte ansehen ↓
-          </button>
+            Projekte ansehen
+            <ArrowDown className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </div>
 
@@ -268,90 +164,50 @@ function Home() {
         type="button"
         onClick={() => projectsRef.current?.scrollIntoView({ behavior: "smooth" })}
         aria-label="Zu den Projekten scrollen"
-        style={{
-          position: "fixed",
-          left: "50%",
-          bottom: "28px",
-          transform: showProjects
-            ? "translateX(-50%) translateY(12px)"
-            : "translateX(-50%) translateY(0)",
-          border: "1px solid var(--arrow-border)",
-          background: "var(--arrow-bg)",
-          color: "var(--text-muted)",
-          borderRadius: "999px",
-          padding: "7px 16px",
-          cursor: "pointer",
-          boxShadow: "var(--arrow-shadow)",
-          opacity: showProjects ? 0 : 1,
-          pointerEvents: showProjects ? "none" : "auto",
-          transition: "opacity 280ms ease, transform 280ms ease",
-          fontSize: "13px",
-          fontWeight: 500,
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-        }}
+        className={cn(
+          "fixed left-1/2 bottom-7 -translate-x-1/2 z-40",
+          "flex items-center gap-1.5 px-4 py-1.5 rounded-full",
+          "border border-border/60 bg-background/80 backdrop-blur-md",
+          "text-muted-foreground text-sm font-medium shadow-md",
+          "transition-all duration-300",
+          showProjects ? "opacity-0 translate-y-3 pointer-events-none" : "opacity-100 translate-y-0"
+        )}
       >
-        ↓ Scroll
+        <ChevronDown className="h-3.5 w-3.5" />
+        Scroll
       </button>
 
       {/* ── Projects ── */}
       <div
         id="projects"
         ref={projectsRef}
-        style={{
-          padding: "0 24px 100px",
-          opacity: showProjects ? 1 : 0,
-          transform: showProjects ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 500ms ease, transform 500ms ease",
-          pointerEvents: showProjects ? "auto" : "none",
-        }}
+        className={cn(
+          "px-6 pb-24 transition-all duration-500",
+          showProjects ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5 pointer-events-none"
+        )}
       >
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+        <div className="max-w-3xl mx-auto">
           {/* Section heading */}
-          <div style={{ marginBottom: "32px" }}>
-            <p
-              style={{
-                fontSize: "11px",
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "var(--accent)",
-                marginBottom: "8px",
-              }}
-            >
+          <div className="mb-8">
+            <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">
               Lehrjahr-Projekte
             </p>
-            <h2
-              style={{
-                fontSize: "clamp(1.5rem, 3vw, 2rem)",
-                fontWeight: 700,
-                letterSpacing: "-0.03em",
-                color: "var(--text)",
-                marginBottom: "6px",
-              }}
-            >
+            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-1.5">
               Meine Projekte
             </h2>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.92rem" }}>
+            <p className="text-sm text-muted-foreground">
               Projekte aus meiner Ausbildung bei Swisscom — chronologisch von aktuell zu früher.
             </p>
           </div>
 
           {/* Project list */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div className="flex flex-col gap-3">
             {projects.map((project, index) => (
               <ProjectCard key={index} project={project} />
             ))}
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50%       { opacity: 0; }
-        }
-      `}</style>
     </div>
   );
 }
@@ -369,127 +225,60 @@ function ProjectCard({ project }: { project: Project }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div
-      className="card-hover"
-      style={{
-        border: "1px solid var(--card-border)",
-        borderRadius: "14px",
-        padding: "20px 22px",
-        background: "var(--card-bg)",
-        boxShadow: "var(--card-shadow)",
-        cursor: "pointer",
-      }}
+    <Card
+      className="cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
       onClick={() => setExpanded((e) => !e)}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: "16px",
-        }}
-      >
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "3px" }}>
-            <span style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text)" }}>
-              {project.title}
-            </span>
-            {project.isOngoing && (
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "5px",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                  padding: "2px 9px",
-                  borderRadius: "999px",
-                  border: "1px solid var(--badge-ongoing-border)",
-                  background: "var(--badge-ongoing-bg)",
-                  color: "var(--badge-ongoing-color)",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                <span
-                  style={{
-                    width: "5px",
-                    height: "5px",
-                    borderRadius: "50%",
-                    background: "var(--badge-dot)",
-                    boxShadow: "0 0 5px var(--badge-dot)",
-                  }}
-                />
-                Aktuell
-              </span>
-            )}
+      <CardHeader className="pb-0 pt-5 px-5">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2.5 flex-wrap mb-0.5">
+              <span className="font-bold text-base text-foreground">{project.title}</span>
+              {project.isOngoing && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-green-500/30 bg-green-500/10 text-green-500 dark:text-green-400 gap-1"
+                >
+                  <span className="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_4px_#22c55e]" />
+                  Aktuell
+                </Badge>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">{project.company}</p>
           </div>
-          <p style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-            {project.company}
-          </p>
+          <div className="flex items-center gap-2.5 shrink-0">
+            <span className="text-xs text-muted-foreground whitespace-nowrap">{project.date}</span>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 text-muted-foreground transition-transform duration-200",
+                expanded && "rotate-180"
+              )}
+            />
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent className="pt-3 pb-5 px-5">
+        {/* Tags always visible */}
+        <div className="flex flex-wrap gap-1.5">
+          {project.tags.map((tag) => (
+            <Badge key={tag} variant="secondary" className="text-xs font-medium">
+              {tag}
+            </Badge>
+          ))}
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-          <span
-            style={{
-              fontSize: "0.75rem",
-              color: "var(--text-muted)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {project.date}
-          </span>
-          <span
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "16px",
-              lineHeight: 1,
-              transition: "transform 200ms ease",
-              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-              display: "inline-block",
-            }}
-          >
-            ↓
-          </span>
-        </div>
-      </div>
-
-      {/* Tags always visible */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "12px" }}>
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            style={{
-              border: "1px solid var(--chip-border)",
-              borderRadius: "6px",
-              padding: "2px 9px",
-              fontSize: "0.72rem",
-              background: "var(--chip-bg)",
-              color: "var(--text-muted)",
-              fontWeight: 500,
-              letterSpacing: "0.01em",
-            }}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      {/* Expandable description */}
-      {expanded && (
-        <p
-          style={{
-            marginTop: "14px",
-            paddingTop: "14px",
-            borderTop: "1px solid var(--divider)",
-            lineHeight: 1.7,
-            color: "var(--text-secondary)",
-            fontSize: "0.9rem",
-          }}
-        >
-          {project.description}
-        </p>
-      )}
-    </div>
+        {/* Expandable description */}
+        {expanded && (
+          <>
+            <Separator className="my-3" />
+            <p className="text-sm text-muted-foreground leading-7">
+              {project.description}
+            </p>
+          </>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

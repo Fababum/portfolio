@@ -1,76 +1,33 @@
 import { useEffect, useState } from "react";
-import "./navBar.css";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Sun, Moon, Home, User, Mail, MessageSquare, Calendar } from "lucide-react";
 
 const navItems = [
-  {
-    to: "#home",
-    label: "Home",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 10.5 12 3l9 7.5" />
-        <path d="M5 10v9h5v-6h4v6h5v-9" />
-      </svg>
-    ),
-  },
-  {
-    to: "#about",
-    label: "About",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="8" r="4" />
-        <path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6" />
-      </svg>
-    ),
-  },
-  {
-    to: "#contact",
-    label: "Contact",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
-        <path d="m4 8 8 5 8-5" />
-      </svg>
-    ),
-  },
-  {
-    to: "#chat",
-    label: "Chat",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 6h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
-      </svg>
-    ),
-  },
-  {
-    to: "#calendarai",
-    label: "CalendarAI",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
-        <path d="M8 2v4M16 2v4M3 10h18" />
-      </svg>
-    ),
-  },
+  { to: "#home",       label: "Home",       icon: Home },
+  { to: "#about",      label: "About",      icon: User },
+  { to: "#contact",    label: "Contact",    icon: Mail },
+  { to: "#chat",       label: "Chat",       icon: MessageSquare },
+  { to: "#calendarai", label: "CalendarAI", icon: Calendar },
 ];
 
 function NavBar() {
-  const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
-    if (saved === "light" || saved === "dark") {
-      setTheme(saved);
-    }
+    if (saved === "light" || saved === "dark") setTheme(saved);
   }, []);
 
   useEffect(() => {
-    document.body.classList.remove("theme-dark", "theme-light");
-    document.body.classList.add(theme === "dark" ? "theme-dark" : "theme-light");
+    const isDark = theme === "dark";
+    document.documentElement.classList.toggle("dark", isDark);
+    document.body.classList.toggle("theme-dark", isDark);
+    document.body.classList.toggle("theme-light", !isDark);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // Track which section is currently in view
   useEffect(() => {
     const sectionIds = navItems.map((item) => item.to.replace("#", ""));
     const observers: IntersectionObserver[] = [];
@@ -79,9 +36,7 @@ function NavBar() {
       const el = document.getElementById(id);
       if (!el) return;
       const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
         { threshold: 0.3 }
       );
       obs.observe(el);
@@ -91,55 +46,59 @@ function NavBar() {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    to: string
-  ) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
     e.preventDefault();
     const id = to.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <nav className="navBar">
-      <div className="navLinks" role="navigation" aria-label="Primary">
+    <nav className="sticky top-0 z-50 flex justify-center px-4 py-3 pointer-events-none">
+      <div
+        className="pointer-events-auto flex items-center gap-1 px-2 py-1.5 rounded-2xl border border-border/60 bg-background/80 backdrop-blur-xl shadow-lg"
+        role="navigation"
+        aria-label="Primary"
+      >
         {navItems.map((item) => {
           const id = item.to.replace("#", "");
           const isActive = activeSection === id;
+          const Icon = item.icon;
           return (
             <a
               key={item.to}
               href={item.to}
-              className={isActive ? "navLink active" : "navLink"}
               onClick={(e) => handleNavClick(e, item.to)}
+              className={cn(
+                "group flex items-center gap-2 px-2.5 py-2 rounded-xl text-sm font-medium transition-all duration-150 select-none",
+                "text-muted-foreground hover:text-foreground hover:bg-muted",
+                isActive && "text-foreground bg-muted"
+              )}
             >
-              <span className="navIcon">{item.icon}</span>
-              <span className="navLabel">{item.label}</span>
+              <Icon className="h-4 w-4 shrink-0" />
+              <span
+                className={cn(
+                  "overflow-hidden whitespace-nowrap transition-all duration-200",
+                  "max-w-0 opacity-0 group-hover:max-w-[80px] group-hover:opacity-100",
+                  isActive && "max-w-[80px] opacity-100"
+                )}
+              >
+                {item.label}
+              </span>
             </a>
           );
         })}
-        <button
-          type="button"
-          className="navLink themeToggle"
-          aria-label="Toggle theme"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        >
-          <span className="navIcon" aria-hidden="true">
-            {theme === "dark" ? (
-              <svg viewBox="0 0 24 24">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-              </svg>
-            )}
-          </span>
-        </button>
+
+        <div className="ml-1 pl-1 border-l border-border/60">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-xl text-muted-foreground hover:text-foreground"
+            aria-label="Toggle theme"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        </div>
       </div>
     </nav>
   );

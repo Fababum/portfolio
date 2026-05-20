@@ -1,9 +1,13 @@
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+
 const skills = [
-  { category: "Frontend",       items: ["React", "TypeScript", "JavaScript", "HTML/CSS"] },
-  { category: "Backend",        items: ["NestJS", "Node.js", "Java", "Python"] },
-  { category: "Datenbanken",    items: ["Prisma ORM", "PostgreSQL", "SQL"] },
-  { category: "Tools",          items: ["Git", "REST APIs", "Agile / Scrum"] },
-  { category: "Security",       items: ["Cybersecurity", "Phishing Detection", "Threat Analysis"] },
+  { category: "Frontend",    items: ["React", "TypeScript", "JavaScript", "HTML/CSS"] },
+  { category: "Backend",     items: ["NestJS", "Node.js", "Java", "Python"] },
+  { category: "Datenbanken", items: ["Prisma ORM", "PostgreSQL", "SQL"] },
+  { category: "Tools",       items: ["Git", "REST APIs", "Agile / Scrum"] },
+  { category: "Security",    items: ["Cybersecurity", "Phishing Detection", "Threat Analysis"] },
 ];
 
 const timeline = [
@@ -42,253 +46,117 @@ const timeline = [
 
 function About() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        color: "var(--text)",
-        padding: "40px 24px 80px",
-      }}
-    >
-      <div style={{ maxWidth: "780px", margin: "0 auto" }}>
+    <div className="min-h-screen text-foreground px-6 pt-10 pb-24">
+      <div className="max-w-3xl mx-auto space-y-4">
 
         {/* ── Profile header ── */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            gap: "18px",
-            marginBottom: "52px",
-          }}
-        >
-          <div
-            style={{
-              width: "96px",
-              height: "96px",
-              borderRadius: "50%",
-              overflow: "hidden",
-              border: "2px solid var(--card-border)",
-              boxShadow: "var(--card-shadow)",
-              flexShrink: 0,
-            }}
-          >
-            <img
-              src="/PB_Fabian.png"
-              alt="Fabian Spiri"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          </div>
+        <div className="flex flex-col items-center text-center gap-4 mb-12">
+          <Avatar className="h-24 w-24 border-2 border-border shadow-md">
+            <AvatarImage src="/PB_Fabian.png" alt="Fabian Spiri" />
+            <AvatarFallback>FS</AvatarFallback>
+          </Avatar>
           <div>
-            <h1
-              style={{
-                fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
-                marginBottom: "6px",
-                textShadow: "var(--title-shadow)",
-              }}
-            >
+            <h1 className="text-foreground mb-1.5" style={{ textShadow: "var(--title-shadow)" }}>
               Fabian Spiri
             </h1>
-            <p
-              style={{
-                color: "var(--text-secondary)",
-                fontWeight: 500,
-                fontSize: "1rem",
-                marginBottom: "4px",
-              }}
-            >
+            <p className="text-muted-foreground font-medium text-base mb-1">
               Full-Stack Developer in Ausbildung · Swisscom
             </p>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>
-              Zürich, Schweiz
-            </p>
+            <p className="text-muted-foreground text-sm">Zürich, Schweiz</p>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-
-          {/* ── Bio ── */}
-          <section
-            className="card-hover"
-            style={{
-              border: "1px solid var(--card-border)",
-              borderRadius: "14px",
-              padding: "24px",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-            }}
-          >
+        {/* ── Bio ── */}
+        <Card>
+          <CardHeader className="pb-2 pt-5 px-6">
             <SectionLabel>Über mich</SectionLabel>
-            <p style={{ lineHeight: 1.8, color: "var(--text-secondary)", marginBottom: "12px", fontSize: "0.95rem" }}>
+          </CardHeader>
+          <CardContent className="px-6 pb-6 space-y-3">
+            <p className="text-sm text-muted-foreground leading-7">
               Ich bin Fabian Spiri, leidenschaftlicher Full-Stack-Entwickler in der Ausbildung bei Swisscom.
               Ich baue robuste Frontend- und Backend-Lösungen und erkunde kontinuierlich neue Technologien.
             </p>
-            <p style={{ lineHeight: 1.8, color: "var(--text-secondary)", fontSize: "0.95rem" }}>
+            <p className="text-sm text-muted-foreground leading-7">
               Ausserhalb der Arbeit gehe ich regelmässig ins Gym und spiele gerne Souls-like Games.
             </p>
-          </section>
+          </CardContent>
+        </Card>
 
-          {/* ── Skills ── */}
-          <section
-            className="card-hover"
-            style={{
-              border: "1px solid var(--card-border)",
-              borderRadius: "14px",
-              padding: "24px",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-            }}
-          >
+        {/* ── Skills ── */}
+        <Card>
+          <CardHeader className="pb-2 pt-5 px-6">
             <SectionLabel>Skills & Technologien</SectionLabel>
-            <div
-              style={{
-                display: "grid",
-                gap: "20px",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              }}
-            >
+          </CardHeader>
+          <CardContent className="px-6 pb-6">
+            <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
               {skills.map((group) => (
                 <div key={group.category}>
-                  <p
-                    style={{
-                      margin: "0 0 10px",
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      color: "var(--accent)",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.09em",
-                    }}
-                  >
+                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2.5">
                     {group.category}
                   </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  <div className="flex flex-wrap gap-1.5">
                     {group.items.map((skill) => (
-                      <span
-                        key={skill}
-                        style={{
-                          border: "1px solid var(--chip-border)",
-                          borderRadius: "6px",
-                          padding: "3px 10px",
-                          fontSize: "0.78rem",
-                          background: "var(--chip-bg)",
-                          fontWeight: 500,
-                          color: "var(--text-secondary)",
-                        }}
-                      >
+                      <Badge key={skill} variant="secondary" className="text-xs font-medium">
                         {skill}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
-          </section>
+          </CardContent>
+        </Card>
 
-          {/* ── Timeline ── */}
-          <section
-            className="card-hover"
-            style={{
-              border: "1px solid var(--card-border)",
-              borderRadius: "14px",
-              padding: "24px",
-              background: "var(--card-bg)",
-              boxShadow: "var(--card-shadow)",
-            }}
-          >
+        {/* ── Timeline ── */}
+        <Card>
+          <CardHeader className="pb-2 pt-5 px-6">
             <SectionLabel>Erfahrung & Ausbildung</SectionLabel>
-            <div>
+          </CardHeader>
+          <CardContent className="px-6 pb-6">
+            <div className="space-y-0">
               {timeline.map((item, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "16px 1fr",
-                    gap: "0 16px",
-                  }}
-                >
+                <div key={i} className="grid grid-cols-[20px_1fr] gap-x-4">
                   {/* Dot + line */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <div className="flex flex-col items-center">
                     <div
-                      style={{
-                        width: "9px",
-                        height: "9px",
-                        borderRadius: "50%",
-                        border: `2px solid ${item.isOngoing ? "var(--badge-dot)" : "var(--chip-border)"}`,
-                        background: item.isOngoing ? "var(--badge-dot)" : "transparent",
-                        flexShrink: 0,
-                        marginTop: "6px",
-                        boxShadow: item.isOngoing ? "0 0 8px var(--badge-dot)" : "none",
-                      }}
+                      className={`w-2.5 h-2.5 rounded-full mt-1.5 border-2 shrink-0 ${
+                        item.isOngoing
+                          ? "border-green-500 bg-green-500 shadow-[0_0_8px_#22c55e]"
+                          : "border-border bg-transparent"
+                      }`}
                     />
                     {i < timeline.length - 1 && (
-                      <div
-                        style={{
-                          width: "1px",
-                          flex: 1,
-                          background: "var(--divider)",
-                          minHeight: "28px",
-                          margin: "5px 0",
-                        }}
-                      />
+                      <div className="w-px flex-1 bg-border min-h-[28px] my-1" />
                     )}
                   </div>
 
                   {/* Content */}
-                  <div style={{ paddingBottom: i < timeline.length - 1 ? "22px" : 0 }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        flexWrap: "wrap",
-                        marginBottom: "2px",
-                      }}
-                    >
-                      <span style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text)" }}>
-                        {item.role}
-                      </span>
+                  <div className={i < timeline.length - 1 ? "pb-5" : ""}>
+                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                      <span className="font-semibold text-sm text-foreground">{item.role}</span>
                       {item.isOngoing && (
-                        <span
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "4px",
-                            fontSize: "10px",
-                            fontWeight: 600,
-                            padding: "2px 8px",
-                            borderRadius: "999px",
-                            border: "1px solid var(--badge-ongoing-border)",
-                            background: "var(--badge-ongoing-bg)",
-                            color: "var(--badge-ongoing-color)",
-                            letterSpacing: "0.04em",
-                          }}
+                        <Badge
+                          variant="outline"
+                          className="text-[10px] px-2 py-0 border-green-500/30 bg-green-500/10 text-green-500 dark:text-green-400 gap-1"
                         >
-                          <span
-                            style={{
-                              width: "5px",
-                              height: "5px",
-                              borderRadius: "50%",
-                              background: "var(--badge-dot)",
-                              boxShadow: "0 0 4px var(--badge-dot)",
-                            }}
-                          />
+                          <span className="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_4px_#22c55e]" />
                           Aktuell
-                        </span>
+                        </Badge>
                       )}
                     </div>
-                    <p style={{ margin: "0 0 4px", fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                    <p className="text-xs text-muted-foreground mb-1">
                       {item.company} · {item.period}
                     </p>
-                    <p style={{ fontSize: "0.86rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>
+                    <p className="text-sm text-muted-foreground leading-6">
                       {item.description}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-          </section>
+          </CardContent>
+        </Card>
 
-        </div>
       </div>
     </div>
   );
@@ -296,16 +164,7 @@ function About() {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      style={{
-        fontSize: "0.72rem",
-        fontWeight: 700,
-        letterSpacing: "0.09em",
-        textTransform: "uppercase",
-        color: "var(--accent)",
-        marginBottom: "16px",
-      }}
-    >
+    <p className="text-xs font-bold tracking-widest uppercase text-primary mb-0">
       {children}
     </p>
   );

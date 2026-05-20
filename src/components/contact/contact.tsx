@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Mail, ExternalLink, GitFork, Clock, Wrench, ArrowRight } from "lucide-react";
 
 const contacts = [
   {
-    icon: "✉",
+    icon: Mail,
     label: "Email",
     value: "fabian.spiri@gmx.ch",
     sub: "Swisscom: fabian.spiri@swisscom.com",
@@ -10,7 +13,7 @@ const contacts = [
     cta: "Nachricht senden",
   },
   {
-    icon: "in",
+    icon: ExternalLink,
     label: "LinkedIn",
     value: "Fabian Spiri",
     sub: "linkedin.com/in/fabian-spiri",
@@ -18,7 +21,7 @@ const contacts = [
     cta: "Profil ansehen",
   },
   {
-    icon: "</> ",
+    icon: GitFork,
     label: "GitHub",
     value: "@Fababum",
     sub: "github.com/Fababum",
@@ -27,304 +30,130 @@ const contacts = [
   },
 ];
 
-function ContactLink({
-  icon,
-  label,
-  value,
-  sub,
-  href,
-  cta,
-}: {
-  icon: string;
-  label: string;
-  value: string;
-  sub: string;
-  href: string;
-  cta: string;
-}) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="card-hover"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        textDecoration: "none",
-        color: "inherit",
-        padding: "20px",
-        borderRadius: "14px",
-        border: `1px solid ${hovered ? "var(--card-border-hover)" : "var(--card-border)"}`,
-        background: "var(--card-bg)",
-        boxShadow: "var(--card-shadow)",
-        transition: "border-color 200ms ease",
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <div
-          style={{
-            width: "38px",
-            height: "38px",
-            borderRadius: "10px",
-            border: "1px solid var(--accent-border)",
-            background: "var(--accent-muted)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "14px",
-            fontWeight: 700,
-            color: "var(--accent)",
-            flexShrink: 0,
-            fontFamily: "monospace",
-          }}
-        >
-          {icon}
-        </div>
-        <div>
-          <p style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--text)", marginBottom: "2px" }}>
-            {label}
-          </p>
-          <p style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>{sub}</p>
-        </div>
-      </div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-          {value}
-        </span>
-        <span
-          style={{
-            fontSize: "0.78rem",
-            color: "var(--accent)",
-            fontWeight: 600,
-            display: "flex",
-            alignItems: "center",
-            gap: "4px",
-          }}
-        >
-          {cta} →
-        </span>
-      </div>
-    </a>
-  );
-}
-
 function Contact() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        color: "var(--text)",
-        padding: "40px 24px 80px",
-      }}
-    >
-      <div style={{ maxWidth: "780px", margin: "0 auto" }}>
+    <div className="min-h-screen text-foreground px-6 pt-10 pb-24">
+      <div className="max-w-3xl mx-auto">
 
         {/* ── Header ── */}
-        <div style={{ marginBottom: "48px" }}>
-          <p
-            style={{
-              fontSize: "11px",
-              fontWeight: 700,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "var(--accent)",
-              marginBottom: "10px",
-            }}
-          >
+        <div className="mb-12">
+          <p className="text-xs font-bold tracking-widest uppercase text-primary mb-2.5">
             Kontakt
           </p>
-          <h1
-            style={{
-              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
-              marginBottom: "12px",
-              textShadow: "var(--title-shadow)",
-            }}
-          >
+          <h1 className="text-foreground mb-3" style={{ textShadow: "var(--title-shadow)" }}>
             Lass uns reden
           </h1>
-          <p
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "0.95rem",
-              lineHeight: 1.7,
-              maxWidth: "520px",
-            }}
-          >
-            Melde dich für Kollaborationen, Fragen oder ein kurzes Gespräch. Ich
-            antworte in der Regel innerhalb eines Tages.
+          <p className="text-muted-foreground text-sm leading-7 max-w-lg">
+            Melde dich für Kollaborationen, Fragen oder ein kurzes Gespräch.
+            Ich antworte in der Regel innerhalb eines Tages.
           </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div className="space-y-4">
 
           {/* ── Contact links ── */}
-          <div
-            style={{
-              display: "grid",
-              gap: "12px",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            }}
-          >
-            {contacts.map((c) => (
-              <ContactLink key={c.label} {...c} />
-            ))}
+          <div className="grid gap-3 sm:grid-cols-3">
+            {contacts.map((c) => {
+              const Icon = c.icon;
+              return (
+                <a
+                  key={c.label}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <Card className="h-full transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-primary/30 cursor-pointer">
+                    <CardContent className="p-5 flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl border border-primary/20 bg-primary/10 flex items-center justify-center shrink-0">
+                          <Icon className="h-4 w-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-sm text-foreground mb-0.5">{c.label}</p>
+                          <p className="text-xs text-muted-foreground truncate">{c.sub}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground font-medium">{c.value}</span>
+                        <span className="text-xs text-primary font-semibold flex items-center gap-1">
+                          {c.cta} <ArrowRight className="h-3 w-3" />
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </a>
+              );
+            })}
           </div>
 
           {/* ── Details row ── */}
-          <div
-            style={{
-              display: "grid",
-              gap: "12px",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            }}
-          >
+          <div className="grid gap-3 sm:grid-cols-2">
             {/* What I can help with */}
-            <div
-              className="card-hover"
-              style={{
-                padding: "22px",
-                borderRadius: "14px",
-                border: "1px solid var(--card-border)",
-                background: "var(--card-bg)",
-                boxShadow: "var(--card-shadow)",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "0.72rem",
-                  fontWeight: 700,
-                  color: "var(--accent)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.09em",
-                  marginBottom: "10px",
-                }}
-              >
-                Womit ich helfen kann
-              </p>
-              <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "14px" }}>
-                Web-Apps, APIs, sicherheitsorientierte Features und Verbesserungen bestehender Produkte.
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                {["Frontend", "Backend", "APIs", "Security", "UI"].map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      border: "1px solid var(--chip-border)",
-                      borderRadius: "6px",
-                      padding: "2px 9px",
-                      fontSize: "0.72rem",
-                      background: "var(--chip-bg)",
-                      color: "var(--text-muted)",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <Card>
+              <CardContent className="p-5">
+                <p className="text-xs font-bold text-primary uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                  <Wrench className="h-3 w-3" />
+                  Womit ich helfen kann
+                </p>
+                <p className="text-sm text-muted-foreground leading-7 mb-3">
+                  Web-Apps, APIs, sicherheitsorientierte Features und Verbesserungen bestehender Produkte.
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {["Frontend", "Backend", "APIs", "Security", "UI"].map((tag) => (
+                    <Badge key={tag} variant="secondary" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Availability */}
-            <div
-              className="card-hover"
-              style={{
-                padding: "22px",
-                borderRadius: "14px",
-                border: "1px solid var(--card-border)",
-                background: "var(--card-bg)",
-                boxShadow: "var(--card-shadow)",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "0.72rem",
-                  fontWeight: 700,
-                  color: "var(--accent)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.09em",
-                  marginBottom: "10px",
-                }}
-              >
-                Verfügbarkeit
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>Geschäftlich</span>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontFamily: "monospace" }}>07:00 – 15:00</span>
+            <Card>
+              <CardContent className="p-5">
+                <p className="text-xs font-bold text-primary uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                  <Clock className="h-3 w-3" />
+                  Verfügbarkeit
+                </p>
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Geschäftlich</span>
+                    <span className="text-muted-foreground font-mono text-xs">07:00 – 15:00</span>
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Privat</span>
+                    <span className="text-muted-foreground font-mono text-xs">18:00 – 22:00</span>
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Reaktionszeit</span>
+                    <span className="text-green-500 dark:text-green-400 font-semibold text-xs">≤ 1 Tag</span>
+                  </div>
                 </div>
-                <div
-                  style={{
-                    height: "1px",
-                    background: "var(--divider)",
-                  }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>Privat</span>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontFamily: "monospace" }}>18:00 – 22:00</span>
-                </div>
-                <div
-                  style={{
-                    height: "1px",
-                    background: "var(--divider)",
-                  }}
-                />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>Reaktionszeit</span>
-                  <span style={{ fontSize: "0.82rem", color: "var(--badge-ongoing-color)", fontWeight: 600 }}>≤ 1 Tag</span>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* ── CTA banner ── */}
-          <div
-            className="card-hover"
-            style={{
-              padding: "28px",
-              borderRadius: "14px",
-              border: "1px solid var(--accent-border)",
-              background: "var(--accent-muted)",
-              boxShadow: "var(--card-shadow)",
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "16px",
-            }}
-          >
-            <div>
-              <p style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text)", marginBottom: "4px" }}>
-                Bereit für ein Projekt?
-              </p>
-              <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-                Ich bin offen für neue Kooperationen und Herausforderungen.
-              </p>
-            </div>
-            <a
-              href="mailto:fabian.spiri@gmx.ch"
-              style={{
-                textDecoration: "none",
-                color: "#fff",
-                background: "var(--accent)",
-                border: "1px solid var(--accent)",
-                padding: "10px 22px",
-                borderRadius: "10px",
-                fontWeight: 600,
-                fontSize: "0.875rem",
-                whiteSpace: "nowrap",
-                transition: "opacity 180ms ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-            >
-              E-Mail senden →
-            </a>
-          </div>
+          <Card className="border-primary/20 bg-primary/5">
+            <CardContent className="p-6 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="font-bold text-base text-foreground mb-1">Bereit für ein Projekt?</p>
+                <p className="text-sm text-muted-foreground">
+                  Ich bin offen für neue Kooperationen und Herausforderungen.
+                </p>
+              </div>
+              <a
+                href="mailto:fabian.spiri@gmx.ch"
+                className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition-opacity hover:opacity-85 shrink-0"
+              >
+                E-Mail senden
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </a>
+            </CardContent>
+          </Card>
 
         </div>
       </div>

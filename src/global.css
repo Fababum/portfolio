@@ -1,47 +1,113 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   shadcn/ui CSS Variables (HSL — Tailwind v3 compatible)
+───────────────────────────────────────────── */
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 240 5% 6%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 5% 6%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 5% 6%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 94%;
+    --secondary-foreground: 240 5% 6%;
+    --muted: 240 5% 94%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 240 5% 94%;
+    --accent-foreground: 240 5% 6%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 243 75% 59%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 240 6% 7%;
+    --foreground: 240 5% 93%;
+    --card: 240 6% 10%;
+    --card-foreground: 240 5% 93%;
+    --popover: 240 6% 10%;
+    --popover-foreground: 240 5% 93%;
+    --primary: 243 75% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 6% 15%;
+    --secondary-foreground: 240 5% 93%;
+    --muted: 240 6% 15%;
+    --muted-foreground: 240 4% 55%;
+    --accent: 240 6% 15%;
+    --accent-foreground: 240 5% 93%;
+    --destructive: 0 63% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 16%;
+    --input: 240 6% 16%;
+    --ring: 243 75% 65%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+/* ─────────────────────────────────────────────
+   Custom Design Tokens (kept for gradual migration)
+───────────────────────────────────────────── */
+body.theme-dark {
+  --indigo: #6366f1;
+  --badge-ongoing-bg: rgba(34, 197, 94, 0.10);
+  --badge-ongoing-border: rgba(34, 197, 94, 0.30);
+  --badge-ongoing-color: #4ade80;
+  --badge-dot: #22c55e;
+  --hero-glow: rgba(99, 102, 241, 0.12);
+  --nav-bg: rgba(14, 14, 17, 0.85);
+  --nav-border: rgba(255, 255, 255, 0.10);
+  --nav-hover: rgba(255, 255, 255, 0.07);
+  --nav-active: rgba(255, 255, 255, 0.12);
+  --nav-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --scrollbar: rgba(255,255,255,0.10);
+  --scrollbar-hover: rgba(255,255,255,0.20);
+  --title-shadow: 0 0 60px rgba(99, 102, 241, 0.12);
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
+body.theme-light {
+  --indigo: #4f46e5;
+  --badge-ongoing-bg: rgba(22, 163, 74, 0.08);
+  --badge-ongoing-border: rgba(22, 163, 74, 0.25);
+  --badge-ongoing-color: #16a34a;
+  --badge-dot: #16a34a;
+  --hero-glow: rgba(79, 70, 229, 0.06);
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-border: rgba(0, 0, 0, 0.10);
+  --nav-hover: rgba(0, 0, 0, 0.05);
+  --nav-active: rgba(0, 0, 0, 0.09);
+  --nav-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 1px 0 rgba(255,255,255,0.8) inset;
+  --scrollbar: rgba(0,0,0,0.12);
+  --scrollbar-hover: rgba(0,0,0,0.22);
+  --title-shadow: none;
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar);
+  background: var(--scrollbar, rgba(128,128,128,0.3));
   border-radius: 999px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
-
-/* ── Text selection ── */
-::selection {
-  background: var(--selection-bg);
-  color: var(--text);
-}
-
-/* ── Focus ── */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover, rgba(128,128,128,0.5)); }
 
 /* ── Typography ── */
 h1 {
@@ -59,17 +125,6 @@ h2 {
 }
 p { margin: 0; }
 
-/* ── Card hover (utility) ── */
-.card-hover {
-  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
-  will-change: transform;
-}
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--card-shadow-hover);
-  border-color: var(--card-border-hover);
-}
-
 /* ── Page transition ── */
 .pageTransition {
   animation: pageIn 380ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -83,107 +138,15 @@ p { margin: 0; }
   .pageTransition { animation: none; }
 }
 
-/* ─────────────────────────────────────────────
-   DARK THEME
-───────────────────────────────────────────── */
-body.theme-dark {
-  --bg: #0c0c0e;
-  --bg-subtle: #111114;
-  --text: #ededef;
-  --text-muted: rgba(237, 237, 239, 0.45);
-  --text-secondary: rgba(237, 237, 239, 0.65);
-
-  --accent: #6366f1;
-  --accent-muted: rgba(99, 102, 241, 0.15);
-  --accent-border: rgba(99, 102, 241, 0.4);
-
-  --title-shadow: 0 0 60px rgba(99, 102, 241, 0.12);
-
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.07);
-  --card-border-hover: rgba(255, 255, 255, 0.18);
-  --card-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
-  --card-shadow-hover: 0 4px 6px rgba(0,0,0,0.5), 0 16px 48px rgba(0,0,0,0.5);
-
-  --chip-bg: rgba(255, 255, 255, 0.05);
-  --chip-border: rgba(255, 255, 255, 0.10);
-
-  --divider: rgba(255, 255, 255, 0.06);
-
-  --nav-bg: rgba(14, 14, 17, 0.85);
-  --nav-border: rgba(255, 255, 255, 0.10);
-  --nav-hover: rgba(255, 255, 255, 0.07);
-  --nav-active: rgba(255, 255, 255, 0.12);
-  --nav-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
-
-  --badge-ongoing-bg: rgba(34, 197, 94, 0.10);
-  --badge-ongoing-border: rgba(34, 197, 94, 0.30);
-  --badge-ongoing-color: #4ade80;
-  --badge-dot: #22c55e;
-
-  --hero-glow: rgba(99, 102, 241, 0.12);
-
-  --scrollbar: rgba(255,255,255,0.10);
-  --scrollbar-hover: rgba(255,255,255,0.20);
-  --selection-bg: rgba(99, 102, 241, 0.25);
-
-  --arrow-bg: rgba(255, 255, 255, 0.05);
-  --arrow-border: rgba(255, 255, 255, 0.12);
-  --arrow-shadow: 0 4px 16px rgba(0,0,0,0.5);
-}
-
-/* ─────────────────────────────────────────────
-   LIGHT THEME
-───────────────────────────────────────────── */
-body.theme-light {
-  --bg: #f9f9fb;
-  --bg-subtle: #f2f2f5;
-  --text: #0f0f12;
-  --text-muted: rgba(15, 15, 18, 0.45);
-  --text-secondary: rgba(15, 15, 18, 0.65);
-
-  --accent: #4f46e5;
-  --accent-muted: rgba(79, 70, 229, 0.08);
-  --accent-border: rgba(79, 70, 229, 0.25);
-
-  --title-shadow: none;
-
-  --card-bg: #ffffff;
-  --card-border: rgba(0, 0, 0, 0.07);
-  --card-border-hover: rgba(0, 0, 0, 0.16);
-  --card-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
-  --card-shadow-hover: 0 4px 6px rgba(0,0,0,0.08), 0 16px 40px rgba(0,0,0,0.10);
-
-  --chip-bg: rgba(0, 0, 0, 0.04);
-  --chip-border: rgba(0, 0, 0, 0.10);
-
-  --divider: rgba(0, 0, 0, 0.06);
-
-  --nav-bg: rgba(255, 255, 255, 0.85);
-  --nav-border: rgba(0, 0, 0, 0.10);
-  --nav-hover: rgba(0, 0, 0, 0.05);
-  --nav-active: rgba(0, 0, 0, 0.09);
-  --nav-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 1px 0 rgba(255,255,255,0.8) inset;
-
-  --badge-ongoing-bg: rgba(22, 163, 74, 0.08);
-  --badge-ongoing-border: rgba(22, 163, 74, 0.25);
-  --badge-ongoing-color: #16a34a;
-  --badge-dot: #16a34a;
-
-  --hero-glow: rgba(79, 70, 229, 0.06);
-
-  --scrollbar: rgba(0,0,0,0.12);
-  --scrollbar-hover: rgba(0,0,0,0.22);
-  --selection-bg: rgba(79, 70, 229, 0.15);
-
-  --arrow-bg: #ffffff;
-  --arrow-border: rgba(0, 0, 0, 0.10);
-  --arrow-shadow: 0 4px 16px rgba(0,0,0,0.10);
-}
-
 /* ── Section scroll offset (for sticky nav) ── */
 section {
   scroll-margin-top: 80px;
+}
+
+/* ── Blink animation ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
 
 /* ── Responsive ── */

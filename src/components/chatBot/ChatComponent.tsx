@@ -2,6 +2,18 @@ import * as React from "react";
 import useChatbot from "../../hooks/useChatbot";
 import Markdown from "react-markdown";
 import useChatScroll from "../../hooks/useChatScroll";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { Send, Bot, User } from "lucide-react";
+
+const PROMPT_SUGGESTIONS = [
+  { label: "Main Skills", text: "What are Fabian's main skills?" },
+  { label: "Projekte",    text: "Tell me about Fabian's projects" },
+  { label: "Erfahrung",  text: "What is Fabian's experience?" },
+];
 
 function ChatComponent() {
   const [input, setInput] = React.useState("");
@@ -10,166 +22,13 @@ function ChatComponent() {
   const messagesEndRef = useChatScroll(messages);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const styles = {
-    page: {
-      minHeight: "100vh",
-      color: "var(--text)",
-      padding: "10px 16px 40px",
-    },
-    shell: {
-      maxWidth: "980px",
-      margin: "0 auto",
-      display: "grid",
-      gap: "20px",
-    },
-    header: {
-      textAlign: "center" as const,
-      display: "grid",
-      gap: "8px",
-      marginTop: "10px",
-    },
-    title: {
-      margin: 0,
-      textShadow: "var(--title-shadow)",
-    },
-    subtitle: {
-      margin: 0,
-      opacity: 0.75,
-    },
-    chatCard: {
-      border: "1px solid var(--card-border)",
-      borderRadius: "18px",
-      background: "var(--card-bg)",
-      boxShadow: "var(--card-shadow)",
-      overflow: "hidden",
-      display: "grid",
-      gridTemplateRows: "1fr auto",
-      minHeight: "48vh",
-    },
-    messages: {
-      padding: "20px",
-      display: "flex",
-      flexDirection: "column" as const,
-      gap: "14px",
-      overflowY: "auto" as const,
-      maxHeight: "42vh",
-    },
-    emptyState: {
-      border: "1px dashed var(--chip-border)",
-      borderRadius: "16px",
-      padding: "18px",
-      display: "grid",
-      gap: "10px",
-      textAlign: "left" as const,
-      background: "var(--chip-bg)",
-    },
-    emptyTitle: {
-      margin: 0,
-      fontSize: "22px",
-    },
-    emptyText: {
-      margin: 0,
-      opacity: 0.8,
-      lineHeight: 1.6,
-    },
-    promptRow: {
-      display: "flex",
-      flexWrap: "wrap" as const,
-      gap: "8px",
-    },
-    promptButton: {
-      border: "1px solid var(--chip-border)",
-      background: "var(--chip-bg)",
-      color: "var(--text)",
-      borderRadius: "999px",
-      padding: "6px 12px",
-      fontSize: "12px",
-      cursor: "pointer",
-    },
-    bubbleRow: {
-      display: "flex",
-    },
-    bubble: {
-      maxWidth: "78%",
-      padding: "8px 10px",
-      borderRadius: "16px",
-      border: "1px solid var(--card-border)",
-      background: "var(--chip-bg)",
-      lineHeight: 1.5,
-      fontSize: "14px",
-    },
-    bubbleUser: {
-      marginLeft: "auto",
-      background: "var(--card-bg)",
-    },
-    bubbleBot: {
-      marginRight: "auto",
-    },
-    sender: {
-      fontSize: "10px",
-      letterSpacing: "0.2em",
-      textTransform: "uppercase" as const,
-      opacity: 0.6,
-      marginBottom: "4px",
-    },
-    loading: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: "8px",
-      fontSize: "13px",
-      opacity: 0.7,
-    },
-    inputBar: {
-      borderTop: "1px solid var(--card-border)",
-      padding: "12px",
-      display: "flex",
-      gap: "10px",
-      alignItems: "center",
-      background: "rgba(0,0,0,0)",
-    },
-    input: {
-      flex: 1,
-      borderRadius: "999px",
-      border: "1px solid var(--chip-border)",
-      background: "var(--chip-bg)",
-      color: "var(--text)",
-      padding: "10px 14px",
-      outline: "none",
-    },
-    sendButton: {
-      border: "1px solid var(--chip-border)",
-      background: "var(--chip-bg)",
-      color: "var(--text)",
-      borderRadius: "999px",
-      padding: "10px 16px",
-      cursor: "pointer",
-      fontWeight: 600,
-      display: "inline-flex",
-      alignItems: "center",
-      gap: "8px",
-    },
-    sendDisabled: {
-      opacity: 0.5,
-      cursor: "not-allowed",
-    },
-    cooldownNotice: {
-      fontSize: "12px",
-      opacity: 0.7,
-    },
-  };
-
   const handleSend = async () => {
-    if (!input.trim()) return;
-    if (cooldownSeconds > 0 || isSending || loading) return;
-
+    if (!input.trim() || cooldownSeconds > 0 || isSending || loading) return;
     setIsSending(true);
     await sendMessage(input.trim());
     setInput("");
     setIsSending(false);
-
-    if (window.innerWidth >= 768 && inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (window.innerWidth >= 768 && inputRef.current) inputRef.current.focus();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -179,146 +38,139 @@ function ChatComponent() {
     }
   };
 
+  const isDisabled = isSending || cooldownSeconds > 0;
+
   return (
-    <div style={styles.page}>
-      <div style={styles.shell}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Chat Bot</h1>
-          <p style={styles.subtitle}>
-            Ask anything about Fabian&apos;s work, projects, or experience.
+    <div className="min-h-screen text-foreground px-4 pt-6 pb-24">
+      <div className="max-w-3xl mx-auto space-y-5">
+
+        {/* Header */}
+        <div className="text-center space-y-1.5">
+          <h1 className="text-foreground" style={{ textShadow: "var(--title-shadow)" }}>
+            Chat Bot
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Ask anything about Fabian's work, projects, or experience.
           </p>
         </div>
 
-        <div style={styles.chatCard}>
-          <div style={styles.messages} ref={messagesEndRef}>
+        {/* Chat card */}
+        <Card className="overflow-hidden flex flex-col" style={{ minHeight: "52vh" }}>
+          <CardHeader className="border-b border-border px-5 py-3.5">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_6px_#22c55e]" />
+              <span className="text-sm font-medium text-foreground">AI Assistant</span>
+              <span className="text-xs text-muted-foreground ml-auto">Powered by Gemini</span>
+            </div>
+          </CardHeader>
+
+          {/* Messages */}
+          <ScrollArea className="flex-1 px-5 py-4" ref={messagesEndRef} style={{ maxHeight: "45vh" }}>
             {messages.length === 0 ? (
-              <div style={styles.emptyState}>
-                <h2 style={styles.emptyTitle}>Welcome to the AI Assistant</h2>
-                <p style={styles.emptyText}>
-                  Start a conversation by typing a message below. I can help you
-                  learn more about Fabian&apos;s expertise, projects, and
-                  professional background.
+              <div className="rounded-xl border border-dashed border-border bg-muted/40 p-5 space-y-3">
+                <p className="font-semibold text-foreground text-lg">Welcome to the AI Assistant</p>
+                <p className="text-sm text-muted-foreground leading-6">
+                  Start a conversation. I can help you learn more about Fabian's expertise,
+                  projects, and professional background.
                 </p>
-                <div style={styles.promptRow}>
-                  <button
-                    style={styles.promptButton}
-                    onClick={() => {
-                      setInput("What are Fabian's main skills?");
-                      inputRef.current?.focus();
-                    }}
-                  >
-                    Main Skills
-                  </button>
-                  <button
-                    style={styles.promptButton}
-                    onClick={() => {
-                      setInput("Tell me about Fabian's projects");
-                      inputRef.current?.focus();
-                    }}
-                  >
-                    Projects
-                  </button>
-                  <button
-                    style={styles.promptButton}
-                    onClick={() => {
-                      setInput("What is Fabian's experience?");
-                      inputRef.current?.focus();
-                    }}
-                  >
-                    Experience
-                  </button>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {PROMPT_SUGGESTIONS.map((s) => (
+                    <button
+                      key={s.label}
+                      className="text-xs px-3 py-1.5 rounded-full border border-border bg-background text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors cursor-pointer"
+                      onClick={() => {
+                        setInput(s.text);
+                        inputRef.current?.focus();
+                      }}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             ) : (
-              <>
-                {messages.map((msg, index) => (
+              <div className="space-y-4">
+                {messages.map((msg, i) => (
                   <div
-                    key={index}
-                    style={{
-                      ...styles.bubbleRow,
-                      justifyContent:
-                        msg.sender === "user" ? "flex-end" : "flex-start",
-                    }}
+                    key={i}
+                    className={cn(
+                      "flex gap-2.5 items-start",
+                      msg.sender === "user" ? "flex-row-reverse" : "flex-row"
+                    )}
                   >
                     <div
-                      style={{
-                        ...styles.bubble,
-                        ...(msg.sender === "user"
-                          ? styles.bubbleUser
-                          : styles.bubbleBot),
-                      }}
+                      className={cn(
+                        "w-7 h-7 rounded-full shrink-0 flex items-center justify-center mt-0.5",
+                        msg.sender === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground border border-border"
+                      )}
                     >
-                      <div style={styles.sender}>
-                        {msg.sender === "user" ? "You" : "Bot"}
-                      </div>
+                      {msg.sender === "user"
+                        ? <User className="h-3.5 w-3.5" />
+                        : <Bot className="h-3.5 w-3.5" />}
+                    </div>
+                    <div
+                      className={cn(
+                        "max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-6",
+                        msg.sender === "user"
+                          ? "bg-primary text-primary-foreground rounded-tr-sm"
+                          : "bg-muted text-foreground border border-border rounded-tl-sm"
+                      )}
+                    >
                       <Markdown remarkPlugins={[]}>{msg.text}</Markdown>
                     </div>
                   </div>
                 ))}
                 {loading && (
-                  <div style={styles.bubbleRow}>
-                    <div style={{ ...styles.bubble, ...styles.bubbleBot }}>
-                      <div style={styles.loading}>Loading...</div>
+                  <div className="flex gap-2.5 items-start">
+                    <div className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center mt-0.5 bg-muted text-muted-foreground border border-border">
+                      <Bot className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="bg-muted border border-border rounded-2xl rounded-tl-sm px-4 py-2.5">
+                      <div className="flex gap-1 items-center h-5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:0ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:150ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:300ms]" />
+                      </div>
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             )}
-          </div>
+          </ScrollArea>
 
-          <div style={styles.inputBar}>
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Type your message..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={isSending || cooldownSeconds > 0}
-              aria-label="Type your message"
-              style={styles.input}
-            />
-            <button
-              onClick={handleSend}
-              disabled={isSending || !input.trim() || cooldownSeconds > 0}
-              aria-label="Send message"
-              style={{
-                ...styles.sendButton,
-                ...(isSending || !input.trim() || cooldownSeconds > 0
-                  ? styles.sendDisabled
-                  : {}),
-              }}
-            >
-              {isSending ? (
-                <span>Sending...</span>
-              ) : (
-                <span style={{ display: "inline-flex", alignItems: "center" }}>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15 1L7 9M15 1L10 15L7 9M15 1L1 6L7 9"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  Send
-                </span>
-              )}
-            </button>
-            {cooldownSeconds > 0 && (
-              <span style={styles.cooldownNotice}>
-                Too many requests. Try again in {cooldownSeconds}s.
-              </span>
-            )}
-          </div>
-        </div>
+          {/* Input bar */}
+          <CardContent className="p-3 border-t border-border">
+            <div className="flex gap-2 items-center">
+              <Input
+                ref={inputRef}
+                type="text"
+                placeholder={
+                  cooldownSeconds > 0
+                    ? `Bitte warten… (${cooldownSeconds}s)`
+                    : "Type your message..."
+                }
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={isDisabled}
+                className="rounded-full bg-muted border-border focus-visible:ring-primary"
+                aria-label="Type your message"
+              />
+              <Button
+                onClick={handleSend}
+                disabled={isDisabled || !input.trim()}
+                size="icon"
+                className="rounded-full shrink-0"
+                aria-label="Send message"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
       </div>
     </div>
   );
