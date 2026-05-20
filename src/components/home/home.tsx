@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ArrowDown } from "lucide-react";
+import { ArrowDown, ChevronDown } from "lucide-react";
 
 const projects = [
   {
@@ -76,37 +76,19 @@ function useTypingEffect(words: string[], speed = 65, pause = 2000) {
 }
 
 function Home() {
-  const [showProjects, setShowProjects] = useState(false);
   const projectsRef = useRef<HTMLDivElement | null>(null);
-  const heroRef = useRef<HTMLDivElement | null>(null);
   const typedRole = useTypingEffect(ROLES);
-
-  useEffect(() => {
-    if (!heroRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setShowProjects(!entry.isIntersecting),
-      { threshold: 0.35 }
-    );
-    observer.observe(heroRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <div className="min-h-screen text-foreground">
 
       {/* ── Hero ── */}
-      <div
-        ref={heroRef}
-        className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6 pb-20 pt-16 overflow-hidden"
-      >
+      <div className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6 pb-20 pt-16 overflow-hidden">
         {/* Background glow */}
         <div
           aria-hidden="true"
           className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none"
-          style={{
-            background: "var(--hero-glow, rgba(99,102,241,0.08))",
-            filter: "blur(100px)",
-          }}
+          style={{ background: "var(--hero-glow, rgba(99,102,241,0.08))", filter: "blur(100px)" }}
         />
 
         {/* Status pill */}
@@ -159,35 +141,9 @@ function Home() {
         </div>
       </div>
 
-      {/* ── Scroll hint ── */}
-      <button
-        type="button"
-        onClick={() => projectsRef.current?.scrollIntoView({ behavior: "smooth" })}
-        aria-label="Zu den Projekten scrollen"
-        className={cn(
-          "fixed left-1/2 bottom-7 -translate-x-1/2 z-40",
-          "flex items-center gap-1.5 px-4 py-1.5 rounded-full",
-          "border border-border/60 bg-background/80 backdrop-blur-md",
-          "text-muted-foreground text-sm font-medium shadow-md",
-          "transition-all duration-300",
-          showProjects ? "opacity-0 translate-y-3 pointer-events-none" : "opacity-100 translate-y-0"
-        )}
-      >
-        <ChevronDown className="h-3.5 w-3.5" />
-        Scroll
-      </button>
-
       {/* ── Projects ── */}
-      <div
-        id="projects"
-        ref={projectsRef}
-        className={cn(
-          "px-6 pb-24 transition-all duration-500",
-          showProjects ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5 pointer-events-none"
-        )}
-      >
+      <div id="projects" ref={projectsRef} className="px-6 pb-24">
         <div className="max-w-3xl mx-auto">
-          {/* Section heading */}
           <div className="mb-8">
             <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">
               Lehrjahr-Projekte
@@ -199,8 +155,6 @@ function Home() {
               Projekte aus meiner Ausbildung bei Swisscom — chronologisch von aktuell zu früher.
             </p>
           </div>
-
-          {/* Project list */}
           <div className="flex flex-col gap-3">
             {projects.map((project, index) => (
               <ProjectCard key={index} project={project} />
