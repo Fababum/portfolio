@@ -207,7 +207,8 @@ function Home() {
         {/* CTAs */}
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center" }}>
           <a
-            href="/contact"
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
             style={{
               textDecoration: "none",
               color: "#fff",

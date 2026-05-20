@@ -181,6 +181,11 @@ body.theme-light {
   --arrow-shadow: 0 4px 16px rgba(0,0,0,0.10);
 }
 
+/* ── Section scroll offset (for sticky nav) ── */
+section {
+  scroll-margin-top: 80px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   h1 { font-size: 2.2rem; }

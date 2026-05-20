@@ -1,10 +1,9 @@
-import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./navBar.css";
 
 const navItems = [
   {
-    to: "/",
+    to: "#home",
     label: "Home",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -14,7 +13,7 @@ const navItems = [
     ),
   },
   {
-    to: "/about",
+    to: "#about",
     label: "About",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -24,7 +23,7 @@ const navItems = [
     ),
   },
   {
-    to: "/contact",
+    to: "#contact",
     label: "Contact",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -34,7 +33,7 @@ const navItems = [
     ),
   },
   {
-    to: "/chatBot",
+    to: "#chat",
     label: "Chat",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -43,7 +42,7 @@ const navItems = [
     ),
   },
   {
-    to: "/calendarai",
+    to: "#calendarai",
     label: "CalendarAI",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -56,6 +55,8 @@ const navItems = [
 
 function NavBar() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [activeSection, setActiveSection] = useState("home");
+
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved === "light" || saved === "dark") {
@@ -69,21 +70,57 @@ function NavBar() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Track which section is currently in view
+  useEffect(() => {
+    const sectionIds = navItems.map((item) => item.to.replace("#", ""));
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { threshold: 0.3 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    to: string
+  ) => {
+    e.preventDefault();
+    const id = to.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <nav className="navBar">
       <div className="navLinks" role="navigation" aria-label="Primary">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) =>
-              isActive ? "navLink active" : "navLink"
-            }
-          >
-            <span className="navIcon">{item.icon}</span>
-            <span className="navLabel">{item.label}</span>
-          </NavLink>
-        ))}
+        {navItems.map((item) => {
+          const id = item.to.replace("#", "");
+          const isActive = activeSection === id;
+          return (
+            <a
+              key={item.to}
+              href={item.to}
+              className={isActive ? "navLink active" : "navLink"}
+              onClick={(e) => handleNavClick(e, item.to)}
+            >
+              <span className="navIcon">{item.icon}</span>
+              <span className="navLabel">{item.label}</span>
+            </a>
+          );
+        })}
         <button
           type="button"
           className="navLink themeToggle"
