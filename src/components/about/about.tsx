@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const skills = [
   { category: "Frontend",    items: ["React", "TypeScript", "JavaScript", "HTML/CSS"] },
-  { category: "Backend",     items: ["NestJS", "Node.js", "Java", "Python"] },
+  { category: "Backend",     items: ["NestJS", "Node.js", "Java", "Python", "Docker"] },
   { category: "Datenbanken", items: ["Prisma ORM", "PostgreSQL", "SQL"] },
   { category: "Tools",       items: ["Git", "REST APIs", "Agile / Scrum"] },
   { category: "Security",    items: ["Cybersecurity", "Phishing Detection", "Threat Analysis"] },

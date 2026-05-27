@@ -7,9 +7,9 @@ const contacts = [
   {
     icon: Mail,
     label: "Email",
-    value: "fabian.spiri@gmx.ch",
-    sub: "Swisscom: fabian.spiri@swisscom.com",
-    href: "mailto:fabian.spiri@gmx.ch",
+    value: "fabian.spiri@swisscom.com",
+    sub: "Fabian Swisscom Mail",
+    href: "mailto:fabian.spiri@swisscom.com",
     cta: "Nachricht senden",
   },
   {
@@ -140,9 +140,9 @@ function Contact() {
           <Card className="border-primary/20 bg-primary/5">
             <CardContent className="p-6 flex flex-wrap items-center justify-between gap-4">
               <div>
-                <p className="font-bold text-base text-foreground mb-1">Bereit für ein Projekt?</p>
+                <p className="font-bold text-base text-foreground mb-1">Möchtest du mich kontaktieren?</p>
                 <p className="text-sm text-muted-foreground">
-                  Ich bin offen für neue Kooperationen und Herausforderungen.
+                    Bei Anliegen ausserhalb der regulären Geschäftszeiten kannst du mir gerne eine E-Mail schreiben über meine Privat Mail.
                 </p>
               </div>
               <a

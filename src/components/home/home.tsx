@@ -47,12 +47,6 @@ function Home() {
           style={{ background: "var(--hero-glow, rgba(99,102,241,0.08))", filter: "blur(100px)" }}
         />
 
-        {/* Status pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-medium mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_6px_#22c55e]" />
-          Verfügbar für neue Projekte
-        </div>
-
         {/* Name */}
         <h1 className="mb-4 text-foreground" style={{ textShadow: "var(--title-shadow)" }}>
           Fabian Spiri
