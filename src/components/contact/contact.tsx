@@ -7,8 +7,8 @@ const contacts = [
   {
     icon: Mail,
     label: "Email",
-    value: "fabian.spiri@swisscom.com",
-    sub: "Fabian Swisscom Mail",
+    value: "Fabian Swisscom Mail",
+    sub: "fabian.spiri@swisscom.com",
     href: "mailto:fabian.spiri@swisscom.com",
     cta: "Nachricht senden",
   },
@@ -142,7 +142,7 @@ function Contact() {
               <div>
                 <p className="font-bold text-base text-foreground mb-1">Möchtest du mich kontaktieren?</p>
                 <p className="text-sm text-muted-foreground">
-                    Bei Anliegen ausserhalb der regulären Geschäftszeiten kannst du mir gerne eine E-Mail schreiben über meine Privat Mail.
+                    Bei Anliegen kannst du mir gerne eine E-Mail schreiben über meine Privat Mail.
                 </p>
               </div>
               <a
