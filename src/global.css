@@ -87,6 +87,8 @@
 
   html {
     scroll-behavior: smooth;
+    background: #0d0d0d;
+    overflow-x: hidden;
   }
 
   body {
@@ -95,6 +97,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01" 1, "cv01" 1;
+    background: #0d0d0d;
+    overflow-x: hidden;
   }
 
   ::selection {
