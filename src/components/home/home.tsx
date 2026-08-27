@@ -125,7 +125,7 @@ function Home() {
         <Reveal delay={200} className="hidden lg:block">
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-md ring-1 ring-white/10 shadow-2xl">
             <img
-              src="/images/portraits/portrait-prom.jpg"
+              src="/images/portraits/portrait-night.jpg"
               alt="Fabian Spiri"
               className="h-full w-full object-cover"
               style={{ objectPosition: "50% 20%" }}

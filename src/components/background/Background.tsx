@@ -58,7 +58,11 @@ function Background() {
   }
 
   return (
-    <div aria-hidden="true" className="fixed inset-0 -z-10 overflow-hidden bg-black">
+    <div
+      aria-hidden="true"
+      className="fixed inset-0 -z-10 overflow-hidden"
+      style={{ background: "linear-gradient(160deg, var(--bg-fallback-1), var(--bg-fallback-2))" }}
+    >
       {IMAGES.map((img, i) => (
         <div
           key={img.src}
@@ -73,7 +77,7 @@ function Background() {
             alt=""
             className={cnKen(i === index, reducedMotion)}
             style={{ objectPosition: img.position }}
-            loading={i === 0 ? "eager" : "lazy"}
+            loading="eager"
             fetchPriority={i === 0 ? "high" : "auto"}
           />
         </div>

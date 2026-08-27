@@ -48,6 +48,19 @@
     --muted-foreground: rgba(255, 255, 255, 0.76);  /* level 3, body */
     --foreground-subtle: rgba(255, 255, 255, 0.62); /* level 4, least important */
     --cursor-color: rgba(255, 255, 255, 0.7);
+
+    /*
+      Safe defaults so there is never an unstyled flash to solid black
+      before the theme-dark/theme-light class is applied by NavBar on
+      mount. Actual values are refined per theme further down.
+    */
+    --bg-overlay-top: rgba(0, 0, 0, 0.42);
+    --bg-overlay-bottom: rgba(0, 0, 0, 0.48);
+    --bg-vignette: rgba(0, 0, 0, 0.28);
+    --bg-flat-dim: rgba(0, 0, 0, 0.22);
+    --bg-fallback-1: #141414;
+    --bg-fallback-2: #0d0d0d;
+    --nav-bg: rgba(10, 10, 10, 0.55);
   }
 
   .dark {
