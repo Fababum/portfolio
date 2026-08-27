@@ -49,7 +49,7 @@ function Background() {
     return (
       <div
         aria-hidden="true"
-        className="fixed inset-0 -z-10"
+        className="fixed inset-0 z-0"
         style={{
           background: "linear-gradient(160deg, var(--bg-fallback-1), var(--bg-fallback-2))",
         }}
@@ -60,7 +60,7 @@ function Background() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 -z-10 overflow-hidden"
+      className="fixed inset-0 z-0 overflow-hidden"
       style={{ background: "linear-gradient(160deg, var(--bg-fallback-1), var(--bg-fallback-2))" }}
     >
       {IMAGES.map((img, i) => (

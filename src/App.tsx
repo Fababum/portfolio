@@ -10,7 +10,7 @@ function App() {
     <>
       <Background />
       <NavBar />
-      <main>
+      <main className="relative z-10">
         <section id="home">
           <Home />
         </section>
