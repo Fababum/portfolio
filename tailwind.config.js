@@ -14,7 +14,9 @@ export default {
       },
       colors: {
         background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        foreground: 'var(--foreground)',
+        'foreground-2': 'var(--foreground-2)',
+        'foreground-subtle': 'var(--foreground-subtle)',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
@@ -33,7 +35,7 @@ export default {
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
+          foreground: 'var(--muted-foreground)'
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
@@ -43,12 +45,22 @@ export default {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))'
         },
-        border: 'hsl(var(--border))',
+        border: 'hsl(var(--border) / <alpha-value>)',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Geist Variable"', 'Inter', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'hero': 'clamp(3rem, 8vw, 7.5rem)',
+        'display': 'clamp(2.4rem, 5vw, 4.5rem)',
+      },
+      maxWidth: {
+        'content': '1440px',
+      },
+      transitionTimingFunction: {
+        'editorial': 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     }
   },

@@ -1,161 +1,113 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Mail, ExternalLink, GitFork, Clock, Wrench, ArrowRight } from "lucide-react";
+import Reveal from "@/components/reveal/Reveal";
 
-const contacts = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "Fabian Swisscom Mail",
-    sub: "fabian.spiri@swisscom.com",
-    href: "mailto:fabian.spiri@swisscom.com",
-    cta: "Nachricht senden",
-  },
-  {
-    icon: ExternalLink,
-    label: "LinkedIn",
-    value: "Fabian Spiri",
-    sub: "linkedin.com/in/fabian-spiri",
-    href: "https://www.linkedin.com/in/fabian-spiri",
-    cta: "Profil ansehen",
-  },
-  {
-    icon: GitFork,
-    label: "GitHub",
-    value: "@Fababum",
-    sub: "github.com/Fababum",
-    href: "https://github.com/Fababum",
-    cta: "Code ansehen",
-  },
+const links = [
+  { label: "Email", value: "fabian.spiri@swisscom.com", href: "mailto:fabian.spiri@swisscom.com" },
+  { label: "LinkedIn", value: "linkedin.com/in/fabian-spiri", href: "https://www.linkedin.com/in/fabian-spiri" },
+  { label: "GitHub", value: "github.com/Fababum", href: "https://github.com/Fababum" },
 ];
+
+const availability = [
+  { label: "Geschäftlich", value: "07:00 – 15:00" },
+  { label: "Privat", value: "18:00 – 22:00" },
+  { label: "Reaktionszeit", value: "≤ 1 Tag" },
+];
+
+const helpTopics = ["Frontend", "Backend", "APIs", "Security", "UI"];
 
 function Contact() {
   return (
-    <div className="min-h-screen text-foreground px-6 pt-10 pb-24">
-      <div className="max-w-3xl mx-auto">
+    <div className="relative text-foreground" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ background: "var(--section-scrim-v)" }} />
+      <div className="relative mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)", textShadow: "var(--label-shadow)" }}>
 
-        {/* ── Header ── */}
-        <div className="mb-12">
-          <p className="text-xs font-bold tracking-widest uppercase text-primary mb-2.5">
-            Kontakt
+        <Reveal>
+          <p className="eyebrow mb-4">Contact / 07</p>
+        </Reveal>
+        <Reveal delay={60}>
+          <h2 className="text-display font-medium mb-4">Lass uns reden.</h2>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="text-muted-foreground leading-7 max-w-lg mb-16">
+            Melde dich für Kollaborationen, Fragen oder ein kurzes Gespräch. Ich antworte in
+            der Regel innerhalb eines Tages.
           </p>
-          <h1 className="text-foreground mb-3" style={{ textShadow: "var(--title-shadow)" }}>
-            Lass uns reden
-          </h1>
-          <p className="text-muted-foreground text-sm leading-7 max-w-lg">
-            Melde dich für Kollaborationen, Fragen oder ein kurzes Gespräch.
-            Ich antworte in der Regel innerhalb eines Tages.
-          </p>
-        </div>
+        </Reveal>
 
-        <div className="space-y-4">
-
-          {/* ── Contact links ── */}
-          <div className="grid gap-3 sm:grid-cols-3">
-            {contacts.map((c) => {
-              const Icon = c.icon;
-              return (
-                <a
-                  key={c.label}
-                  href={c.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <Card className="h-full transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-primary/30 cursor-pointer">
-                    <CardContent className="p-5 flex flex-col gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl border border-primary/20 bg-primary/10 flex items-center justify-center shrink-0">
-                          <Icon className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-sm text-foreground mb-0.5">{c.label}</p>
-                          <p className="text-xs text-muted-foreground truncate">{c.sub}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground font-medium">{c.value}</span>
-                        <span className="text-xs text-primary font-semibold flex items-center gap-1">
-                          {c.cta} <ArrowRight className="h-3 w-3" />
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </a>
-              );
-            })}
-          </div>
-
-          {/* ── Details row ── */}
-          <div className="grid gap-3 sm:grid-cols-2">
-            {/* What I can help with */}
-            <Card>
-              <CardContent className="p-5">
-                <p className="text-xs font-bold text-primary uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                  <Wrench className="h-3 w-3" />
-                  Womit ich helfen kann
-                </p>
-                <p className="text-sm text-muted-foreground leading-7 mb-3">
-                  Web-Apps, APIs, sicherheitsorientierte Features und Verbesserungen bestehender Produkte.
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {["Frontend", "Backend", "APIs", "Security", "UI"].map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Availability */}
-            <Card>
-              <CardContent className="p-5">
-                <p className="text-xs font-bold text-primary uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                  <Clock className="h-3 w-3" />
-                  Verfügbarkeit
-                </p>
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Geschäftlich</span>
-                    <span className="text-muted-foreground font-mono text-xs">07:00 – 15:00</span>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Privat</span>
-                    <span className="text-muted-foreground font-mono text-xs">18:00 – 22:00</span>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Reaktionszeit</span>
-                    <span className="text-green-500 dark:text-green-400 font-semibold text-xs">≤ 1 Tag</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* ── CTA banner ── */}
-          <Card className="border-primary/20 bg-primary/5">
-            <CardContent className="p-6 flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="font-bold text-base text-foreground mb-1">Möchtest du mich kontaktieren?</p>
-                <p className="text-sm text-muted-foreground">
-                    Bei Anliegen kannst du mir gerne eine E-Mail schreiben über meine Privat Mail.
-                </p>
-              </div>
+        {/* Links */}
+        <Reveal>
+          <div className="hairline">
+            {links.map((c) => (
               <a
-                href="mailto:fabian.spiri@gmx.ch"
-                className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition-opacity hover:opacity-85 shrink-0"
+                key={c.label}
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-baseline justify-between gap-6 py-6 hairline"
               >
-                E-Mail senden
-                <ArrowRight className="ml-1 h-4 w-4" />
+                <div className="flex items-baseline gap-4">
+                  <span className="text-xs uppercase tracking-widest text-muted-foreground w-24 shrink-0">
+                    {c.label}
+                  </span>
+                  <span className="text-lg sm:text-xl font-medium transition-transform duration-200 ease-editorial group-hover:translate-x-1">
+                    {c.value}
+                  </span>
+                </div>
+                <span className="text-muted-foreground transition-transform duration-200 ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
               </a>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
+        </Reveal>
 
+        {/* Help + Availability */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 mt-16">
+          <Reveal>
+            <p className="eyebrow mb-4">Womit ich helfen kann</p>
+            <p className="text-sm text-muted-foreground leading-7 mb-4 max-w-sm">
+              Web-Apps, APIs, sicherheitsorientierte Features und Verbesserungen bestehender
+              Produkte.
+            </p>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              {helpTopics.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </Reveal>
+
+          <Reveal delay={60}>
+            <p className="eyebrow mb-4">Verfügbarkeit</p>
+            <div>
+              {availability.map((a, i) => (
+                <div
+                  key={a.label}
+                  className={"flex items-center justify-between py-3 text-sm " + (i > 0 ? "hairline" : "")}
+                >
+                  <span className="text-muted-foreground">{a.label}</span>
+                  <span className="font-mono text-foreground">{a.value}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
+
+        {/* Final CTA */}
+        <Reveal delay={100}>
+          <div className="hairline mt-20 pt-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+            <p className="text-display font-medium leading-tight max-w-lg">
+              Ein Projekt<br />im Kopf?
+            </p>
+            <a
+              href="mailto:fabian.spiri@gmx.ch"
+              className="group inline-flex items-center gap-2 text-lg font-semibold shrink-0"
+            >
+              Schreib mir
+              <span className="inline-block transition-transform duration-200 ease-editorial group-hover:translate-x-1 group-hover:-translate-y-1">
+                →
+              </span>
+            </a>
+          </div>
+        </Reveal>
       </div>
     </div>
   );

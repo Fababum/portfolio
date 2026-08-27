@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import Reveal from "@/components/reveal/Reveal";
 
-const ROLES = [
-  "Full-Stack Developer",
-  "React & TypeScript",
-  "API Engineer",
-  "Security Enthusiast",
-];
+const ROLES = ["Full-Stack Developer", "Security Enthusiast"];
 
-function useTypingEffect(words: string[], speed = 65, pause = 2000) {
+function useTypingEffect(words: string[], speed = 55, pause = 2600) {
   const [display, setDisplay] = useState("");
   const [wordIdx, setWordIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setDisplay(words[0]);
+      return;
+    }
     const current = words[wordIdx];
     let timeout: number;
     if (!deleting && charIdx < current.length) {
@@ -38,62 +38,100 @@ function Home() {
   const typedRole = useTypingEffect(ROLES);
 
   return (
-    <div className="min-h-screen text-foreground">
-      <div className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-6 pb-20 pt-16 overflow-hidden">
-        {/* Background glow */}
-        <div
-          aria-hidden="true"
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: "var(--hero-glow, rgba(99,102,241,0.08))", filter: "blur(100px)" }}
-        />
-
-        {/* Name */}
-        <h1 className="mb-4 text-foreground" style={{ textShadow: "var(--title-shadow)" }}>
-          Fabian Spiri
-        </h1>
-
-        {/* Typed subtitle */}
-        <p className="text-lg text-muted-foreground mb-5 min-h-[1.6em] font-medium tracking-tight">
-          {typedRole}
-          <span
-            className="inline-block w-0.5 h-[1em] bg-primary ml-0.5 align-middle rounded-sm"
-            style={{ animation: "blink 1s step-end infinite" }}
-          />
-        </p>
-
-        {/* Bio */}
-        <p className="max-w-md text-muted-foreground leading-7 mb-10 text-sm">
-          Lernender Full-Stack-Entwickler bei{" "}
-          <strong className="text-foreground font-semibold">Swisscom</strong>.
-          Ich baue robuste Web-Applikationen mit modernen Technologien.
-        </p>
-
-        {/* CTAs */}
-        <div className="flex gap-3 flex-wrap justify-center">
-          <a
-            href="#contact"
-            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.preventDefault();
-              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="inline-flex items-center justify-center h-9 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition-opacity hover:opacity-85"
-          >
-            Kontakt aufnehmen
-          </a>
-          <a
-            href="#about"
-            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.preventDefault();
-              document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className={cn(
-              "inline-flex items-center justify-center h-9 px-4 rounded-lg text-sm font-medium transition-colors",
-              "border border-border bg-background text-foreground hover:bg-muted"
-            )}
-          >
-            Mehr über mich
-          </a>
+    <div className="relative min-h-[100svh] flex items-end text-foreground">
+      {/* Local scrim behind the text column for legibility on bright photos */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 left-0 w-full lg:w-[70%] pointer-events-none"
+        style={{ background: "var(--hero-scrim)" }}
+      />
+      <div
+        className="relative w-full mx-auto max-w-content pb-16 sm:pb-24 grid grid-cols-1 lg:grid-cols-[1.4fr_0.6fr] gap-10 lg:gap-16 items-end"
+        style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}
+      >
+        {/* Text block */}
+        <div>
+          <Reveal>
+            <p className="eyebrow mb-5">Fabian Spiri / Portfolio</p>
+          </Reveal>
+          <Reveal delay={80}>
+            <h1
+              className="text-hero font-medium text-foreground mb-6"
+              style={{ textShadow: "var(--title-shadow)" }}
+            >
+              Applikations-
+              <br />
+              entwickler.
+            </h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <p
+              className="text-base sm:text-lg text-muted-foreground mb-2 min-h-[1.6em] font-medium"
+              style={{ textShadow: "var(--label-shadow)" }}
+            >
+              {typedRole}
+              <span
+                className="inline-block w-0.5 h-[1em] bg-white/60 ml-0.5 align-middle"
+                style={{ animation: "blink 1.1s step-end infinite" }}
+              />
+            </p>
+          </Reveal>
+          <Reveal delay={220}>
+            <p
+              className="max-w-md text-muted-foreground leading-7 text-sm sm:text-base mt-4 mb-8"
+              style={{ textShadow: "var(--label-shadow)" }}
+            >
+              Lernender Full-Stack-Entwickler bei{" "}
+              <strong className="text-foreground font-semibold">Swisscom</strong>, mit
+              Fokus auf Cybersecurity. Ich baue robuste Web-Applikationen mit modernen
+              Technologien.
+            </p>
+          </Reveal>
+          <Reveal delay={280}>
+            <div className="flex items-center gap-8 flex-wrap">
+              <a
+                href="#contact"
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  e.preventDefault();
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="group inline-flex items-center gap-1.5 text-sm font-semibold text-foreground"
+                style={{ textShadow: "var(--label-shadow)" }}
+              >
+                Kontakt aufnehmen
+                <span className="inline-block transition-transform duration-200 ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  →
+                </span>
+              </a>
+              <a
+                href="#about"
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  e.preventDefault();
+                  document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                style={{ textShadow: "var(--label-shadow)" }}
+              >
+                Mehr über mich
+                <span className="inline-block transition-transform duration-200 ease-editorial group-hover:translate-y-0.5">
+                  ↓
+                </span>
+              </a>
+            </div>
+          </Reveal>
         </div>
+
+        {/* Editorial portrait block */}
+        <Reveal delay={200} className="hidden lg:block">
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-md ring-1 ring-white/10 shadow-2xl">
+            <img
+              src="/images/portraits/portrait-prom.jpg"
+              alt="Fabian Spiri"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: "50% 20%" }}
+            />
+          </div>
+        </Reveal>
       </div>
     </div>
   );

@@ -1,13 +1,14 @@
 import NavBar from "./components/navBar/navBar";
+import Background from "./components/background/Background";
 import Home from "./components/home/home";
 import About from "./components/about/about";
 import Contact from "./components/contact/contact";
-import ChatComponent from "./components/chatBot/ChatComponent";
-import CalendarAI from "./components/CalendarAI/CalendarAI";
+import Gallery from "./components/gallery/Gallery";
 
 function App() {
   return (
     <>
+      <Background />
       <NavBar />
       <main>
         <section id="home">
@@ -16,14 +17,11 @@ function App() {
         <section id="about">
           <About />
         </section>
+        <section id="gallery">
+          <Gallery />
+        </section>
         <section id="contact">
           <Contact />
-        </section>
-        <section id="chat">
-          <ChatComponent />
-        </section>
-        <section id="calendarai">
-          <CalendarAI />
         </section>
       </main>
     </>

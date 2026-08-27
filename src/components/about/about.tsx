@@ -1,172 +1,323 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useState } from "react";
+import { ExternalLink } from "lucide-react";
+import Reveal from "@/components/reveal/Reveal";
 
-const skills = [
-  { category: "Frontend",    items: ["React", "TypeScript", "JavaScript", "HTML/CSS"] },
+const skillGroups = [
+  { category: "Frontend",    items: ["React", "TypeScript", "JavaScript", "HTML / CSS"] },
   { category: "Backend",     items: ["NestJS", "Node.js", "Java", "Python", "Docker"] },
   { category: "Datenbanken", items: ["Prisma ORM", "PostgreSQL", "SQL"] },
   { category: "Tools",       items: ["Git", "REST APIs", "Agile / Scrum"] },
-  { category: "Security",    items: ["Cybersecurity", "Phishing Detection", "Threat Analysis"] },
+  { category: "Security",    items: ["Cybersecurity", "Phishing Detection", "Threat Analysis", "OWASP Top 10"], accent: true },
+];
+
+const certifications = [
+  { name: "SPARC-Kurs", issuer: "Schweizer Armee", note: "Vertiefte Cybersecurity-Ausbildung." },
+  { name: "OWASP Top 10", issuer: "Immersive Labs", note: "Web-Sicherheitslücken & Gegenmassnahmen." },
+  { name: "Security Fundamentals & Tooling", issuer: "Immersive Labs", note: "Secure Fundamentals, Secure Testing, Secure Tooling, Browser Developer Tools." },
+];
+
+const projects = [
+  {
+    name: "Security Awareness Game",
+    tag: "SSO · Security · Web-App",
+    description: "Ein spielerisches Tool zur Sensibilisierung für Cybersecurity-Themen, inkl. SSO-Integration.",
+    href: "https://humanorai.dev-scapp.swisscom.com/",
+  },
+  {
+    name: "Startup (Nebenprojekt)",
+    tag: "Nebenprojekt",
+    description: "Mitarbeit an einem eigenen Startup-Projekt neben der Ausbildung.",
+  },
+  {
+    name: "Webseite für die Kirche",
+    tag: "Webdesign · Ehrenamt",
+    description: "Unterstützung beim Webdesign und Aufbau einer Webseite für eine Kirchgemeinde.",
+  },
 ];
 
 const timeline = [
   {
-    period: "Feb 2026 – heute",
-    role: "Halo",
+    period: "2026 – heute",
+    role: "Host, Team Halo",
     company: "Swisscom",
-    description: "Entwicklung interner Web-Applikationen mit React und TypeScript. Fokus auf moderne Frontend-Architektur und kollaborative agile Prozesse.",
+    description: "Aktuelles Ausbildungsprojekt als Host im Team Halo.",
     isOngoing: true,
   },
   {
-    period: "Aug 2025 – Feb 2026",
+    period: "2026",
+    role: "Mitglied, Team Halo",
+    company: "Swisscom",
+    description: "Aktuelles Ausbildungsprojekt als Host im Team Halo.",
+  },
+  {
+    period: "2025 – 2026",
     role: "Apps Team",
     company: "Swisscom",
     description: "API-Entwicklung mit NestJS, Datenbankintegration via Prisma ORM und React-Frontend.",
   },
   {
-    period: "Feb 2025 – Aug 2025",
+    period: "2025",
     role: "CodemiX2",
     company: "Swisscom",
     description: "Vertiefung in JavaScript, TypeScript, React und Software-Engineering-Grundlagen.",
   },
   {
-    period: "Aug 2024 – Feb 2025",
+    period: "2024 – 2025",
     role: "Abuse Team",
     company: "Swisscom Cyber Security",
     description: "Spam- und Phishing-Erkennung, Sicherheitsmassnahmen, Java und Python.",
   },
   {
-    period: "Aug 2024",
+    period: "2024",
     role: "Start Berufslehre Informatik EFZ",
     company: "Swisscom",
-    description: "Beginn der vierjährigen Ausbildung zum Informatiker EFZ.",
+    description: "Beginn der vierjährigen Ausbildung zum Informatiker EFZ, 3. Lehrjahr aktuell.",
   },
 ];
 
 function About() {
-  return (
-    <div className="min-h-screen text-foreground px-6 pt-10 pb-24">
-      <div className="max-w-3xl mx-auto space-y-4">
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-        {/* ── Profile header ── */}
-        <div className="flex flex-col items-center text-center gap-4 mb-12">
-          <Avatar className="h-24 w-24 border-2 border-border shadow-md">
-            <AvatarImage src="/PB_Fabian.png" alt="Fabian Spiri" />
-            <AvatarFallback>FS</AvatarFallback>
-          </Avatar>
-          <div>
-            <h1 className="text-foreground mb-1.5" style={{ textShadow: "var(--title-shadow)" }}>
-              Fabian Spiri
-            </h1>
-            <p className="text-muted-foreground font-medium text-base mb-1">
-              Full-Stack Developer in Ausbildung · Swisscom
-            </p>
-            <p className="text-muted-foreground text-sm">Zürich, Schweiz</p>
+  return (
+    <div className="relative text-foreground px-5 sm:px-8" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
+      {/* Section scrim: keeps body copy readable over busy photo textures */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ background: "var(--section-scrim-v)" }} />
+      <div className="relative mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)" }}>
+
+        {/* ── Intro: portrait + heading, two columns ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-20 mb-24">
+          <Reveal>
+            <div className="relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-md">
+              <img
+                src="/images/portraits/portrait-hiking.jpg"
+                alt="Fabian Spiri"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: "50% 30%" }}
+              />
+            </div>
+          </Reveal>
+
+          <div style={{ textShadow: "var(--label-shadow)" }}>
+            <Reveal>
+              <p className="eyebrow mb-4">About / 01</p>
+            </Reveal>
+            <Reveal delay={60}>
+              <h2 className="text-display font-medium mb-2">Fabian Spiri</h2>
+            </Reveal>
+            <Reveal delay={100}>
+              <p className="text-muted-foreground font-medium mb-1">
+                Informatik Applikationsentwickler EFZ · Host bei Team Halo · Swisscom
+              </p>
+              <p className="text-muted-foreground text-sm mb-8">Zürich, Schweiz</p>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <div className="space-y-4 max-w-xl">
+                <p className="text-muted-foreground leading-7">
+                  Ich bin Fabian Spiri, Informatik Applikationsentwickler Lehrling im dritten
+                  Lehrjahr bei Swisscom. Ich interessiere mich sehr für Cybersecurity und habe
+                  mir neben Backend- und Frontend-Development auch Kenntnisse durch verschiedene
+                  Immersive-Labs-Kurse und den SPARC-Kurs des Militärs angeeignet.
+                </p>
+                <p className="text-muted-foreground leading-7">
+                  Ich bin wissbegierig, kenne die Meeting-Kultur und SCRUM aus eigener Erfahrung
+                  in der Cybersecurity bei Swisscom und arbeite sehr gerne im Team – aktuell als
+                  Host im Team Halo. Ich war früher auch als Hilfsleiter im Sommerlager aktiv und
+                  bin eine offene, hilfsbereite und teamfähige Person, die genauso gut
+                  selbständig arbeiten kann.
+                </p>
+                <p className="text-muted-foreground leading-7">
+                  Ausserhalb der Arbeit gehe ich regelmässig ins Gym und spiele gerne
+                  Golf.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
 
-        {/* ── Bio ── */}
-        <Card>
-          <CardHeader className="pb-2 pt-5 px-6">
-            <SectionLabel>Über mich</SectionLabel>
-          </CardHeader>
-          <CardContent className="px-6 pb-6 space-y-3">
-            <p className="text-sm text-muted-foreground leading-7">
-              Ich bin Fabian Spiri, leidenschaftlicher Full-Stack-Entwickler in der Ausbildung bei Swisscom.
-              Ich baue robuste Frontend- und Backend-Lösungen und erkunde kontinuierlich neue Technologien.
-            </p>
-            <p className="text-sm text-muted-foreground leading-7">
-              Ausserhalb der Arbeit gehe ich regelmässig ins Gym und spiele gerne Souls-like Games.
-            </p>
-          </CardContent>
-        </Card>
-
         {/* ── Skills ── */}
-        <Card>
-          <CardHeader className="pb-2 pt-5 px-6">
-            <SectionLabel>Skills & Technologien</SectionLabel>
-          </CardHeader>
-          <CardContent className="px-6 pb-6">
-            <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
-              {skills.map((group) => (
+        <Reveal>
+          <div className="hairline pt-10 mb-16">
+            <p className="eyebrow mb-8">Skills / 02</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-8">
+              {skillGroups.map((group) => (
                 <div key={group.category}>
-                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2.5">
+                  <p
+                    className={
+                      "text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-1.5 " +
+                      (group.accent ? "text-foreground" : "text-level2")
+                    }
+                    style={{ textShadow: "var(--label-shadow)" }}
+                  >
+                    {group.accent && (
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--ongoing-dot)" }} />
+                    )}
                     {group.category}
                   </p>
-                  <div className="flex flex-wrap gap-1.5">
+                  <ul className="space-y-1.5">
                     {group.items.map((skill) => (
-                      <Badge key={skill} variant="secondary" className="text-xs font-medium">
+                      <li key={skill} className="text-sm text-muted-foreground" style={{ textShadow: "var(--label-shadow)" }}>
                         {skill}
-                      </Badge>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </Reveal>
+
+        {/* ── Certifications ── */}
+        <Reveal>
+          <div className="hairline pt-10 mb-16">
+            <p className="eyebrow mb-8">Zertifikate / 03</p>
+            <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-16 items-start">
+              <div>
+                {certifications.map((c, i) => (
+                  <div
+                    key={c.name}
+                    className={
+                      "py-5 grid grid-cols-[1fr] sm:grid-cols-[180px_1fr] gap-2 sm:gap-8 " +
+                      (i > 0 ? "hairline" : "")
+                    }
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-widest text-level2" style={{ textShadow: "var(--label-shadow)" }}>
+                      {c.issuer}
+                    </p>
+                    <div>
+                      <p className="text-base font-medium text-foreground mb-1">{c.name}</p>
+                      <p className="text-sm text-muted-foreground leading-6" style={{ textShadow: "var(--label-shadow)" }}>{c.note}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setLightboxOpen(true)}
+                className="block w-full text-left group"
+                aria-label="Immersive Labs Zertifikate vergrössern"
+              >
+                <div
+                  className="overflow-hidden rounded-md"
+                  style={{ border: "1px solid rgba(255,255,255,0.15)", boxShadow: "0 12px 32px rgba(0,0,0,0.28)" }}
+                >
+                  <img
+                    src="/images/immersivlabscertifikate.png"
+                    alt="Abgeschlossene Immersive Labs Kurse: Secure Fundamentals, Secure Testing, Secure Tooling, Browser Developer Tools, OWASP Top 10"
+                    className="w-full h-auto transition-transform duration-500 ease-editorial group-hover:scale-[1.02]"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-2" style={{ textShadow: "var(--label-shadow)" }}>Immersive Labs: Nachweis ansehen ↗</p>
+              </button>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── Projects ── */}
+        <Reveal>
+          <div className="hairline pt-10 mb-16" style={{ textShadow: "var(--label-shadow)" }}>
+            <p className="eyebrow mb-8">Nebenprojekte / 04</p>
+            <div>
+              {projects.map((p, i) => {
+                const Wrapper = p.href ? "a" : "div";
+                return (
+                  <Wrapper
+                    key={p.name}
+                    {...(p.href ? { href: p.href, target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className={
+                      "group flex items-center justify-between gap-6 py-6 " +
+                      (i > 0 ? "hairline" : "") +
+                      (p.href ? " cursor-pointer" : "")
+                    }
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-3 flex-wrap">
+                        <p className="text-lg sm:text-xl font-medium text-foreground transition-transform duration-200 ease-editorial group-hover:translate-x-1">
+                          {p.name}
+                        </p>
+                        <span className="text-[11px] uppercase tracking-widest text-level4">
+                          {p.tag}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-6 mt-1.5 max-w-lg">
+                        {p.description}
+                      </p>
+                    </div>
+                    {p.href && (
+                      <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-200 ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    )}
+                  </Wrapper>
+                );
+              })}
+            </div>
+          </div>
+        </Reveal>
 
         {/* ── Timeline ── */}
-        <Card>
-          <CardHeader className="pb-2 pt-5 px-6">
-            <SectionLabel>Erfahrung & Ausbildung</SectionLabel>
-          </CardHeader>
-          <CardContent className="px-6 pb-6">
-            <div className="space-y-0">
+        <Reveal>
+          <div className="hairline pt-10" style={{ textShadow: "var(--label-shadow)" }}>
+            <p className="eyebrow mb-8">Erfahrung / 05</p>
+            <div>
               {timeline.map((item, i) => (
-                <div key={i} className="grid grid-cols-[20px_1fr] gap-x-4">
-                  {/* Dot + line */}
-                  <div className="flex flex-col items-center">
-                    <div
-                      className={`w-2.5 h-2.5 rounded-full mt-1.5 border-2 shrink-0 ${
-                        item.isOngoing
-                          ? "border-green-500 bg-green-500 shadow-[0_0_8px_#22c55e]"
-                          : "border-border bg-transparent"
-                      }`}
-                    />
-                    {i < timeline.length - 1 && (
-                      <div className="w-px flex-1 bg-border min-h-[28px] my-1" />
+                <div
+                  key={i}
+                  className={
+                    "grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-8 py-6 " +
+                    (i > 0 ? "hairline" : "")
+                  }
+                >
+                  <div className="flex items-center gap-2">
+                    {item.isOngoing && (
+                      <span
+                        className="h-1.5 w-1.5 rounded-full shrink-0"
+                        style={{ background: "var(--ongoing-dot)" }}
+                      />
                     )}
+                    <p className="text-sm font-mono text-muted-foreground">{item.period}</p>
                   </div>
-
-                  {/* Content */}
-                  <div className={i < timeline.length - 1 ? "pb-5" : ""}>
-                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                      <span className="font-semibold text-sm text-foreground">{item.role}</span>
-                      {item.isOngoing && (
-                        <Badge
-                          variant="outline"
-                          className="text-[10px] px-2 py-0 border-green-500/30 bg-green-500/10 text-green-500 dark:text-green-400 gap-1"
-                        >
-                          <span className="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_4px_#22c55e]" />
-                          Aktuell
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-1">
-                      {item.company} · {item.period}
+                  <div>
+                    <p className="text-base font-medium text-foreground">
+                      {item.role} <span className="text-muted-foreground font-normal">· {item.company}</span>
                     </p>
-                    <p className="text-sm text-muted-foreground leading-6">
+                    <p className="text-sm text-muted-foreground leading-6 mt-1 max-w-xl">
                       {item.description}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-
+          </div>
+        </Reveal>
       </div>
-    </div>
-  );
-}
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-xs font-bold tracking-widest uppercase text-primary mb-0">
-      {children}
-    </p>
+      {/* Lightbox for certificate screenshot */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/85"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setLightboxOpen(false)}
+          onKeyDown={(e) => e.key === "Escape" && setLightboxOpen(false)}
+          tabIndex={-1}
+        >
+          <img
+            src="/images/immersivlabscertifikate.png"
+            alt="Abgeschlossene Immersive Labs Kurse"
+            className="max-h-[85vh] max-w-[92vw] rounded-md"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            type="button"
+            onClick={() => setLightboxOpen(false)}
+            aria-label="Schliessen"
+            className="absolute top-6 right-6 text-white/80 hover:text-white text-2xl leading-none"
+          >
+            ×
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 

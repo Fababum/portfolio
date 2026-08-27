@@ -1,0 +1,303 @@
+KONTEXT FÜR CHATGPT: Bitte lies dir das Folgende komplett durch und erstelle mir daraus einen
+sehr detaillierten "Mega-Prompt", den ich anschliessend an meinen Coding-Agent (OpenCode, Modell
+Claude Sonnet) weitergeben kann, damit er mein bestehendes Portfolio optisch/visuell deutlich
+aufwertet ("schöner machen"), OHNE die Inhalte, Struktur oder Technologie grundlegend zu
+verändern. Der Mega-Prompt soll konkrete, umsetzbare Design-Anweisungen enthalten (Farben,
+Typografie, Spacing, Animationen, Layout-Verbesserungen, Microinteractions, Responsive-Verhalten
+etc.), die auf Basis der unten beschriebenen Ist-Situation sinnvoll sind. Der Agent hat bereits
+vollen Zugriff auf den Code, also muss der Mega-Prompt keine Dateien einfügen, sondern nur klare,
+priorisierte Anweisungen geben.
+
+======================================================================
+1. PROJEKT-ÜBERBLICK
+======================================================================
+- Persönliches Bewerbungs-/Portfolio-Webseite für Fabian Spiri, 3.-Lehrjahr Informatik
+  Applikationsentwickler EFZ bei Swisscom, mit starkem Fokus auf Cybersecurity.
+- Ziel der Seite: potenzielle Ausbildner/Projektverantwortliche (z.B. für ein
+  Cybersecurity-Langzeitprojekt ab Februar 2027) sollen einen professionellen, aber auch
+  persönlichen Eindruck bekommen. Die Seite wird auch per Link in Bewerbungs-E-Mails verschickt.
+- Sprache: Deutsch (Schweizer Kontext, aber Hochdeutsch in den Texten).
+- Single-Page-Application mit Anchor-Navigation (kein Multi-Page-Routing für die Hauptseiten,
+  nur eine NotFound-404-Seite existiert als Extra-Route).
+
+======================================================================
+2. TECH-STACK
+======================================================================
+- React 19 + TypeScript, gebaut mit Vite 7 (vite.config.ts, @vitejs/plugin-react-swc).
+- Styling: Tailwind CSS v3 (tailwind.config.js, postcss.config.js) + eigenes CSS in
+  src/global.css mit CSS-Variablen für Farb-Themes (HSL-basiert, kompatibel mit shadcn/ui).
+- UI-Komponenten-Basis: shadcn/ui-Pattern (eigene Komponenten unter src/components/ui/:
+  avatar.tsx, badge.tsx, button.tsx, card.tsx, input.tsx, separator.tsx), gebaut mit
+  class-variance-authority + tailwind-merge (cn()-Helper in src/lib/utils.ts).
+- Icons: lucide-react.
+- Routing: react-router-dom nur für die 404-Seite (src/components/error/NotFound.tsx).
+- Deployment: Cloudflare Pages (kein eigenes Backend mehr vorhanden — frühere
+  Chatbot/Kalender-AI-Funktionen mit Cloudflare Pages Functions + Supabase + Gemini API wurden
+  komplett entfernt, inkl. aller Credentials).
+- Kein Dark/Light-Mode-Package, sondern eigene Implementierung via `theme-dark` / `theme-light`
+  Klassen auf <body>, gesteuert über NavBar (Sonne/Mond-Toggle-Button), Speicherung in
+  localStorage.
+
+======================================================================
+3. SEITENSTRUKTUR (App.tsx)
+======================================================================
+Reihenfolge der <section>-Elemente (jede volle Viewport-Höhe oder mehr, scroll-snap ist NICHT
+aktiv, normales Scrollen mit Anchor-Links in der Nav):
+
+1. <Background />  — fixer, globaler Hintergrund (siehe Punkt 5)
+2. <NavBar />       — sticky, oben zentriert, "floating pill" Style
+3. #home            — <Home />
+4. #about           — <About />
+5. #gallery         — <Gallery />
+6. #contact         — <Contact />
+
+Zusätzlich: src/components/error/NotFound.tsx als 404-Seite (eigenständiges Design, nutzt
+Inline-Styles statt Tailwind, sollte ggf. auch ins gleiche Designsystem migriert werden).
+
+======================================================================
+4. NAVBAR (src/components/navBar/navBar.tsx)
+======================================================================
+- Sticky, horizontal zentrierte "Pill"-Navigation oben auf der Seite (fixed/sticky top-0,
+  z-50), mit backdrop-blur, abgerundeten Ecken (rounded-2xl), Border und Shadow.
+- Nav-Items (Icon + Label, Label erscheint nur bei Hover oder wenn aktiv, sonst nur Icon
+  sichtbar — Label ist per max-width/opacity-Transition versteckt):
+  - Home (Home-Icon) → #home
+  - About (User-Icon) → #about
+  - Galerie (Image-Icon) → #gallery
+  - Contact (Mail-Icon) → #contact
+- Rechts in der Pill: Dark/Light-Theme-Toggle-Button (Sonne/Mond-Icon).
+- Aktiver Nav-Punkt wird per IntersectionObserver ermittelt (Section mit >30% im Viewport wird
+  aktiv), visuell hervorgehoben mit bg-muted + text-foreground.
+- Smooth-Scroll beim Klick via scrollIntoView({behavior: "smooth"}).
+
+======================================================================
+5. HINTERGRUND-SYSTEM (src/components/background/Background.tsx)
+======================================================================
+- Fixer, viewport-füllender Hintergrund (position: fixed, inset-0, z-index -10), liegt HINTER
+  dem gesamten Seiteninhalt.
+- Zeigt eine Crossfade-Bildslideshow von 7 eigenen Landschaftsfotos (Berge, Meer, Garten),
+  Bilder liegen unter public/images/landscapes/:
+  - landscape-mountain-lake.jpg (Bergsee-Panorama, Rigi/Pilatus-Region, Tag, blauer Himmel)
+  - landscape-ocean-sunset.jpg (Sonnenuntergang übers Meer, Hochformat)
+  - landscape-garden-ruins.jpg (Gartenruine/Turm mit Blumen, üppig grün)
+  - landscape-peak-sun.jpg (Bergspitze mit Sonne mittig im Bild, sehr kontrastreich)
+  - landscape-ridge.jpg (schroffer Felsgrat/Klamm im Alpstein-Stil)
+  - landscape-night-beach.jpg (Nachtstrand mit Mond, Steinmolen, dunkel-blaue Stimmung)
+  - landscape-cove.jpg (türkise Felsbucht am Mittelmeer, Pinien)
+- Alle 8 Sekunden Wechsel zum nächsten Bild, Crossfade-Transition über 1.5 Sekunden
+  (reine CSS-Opacity-Transition, kein JS-Animationsframework).
+- Overlay: fester Dunkel-/Hell-Overlay via CSS-Variable --bg-overlay (unterschiedlich für
+  Dark/Light-Theme) + zusätzlicher linearer Gradient von oben/unten dunkler für Lesbarkeit von
+  Text/Nav.
+- Fallback (falls keine Bilder vorhanden wären): CSS-Gradient zwischen --bg-fallback-1/2.
+- WICHTIG: Alle Cards auf der Seite sind deshalb "Glassmorphism"-Style: bg-card/70 +
+  backdrop-blur-md + ring-1 ring-foreground/10 + shadow-lg (siehe src/components/ui/card.tsx),
+  damit Text über den Fotos lesbar bleibt.
+
+======================================================================
+6. HOME-SEKTION (src/components/home/home.tsx)
+======================================================================
+- Volle Screen-Höhe (min-h-[92vh]), zentriert (flex column, items-center, justify-center,
+  text-align center).
+- Radialer "Glow"-Blob im Hintergrund (blur(100px), CSS-Variable --hero-glow), rein dekorativ,
+  liegt unter dem Content.
+- Rundes Portrait-Foto (Hero-Bild): 112x112px (h-28 w-28), rounded-full, ring-4
+  ring-background/70, shadow-2xl — zeigt public/images/portraits/portrait-prom.jpg
+  (Abschlussball-Foto).
+- H1 "Fabian Spiri" mit text-shadow (CSS-Var --title-shadow, unterschiedlich je Theme).
+- Getippter Rollen-Text (eigener useTypingEffect-Hook, Zeichen-für-Zeichen Tipp-/Lösch-Animation
+  mit blinkendem Cursor), rotiert durch:
+  ["Full-Stack Developer", "Host @ Team Halo", "React & TypeScript", "Security Enthusiast"]
+- Kurzer Bio-Absatz (2 Sätze) über die Ausbildung bei Swisscom.
+- Zwei CTA-Buttons nebeneinander: "Kontakt aufnehmen" (primary, filled) und "Mehr über mich"
+  (outline), beide scrollen smooth zur jeweiligen Section.
+
+======================================================================
+7. ABOUT-SEKTION (src/components/about/about.tsx)
+======================================================================
+Aufbau (max-w-3xl, zentriert, vertikal gestapelte Cards mit space-y-4):
+
+a) Profil-Header (kein Card, eigener Block):
+   - Avatar (96x96px, rund, Border) zeigt public/images/portraits/portrait-hiking.jpg
+     (Wander-Foto, auf Aussicht zeigend)
+   - H1 "Fabian Spiri"
+   - Untertitel: "Informatik Applikationsentwickler EFZ · Host bei Team Halo · Swisscom"
+   - "Zürich, Schweiz"
+
+b) Card "Über mich": 3 Absätze Fliesstext (Ausbildung, Cybersecurity-Interesse, SPARC-Kurs,
+   Immersive Labs, Teamfähigkeit, Host bei Team Halo, früher Hilfsleiter im Sommerlager,
+   Hobbys: Gym, Souls-like Games).
+
+c) Card "Skills & Technologien": Grid mit 5 Kategorien (Frontend, Backend, Datenbanken, Tools,
+   Security), jeweils als Badges (Chips) dargestellt:
+   - Frontend: React, TypeScript, JavaScript, HTML/CSS
+   - Backend: NestJS, Node.js, Java, Python, Docker
+   - Datenbanken: Prisma ORM, PostgreSQL, SQL
+   - Tools: Git, REST APIs, Agile / Scrum
+   - Security: Cybersecurity, Phishing Detection, Threat Analysis, OWASP Top 10
+
+d) Card "Zertifikate & Kurse": 3 Boxen im Grid (je mit ShieldCheck-Icon, Issuer-Label, Name,
+   kurze Notiz):
+   - SPARC-Kurs (Militär) — Schweizer Armee — Vertiefte Cybersecurity-Ausbildung
+   - OWASP Top 10 — Immersive Labs — Web-Sicherheitslücken & Gegenmassnahmen
+   - Weitere Zertifikate — Immersive Labs — Verschiedene Cybersecurity-Kurse & Labs
+   Hinweis: Es existiert bereits ein Screenshot der abgeschlossenen Immersive-Labs-Kurse unter
+   public/images/immersivlabscertifikate.png (zeigt 5 Kurskarten: Secure Fundamentals, Secure
+   Testing – Beginner, Secure Tooling – Beginner, Browser Developer Tools, OWASP Top 10 (2021),
+   alle mit Status "Completed"). Dieses Bild wird aktuell NICHT auf der Seite verwendet — könnte
+   als Beweis/Zertifikat-Nachweis eingebunden werden (z.B. als Klick-vergrösserbares Bild oder
+   in einer Lightbox).
+
+e) Card "Nebenprojekte": 3 Boxen im Grid:
+   - "Security Awareness Game" — verlinkt (extern, target=_blank) zu
+     https://humanorai.dev-scapp.swisscom.com/ — Beschreibung: "Ein spielerisches Tool zur
+     Sensibilisierung für Cybersecurity-Themen, inkl. SSO-Integration." — Tag: "SSO · Security ·
+     Web-App"
+   - "Startup (Nebenprojekt)" — kein Link — "Mitarbeit an einem eigenen Startup-Projekt neben
+     der Ausbildung." — Tag: "Nebenprojekt"
+   - "Webseite für die Kirche" — kein Link — "Unterstützung beim Webdesign und Aufbau einer
+     Webseite für eine Kirchgemeinde." — Tag: "Webdesign · Ehrenamt"
+
+f) Card "Erfahrung & Ausbildung": vertikale Timeline mit Punkten + Verbindungslinie
+   (grüner Dot + Glow für "Aktuell"-Einträge, sonst grauer Ring), neuester Eintrag oben:
+   - Feb 2026 – heute: "Host, Team Halo" @ Swisscom (aktuell, mit "Aktuell"-Badge) — inkl.
+     Hinweis auf neues Ausbildungsmodell (Langzeitprojekt ab Feb 2027, 1.5–2 Jahre)
+   - Aug 2025 – Feb 2026: "Apps Team" @ Swisscom — NestJS, Prisma, React
+   - Feb 2025 – Aug 2025: "CodemiX2" @ Swisscom — JS/TS/React Grundlagen
+   - Aug 2024 – Feb 2025: "Abuse Team" @ Swisscom Cyber Security — Phishing-Erkennung, Java/Python
+   - Aug 2024: "Start Berufslehre Informatik EFZ" @ Swisscom
+
+======================================================================
+8. GALERIE-SEKTION (src/components/gallery/Gallery.tsx)
+======================================================================
+- Masonry-artiges Grid via CSS columns (columns-2 sm:columns-3, break-inside-avoid),
+  zeigt ALLE 12 vorhandenen persönlichen Fotos gemischt (Landschaften, Portraits, Hund):
+  1. portrait-hiking.jpg (Fabian wandernd, zeigt in die Ferne)
+  2. landscape-ridge.jpg (Felsgrat)
+  3. dog-face.jpg (Nahaufnahme Hundegesicht, weisser Hund mit Locken)
+  4. landscape-ocean-sunset.jpg (Sonnenuntergang Meer)
+  5. portrait-prom.jpg (Abschlussball, Fabian + Partnerin im grünen Kleid)
+  6. landscape-cove.jpg (türkise Bucht)
+  7. dog-hand.jpg (Hund + Hand des Besitzers, auf Teppich)
+  8. landscape-garden-ruins.jpg (Gartenruine)
+  9. portrait-night.jpg (Fabian Nachtporträt, gestreiftes Hemd)
+  10. landscape-night-beach.jpg (Nachtstrand)
+  11. landscape-peak-sun.jpg (Bergspitze mit Sonne)
+  12. landscape-mountain-lake.jpg (Bergsee)
+- Jede Kachel: rounded-xl, ring-1 ring-foreground/10, shadow-lg, bg-card/40 backdrop-blur-sm,
+  Hover-Effekt: scale-105 auf dem Bild (transition-transform).
+- Bilder sind lazy-loaded (loading="lazy").
+- Aktuell KEINE Lightbox/Vollbild-Ansicht beim Klick — Bilder sind nur im Grid sichtbar.
+- Aktuell KEINE Kategorisierung/Filter (z.B. "Nur Landschaften" / "Nur ich" / "Hund").
+
+======================================================================
+9. CONTACT-SEKTION (src/components/contact/contact.tsx)
+======================================================================
+- Header mit Kicker "Kontakt", H1 "Lass uns reden", kurzer Text.
+- 3 Kontakt-Karten nebeneinander (Grid sm:grid-cols-3), jede ein <a target=_blank>-Link mit
+  Hover-Lift (-translate-y-1) und Hover-Shadow:
+  - Email: fabian.spiri@swisscom.com
+  - LinkedIn: linkedin.com/in/fabian-spiri
+  - GitHub: github.com/Fababum
+  Jede Karte: Icon in farbigem Rounded-Square, Label, Sub-Text (URL/Adresse), CTA mit Pfeil-Icon.
+- 2 weitere Karten im Grid (sm:grid-cols-2):
+  - "Womit ich helfen kann": Fliesstext + Badges (Frontend, Backend, APIs, Security, UI)
+  - "Verfügbarkeit": Liste mit Separator-Linien (Geschäftlich 07:00–15:00, Privat 18:00–22:00,
+    Reaktionszeit ≤ 1 Tag)
+- Abschliessende "CTA-Banner"-Card (border-primary/20, bg-primary/5): Aufforderung zur
+  Kontaktaufnahme + Button "E-Mail senden" zu fabian.spiri@gmx.ch (Privat-Mail).
+
+======================================================================
+10. DESIGN-SYSTEM / FARBEN (src/global.css)
+======================================================================
+- Farbsystem ist HSL-basiert über CSS-Variablen (--background, --foreground, --card, --primary,
+  --secondary, --muted, --accent, --destructive, --border, --input, --ring, --radius: 0.625rem),
+  kompatibel mit Tailwind/shadcn-Konventionen. Es gibt einen :root (Light) und einen .dark-Block.
+- primary-Farbe: Indigo/Violett-Ton (243° Hue, ~75% Saturation), sowohl Light als auch Dark.
+- Body selbst hat KEINEN eigenen Hintergrund mehr (transparent), damit der fixe Background-Layer
+  durchscheint — nur text-foreground.
+- Zusätzliche Custom-Properties je nach Theme-Klasse (body.theme-dark / body.theme-light):
+  --indigo, --badge-ongoing-* (grüne Akzentfarbe für "Aktuell"-Badges), --hero-glow, --nav-*,
+  --scrollbar*, --title-shadow, --bg-overlay, --bg-fallback-1/2.
+- Schriftart: 'Inter' (system-font-fallback-Stack), keine Web-Font-Datei eingebunden (nur
+  @fontsource-variable/geist ist als Dependency vorhanden, aber aktuell NICHT im CSS
+  eingebunden/genutzt — evtl. Inkonsistenz).
+- H1: clamp(2.4rem, 6vw, 3.8rem), font-weight 700, letter-spacing -0.03em.
+- H2: clamp(1.05rem, 2vw, 1.25rem), font-weight 600.
+- Eigene Scrollbar-Styles (dünn, 5px, an Theme angepasste Farben).
+- Page-Transition-Klasse "pageTransition" (fadeIn + translateY, 380ms) existiert im CSS, wird
+  aber aktuell in keiner Komponente verwendet (totes CSS bzw. für spätere Nutzung gedacht).
+- Sections haben scroll-margin-top: 80px wegen der sticky NavBar.
+- Card-Komponente (src/components/ui/card.tsx): rounded-xl, bg-card/70, backdrop-blur-md,
+  ring-1 ring-foreground/10, shadow-lg, py-4, text-sm — bewusst als "Glass Card" gestaltet, damit
+  die Foto-Hintergründe durchschimmern.
+
+======================================================================
+11. BISHERIGE ENTWICKLUNGSHISTORIE (relevant für Kontext)
+======================================================================
+- Ursprünglich gab es einen Gemini-basierten Chatbot (Cloudflare Pages Function + Supabase
+  Blacklist-Check) und eine "CalendarAI"-Komponente (Google OAuth + n8n-Webhook + Supabase) als
+  Abschnitte der Seite. Diese wurden VOLLSTÄNDIG entfernt (Code, Pakete, Env-Variablen,
+  Cloudflare-Function, Routing, Nav-Einträge) auf Wunsch des Users, da sie nicht mehr gewünscht
+  waren. Diese Themen sollen NICHT wieder auftauchen oder referenziert werden.
+- Danach wurde die Seite auf ein bildbasiertes Konzept umgestellt: eigene Landschaftsfotos als
+  Hintergrund-Slideshow, Glassmorphism-Cards, Portrait-Fotos in Home/About, neue Galerie-Section
+  mit allen privaten Fotos (Landschaften, Portraits, Hund).
+- Danach wurden die Inhalte um aktuelle berufliche Infos ergänzt (Host bei Team Halo, SPARC-Kurs,
+  Immersive-Labs-Zertifikate inkl. OWASP Top 10, Nebenprojekte: Security Awareness Game mit SSO
+  unter https://humanorai.dev-scapp.swisscom.com/, Startup, Kirchen-Webseite).
+
+======================================================================
+12. WAS FUNKTIONIERT GUT (nicht anfassen / als Basis nehmen)
+======================================================================
+- Grundstruktur, Inhalte/Texte, Anchor-Navigation, Datenmodell der Komponenten (skills[],
+  timeline[], certifications[], projects[], photos[]), Farbvariablen-System (Theme-Switch),
+  Cloudflare-Pages-Deployment-Setup, TypeScript-Typsicherheit.
+- Diese Dinge sollen erhalten bleiben, der Fokus liegt rein auf VISUELLER Verbesserung
+  (Look & Feel, Polish, Animationen, Hierarchie, Whitespace, Typografie-Feinschliff,
+  Mikrointeraktionen), nicht auf inhaltlichen oder strukturellen Änderungen.
+
+======================================================================
+13. BEKANNTE SCHWACHSTELLEN / MÖGLICHE VERBESSERUNGSFELDER (für ChatGPT als Denkanstoss)
+======================================================================
+- Die NotFound-404-Seite nutzt komplett andere Styling-Patterns (Inline-Styles) statt
+  Tailwind/Card-Komponenten — visuell inkonsistent zum Rest der Seite.
+- Die Gallery hat keine Lightbox/Vollbildansicht und keine Filter/Kategorien.
+- @fontsource-variable/geist ist installiert, aber nicht aktiv genutzt — Typografie wirkt evtl.
+  generisch (System-Font Inter-Fallback statt einer markanteren Schrift).
+- Die Sections wirken evtl. noch recht "listig"/Standard-Card-lastig (viele gleich aussehende
+  Cards untereinander in About) - könnte mit mehr visueller Varianz (unterschiedliche Layouts,
+  grössere Bildintegration, Section-Dividers, Parallax o.ä.) aufgewertet werden.
+- Keine Scroll-Reveal-Animationen (Elemente erscheinen einfach beim Laden, kein Fade-In/Slide-In
+  beim Scrollen in den Viewport).
+- Der Hero (Home) hat noch viel Leerraum und nur einen sehr kleinen Bild-Akzent (112px rundes
+  Foto) - das bildbasierte Konzept könnte im Hero noch stärker zur Geltung kommen.
+- Kein sichtbarer Hinweis/Deep-Link auf die Immersive-Labs-Zertifikat-Grafik
+  (public/images/immersivlabscertifikate.png) - ungenutzte Ressource.
+- Mobile-Verhalten der NavBar-Pill (Labels nur bei Hover sichtbar) könnte auf Touch-Geräten
+  unpraktisch sein (kein Hover-State) - eventuell always-visible-Labels oder Bottom-Nav auf
+  Mobile prüfen.
+- Keine Cursor-/Custom-Interaktionselemente, keine subtilen Parallax-Effekte im Background
+  (Slideshow ist rein statisch, kein Ken-Burns-Zoom-Effekt).
+- Badges/Chips sehen überall gleich aus (variant secondary) — evtl. mehr Farbcodierung nach
+  Kategorie (z.B. Security-Skills in einer Akzentfarbe).
+
+======================================================================
+14. AUFTRAG AN CHATGPT
+======================================================================
+Bitte erstelle auf Basis der obigen Informationen einen einzigen, klar strukturierten
+"Mega-Prompt" (auf Deutsch), den ich 1:1 an meinen Coding-Agenten weitergeben kann. Der Prompt
+soll:
+- konkrete, priorisierte Design-Verbesserungen vorschlagen (z.B. Typografie-Update, Hero-Redesign
+  mit stärkerem Bild-Fokus, Scroll-Reveal-Animationen, Ken-Burns-Effekt im Background, Lightbox
+  für die Galerie, Farbakzente für Skill-Kategorien, Vereinheitlichung der 404-Seite mit dem
+  restlichen Design, sinnvolle Nutzung von public/images/immersivlabscertifikate.png, Mobile-
+  Optimierung der NavBar),
+- explizit sagen, dass Inhalte/Texte/Struktur/Datenmodelle NICHT verändert werden sollen, nur
+  das visuelle Erscheinungsbild,
+- auf die vorhandene Tech-Stack-Basis Rücksicht nehmen (React + TypeScript + Tailwind v3 +
+  shadcn-ähnliche UI-Komponenten + lucide-react Icons, kein neues UI-Framework einführen),
+  performance-bewusst bleiben (keine schweren Animationsbibliotheken zwingend nötig, CSS/
+  Framer-Motion-light reicht),
+  und mit einer klaren Prioritätenliste (Quick Wins zuerst, dann grössere strukturelle
+  Verbesserungen) enden.
