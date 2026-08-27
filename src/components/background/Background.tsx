@@ -79,6 +79,8 @@ function Background() {
         </div>
       ))}
 
+      {/* Flat, even dimmer across the whole photo, moderate so it stays vivid */}
+      <div className="absolute inset-0" style={{ background: "var(--bg-flat-dim)" }} />
       {/* Top gradient: readability for nav */}
       <div
         className="absolute inset-x-0 top-0 h-40"
@@ -94,7 +96,7 @@ function Background() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 100% at 50% 40%, transparent 40%, var(--bg-vignette) 100%)",
+            "radial-gradient(120% 100% at 50% 40%, transparent 30%, var(--bg-vignette) 100%)",
         }}
       />
     </div>

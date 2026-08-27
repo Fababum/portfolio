@@ -119,9 +119,10 @@
    color itself, since text always sits on top of the same photographs.
 ───────────────────────────────────────────── */
 body.theme-dark {
-  --bg-overlay-top: rgba(0, 0, 0, 0.5);
-  --bg-overlay-bottom: rgba(0, 0, 0, 0.55);
-  --bg-vignette: rgba(0, 0, 0, 0.32);
+  --bg-overlay-top: rgba(0, 0, 0, 0.42);
+  --bg-overlay-bottom: rgba(0, 0, 0, 0.48);
+  --bg-vignette: rgba(0, 0, 0, 0.28);
+  --bg-flat-dim: rgba(0, 0, 0, 0.22);
   --bg-fallback-1: #141414;
   --bg-fallback-2: #0d0d0d;
   --nav-bg: rgba(10, 10, 10, 0.55);
@@ -131,9 +132,10 @@ body.theme-dark {
 }
 
 body.theme-light {
-  --bg-overlay-top: rgba(20, 16, 10, 0.34);
-  --bg-overlay-bottom: rgba(20, 16, 10, 0.4);
-  --bg-vignette: rgba(20, 16, 10, 0.2);
+  --bg-overlay-top: rgba(20, 16, 10, 0.28);
+  --bg-overlay-bottom: rgba(20, 16, 10, 0.32);
+  --bg-vignette: rgba(20, 16, 10, 0.16);
+  --bg-flat-dim: rgba(10, 8, 6, 0.14);
   --bg-fallback-1: #efeae0;
   --bg-fallback-2: #ddd6c8;
   --nav-bg: rgba(30, 26, 20, 0.4);
@@ -155,8 +157,6 @@ body {
     rgba(0, 0, 0, 0.08) 60%,
     transparent 78%
   );
-  --section-scrim-h: linear-gradient(90deg, rgba(10, 10, 10, 0.55), rgba(10, 10, 10, 0.32) 55%, rgba(10, 10, 10, 0.12));
-  --section-scrim-v: linear-gradient(180deg, rgba(10, 10, 10, 0.16), rgba(10, 10, 10, 0.46));
 }
 
 /* ── Scrollbar ── */

@@ -80,8 +80,6 @@ function About() {
 
   return (
     <div className="relative text-foreground px-5 sm:px-8" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
-      {/* Section scrim: keeps body copy readable over busy photo textures */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ background: "var(--section-scrim-v)" }} />
       <div className="relative mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)" }}>
 
         {/* ── Intro: portrait + heading, two columns ── */}

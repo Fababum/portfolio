@@ -17,7 +17,6 @@ const helpTopics = ["Frontend", "Backend", "APIs", "Security", "UI"];
 function Contact() {
   return (
     <div className="relative text-foreground" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ background: "var(--section-scrim-v)" }} />
       <div className="relative mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)", textShadow: "var(--label-shadow)" }}>
 
         <Reveal>
