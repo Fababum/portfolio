@@ -142,6 +142,8 @@ body.theme-dark {
   --scrollbar: rgba(255, 255, 255, 0.12);
   --scrollbar-hover: rgba(255, 255, 255, 0.22);
   --ongoing-dot: #7dd4a0;
+  --stage-panel: rgba(10, 10, 10, 0.32);
+  --stage-ring: rgba(255, 255, 255, 0.08);
 }
 
 body.theme-light {
@@ -155,6 +157,8 @@ body.theme-light {
   --scrollbar: rgba(255, 255, 255, 0.14);
   --scrollbar-hover: rgba(255, 255, 255, 0.24);
   --ongoing-dot: #8fe0b3;
+  --stage-panel: rgba(20, 16, 10, 0.24);
+  --stage-ring: rgba(255, 255, 255, 0.1);
 }
 
 /* Shared, theme-independent text-legibility tokens */

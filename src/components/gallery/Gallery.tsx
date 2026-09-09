@@ -154,10 +154,15 @@ function Gallery() {
         {/* Stage */}
         <Reveal delay={180}>
           <div
-            className="relative select-none touch-pan-y"
+            className="relative select-none touch-pan-y overflow-hidden rounded-2xl ring-1"
             style={{
               perspective: "1200px",
               height: "min(62vw, 560px)",
+              background: "var(--stage-panel)",
+              backdropFilter: "blur(28px)",
+              WebkitBackdropFilter: "blur(28px)",
+              boxShadow: "0 30px 90px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06)",
+              borderColor: "var(--stage-ring)",
             }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -165,12 +170,12 @@ function Gallery() {
             onPointerLeave={endDrag}
             onPointerCancel={endDrag}
           >
-            {/* Subtle stage scrim, no card / no stage box */}
+            {/* Subtle stage scrim on top of the solid panel */}
             <div
               aria-hidden="true"
               className="absolute inset-0 -z-10 pointer-events-none"
               style={{
-                background: "radial-gradient(ellipse at center, rgba(0,0,0,0.1), rgba(0,0,0,0.32))",
+                background: "radial-gradient(ellipse at center, rgba(0,0,0,0.08), rgba(0,0,0,0.28))",
               }}
             />
 
@@ -189,35 +194,35 @@ function Gallery() {
               let filterCss = "none";
 
               if (clamped === -1) {
-                translateX = -55;
-                translateZ = -100;
-                scale = 0.78;
-                rotateY = reducedMotion ? 0 : 4;
-                opacity = 0.55;
+                translateX = -48;
+                translateZ = -120;
+                scale = 0.7;
+                rotateY = reducedMotion ? 0 : 1.5;
+                opacity = 0.32;
                 zIndex = 20;
-                filterCss = "brightness(0.72) saturate(0.85)";
+                filterCss = "brightness(0.6) saturate(0.7)";
               } else if (clamped === 1) {
-                translateX = 55;
-                translateZ = -100;
-                scale = 0.78;
-                rotateY = reducedMotion ? 0 : -4;
-                opacity = 0.55;
+                translateX = 48;
+                translateZ = -120;
+                scale = 0.7;
+                rotateY = reducedMotion ? 0 : -1.5;
+                opacity = 0.32;
                 zIndex = 20;
-                filterCss = "brightness(0.72) saturate(0.85)";
+                filterCss = "brightness(0.6) saturate(0.7)";
               } else if (clamped === -2) {
-                translateX = -95;
-                translateZ = -200;
-                scale = 0.6;
+                translateX = -85;
+                translateZ = -220;
+                scale = 0.55;
                 opacity = 0;
                 zIndex = 10;
-                filterCss = "brightness(0.6)";
+                filterCss = "brightness(0.5)";
               } else if (clamped === 2) {
-                translateX = 95;
-                translateZ = -200;
-                scale = 0.6;
+                translateX = 85;
+                translateZ = -220;
+                scale = 0.55;
                 opacity = 0;
                 zIndex = 10;
-                filterCss = "brightness(0.6)";
+                filterCss = "brightness(0.5)";
               }
 
               return (
@@ -249,7 +254,9 @@ function Gallery() {
                     className="w-full h-full overflow-hidden"
                     style={{
                       borderRadius: "10px",
-                      boxShadow: isActive ? "0 30px 70px rgba(0,0,0,0.28)" : "none",
+                      boxShadow: isActive
+                        ? "0 30px 70px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.15)"
+                        : "none",
                     }}
                   >
                     <img
