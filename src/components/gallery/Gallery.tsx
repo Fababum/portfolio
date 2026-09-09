@@ -116,7 +116,7 @@ function Gallery() {
     : "transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease, filter 500ms ease";
 
   return (
-    <div ref={sectionRef} className="surface-section text-foreground overflow-hidden" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
+    <div ref={sectionRef} className="surface-section surface-section--alt text-foreground overflow-hidden" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
       <span className="watermark" aria-hidden="true">06</span>
       <div className="relative z-10 mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 10vw, 140px)" }}>
         <Reveal>
