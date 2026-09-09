@@ -144,6 +144,17 @@ body.theme-dark {
   --ongoing-dot: #7dd4a0;
   --stage-panel: rgba(10, 10, 10, 0.32);
   --stage-ring: rgba(255, 255, 255, 0.08);
+
+  /* Editorial "paper" surface used by content sections (About, Gallery,
+     Contact) that no longer sit on the photographic background — a calm,
+     opaque canvas so dense sections (many images, long lists) read clean. */
+  --surface-bg: #0b0b0c;
+  --surface-fg: rgba(245, 244, 240, 0.96);
+  --surface-fg-2: rgba(245, 244, 240, 0.88);
+  --surface-muted: rgba(245, 244, 240, 0.62);
+  --surface-subtle: rgba(245, 244, 240, 0.42);
+  --surface-hairline: rgba(245, 244, 240, 0.12);
+  --surface-watermark: rgba(245, 244, 240, 0.05);
 }
 
 body.theme-light {
@@ -159,6 +170,14 @@ body.theme-light {
   --ongoing-dot: #8fe0b3;
   --stage-panel: rgba(20, 16, 10, 0.24);
   --stage-ring: rgba(255, 255, 255, 0.1);
+
+  --surface-bg: #f3efe6;
+  --surface-fg: rgba(20, 17, 13, 0.94);
+  --surface-fg-2: rgba(20, 17, 13, 0.82);
+  --surface-muted: rgba(20, 17, 13, 0.6);
+  --surface-subtle: rgba(20, 17, 13, 0.4);
+  --surface-hairline: rgba(20, 17, 13, 0.14);
+  --surface-watermark: rgba(20, 17, 13, 0.06);
 }
 
 /* Shared, theme-independent text-legibility tokens */
@@ -216,6 +235,43 @@ h1, h2, h3 {
 }
 
 p { margin: 0; }
+
+/* ─────────────────────────────────────────────
+   Editorial "paper" sections.
+   About / Gallery / Contact opt out of the photographic background and
+   sit on a calm, opaque surface instead — reduces visual noise when a
+   section shows several images or a lot of text at once. Overriding the
+   foreground/hairline/shadow tokens here means the existing Tailwind
+   utilities (text-foreground, text-muted-foreground, .hairline, the
+   eyebrow text-shadow, …) automatically adapt without touching markup.
+───────────────────────────────────────────── */
+.surface-section {
+  position: relative;
+  z-index: 10;
+  background: var(--surface-bg);
+  color: var(--surface-fg);
+  --foreground: var(--surface-fg);
+  --foreground-2: var(--surface-fg-2);
+  --muted-foreground: var(--surface-muted);
+  --foreground-subtle: var(--surface-subtle);
+  --hairline: var(--surface-hairline);
+  --title-shadow: none;
+  --label-shadow: none;
+}
+
+.watermark {
+  position: absolute;
+  top: clamp(8px, 2vw, 24px);
+  right: clamp(12px, 4vw, 48px);
+  font-size: clamp(4rem, 14vw, 11rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--surface-watermark);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
 
 /* ── Scroll-reveal ── */
 .reveal {

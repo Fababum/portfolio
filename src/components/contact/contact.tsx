@@ -16,8 +16,9 @@ const helpTopics = ["Frontend", "Backend", "APIs", "Security", "UI"];
 
 function Contact() {
   return (
-    <div className="relative text-foreground" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
-      <div className="relative mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)", textShadow: "var(--label-shadow)" }}>
+    <div className="surface-section text-foreground overflow-hidden" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
+      <span className="watermark" aria-hidden="true">07</span>
+      <div className="relative z-10 mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)" }}>
 
         <Reveal>
           <p className="eyebrow mb-4">Contact / 07</p>

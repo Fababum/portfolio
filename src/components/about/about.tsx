@@ -79,8 +79,9 @@ function About() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   return (
-    <div className="relative text-foreground px-5 sm:px-8" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
-      <div className="relative mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)" }}>
+    <div className="surface-section text-foreground px-5 sm:px-8 overflow-hidden" style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}>
+      <span className="watermark" aria-hidden="true">01</span>
+      <div className="relative z-10 mx-auto max-w-content" style={{ paddingBlock: "clamp(64px, 12vw, 160px)" }}>
 
         {/* ── Intro: portrait + heading, two columns ── */}
         <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-20 mb-24">
@@ -198,7 +199,7 @@ function About() {
               >
                 <div
                   className="overflow-hidden rounded-md"
-                  style={{ border: "1px solid rgba(255,255,255,0.15)", boxShadow: "0 12px 32px rgba(0,0,0,0.28)" }}
+                  style={{ border: "1px solid var(--hairline)", boxShadow: "0 12px 32px rgba(0,0,0,0.18)" }}
                 >
                   <img
                     src="/images/immersivlabscertifikate.png"
