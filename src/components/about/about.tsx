@@ -120,7 +120,7 @@ function About() {
                 </p>
                 <p className="text-muted-foreground leading-7">
                   Ich bin wissbegierig, kenne die Meeting-Kultur und SCRUM aus eigener Erfahrung
-                  in der Cybersecurity bei Swisscom und arbeite sehr gerne im Team – aktuell als
+                  in der Cybersecurity bei Swisscom und arbeite sehr gerne im Team aktuell als
                   Host im Team Halo. Ich war früher auch als Hilfsleiter im Sommerlager aktiv und
                   bin eine offene, hilfsbereite und teamfähige Person, die genauso gut
                   selbständig arbeiten kann.
