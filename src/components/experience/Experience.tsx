@@ -47,7 +47,7 @@ function SplitCards() {
               <span className="self-end grid place-items-center h-14 w-14 rounded-full bg-lime text-ink text-xl transition-transform duration-500 group-hover:-rotate-45">→</span>
               <div>
                 <h3 className="font-display" style={{ fontSize: "clamp(4rem, 9vw, 8.5rem)" }}>
-                  <span className="block text-outline transition-colors duration-500 group-hover:text-lime" style={{ WebkitTextStrokeColor: "currentColor" }}>{c.top}</span>
+                  <span className="block text-outline transition-colors duration-500 group-hover:text-lime">{c.top}</span>
                   <span className="block">{c.bottom}</span>
                 </h3>
                 <p className="text-cream/70 max-w-xs mt-4">{c.text}</p>

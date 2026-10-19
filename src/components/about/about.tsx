@@ -17,8 +17,8 @@ function About() {
             className="font-medium tracking-tight max-w-[18ch] sm:max-w-[22ch]"
             style={{ fontSize: "clamp(2.2rem, 5.6vw, 5.5rem)", lineHeight: 1.02, letterSpacing: "-0.035em" }}
           >
-            <Hl>Neugierig</Hl> auf Code, <Hl>besessen</Hl> von Sicherheit. Ich baue Software, die
-            <Hl> hält</Hl>, was sie verspricht.
+            <Hl>Neugierig</Hl> auf Code, <Hl>besessen</Hl> von Sicherheit. Ich baue Software, die{" "}
+            <Hl>hält</Hl>, was sie verspricht.
           </p>
         </Reveal>
 
