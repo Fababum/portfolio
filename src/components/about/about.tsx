@@ -17,8 +17,8 @@ function About() {
             className="font-medium tracking-tight max-w-[18ch] sm:max-w-[22ch]"
             style={{ fontSize: "clamp(2.2rem, 5.6vw, 5.5rem)", lineHeight: 1.02, letterSpacing: "-0.035em" }}
           >
-            <Hl>Neugierig</Hl> auf neue Technologien, <Hl>begeistert</Hl> von gutem Code. Ich baue Web-Apps, die{" "}
-            <Hl>funktionieren</Hl> und Freude machen.
+            Von der <Hl>Idee</Hl> bis zum Deployment. Ich baue Apps für{" "}
+            <Hl>Web</Hl> und <Hl>Handy</Hl>, die echte Probleme lösen.
           </p>
         </Reveal>
 
@@ -62,10 +62,9 @@ function About() {
               <div className="space-y-5 text-[var(--muted-light)] leading-7 max-w-xl text-base sm:text-lg">
                 <p>
                   Ich bin Fabian Spiri, Informatik Applikationsentwickler Lehrling im dritten Lehrjahr bei{" "}
-                  <strong className="text-ink">Swisscom</strong>. Am liebsten entwickle ich Web-Applikationen von A bis Z: vom React-, Next.js- oder Vue-Frontend
-                  über APIs mit NestJS, Express oder FastAPI bis zur Datenbank und dem Deployment in der Cloud. Sogar eine eigene Handy-App
-                  mit React Native habe ich gebaut. Immer öfter
-                  mit dabei: KI, etwa über die Swiss AI Platform oder eigene MCP-Server. Zusätzlich habe ich mir durch Immersive-Labs-Kurse Wissen in Cybersecurity angeeignet
+                  <strong className="text-ink">Swisscom</strong>. Ich entwickle Software von A bis Z: Web-Apps mit React, Next.js
+                  oder Vue, Handy-Apps für iOS und Android mit React Native, Backends und APIs mit NestJS, Express oder
+                  FastAPI, dazu Datenbanken und das Deployment in der Cloud. Immer öfter mit dabei: KI, etwa über die Swiss AI Platform oder eigene MCP-Server. Zusätzlich habe ich mir durch Immersive-Labs-Kurse Wissen in Cybersecurity angeeignet
                   und absolviere aktuell den SPARC-Kurs der Armee.
                 </p>
                 <p>
