@@ -69,11 +69,6 @@ function Skills() {
             Skills<br /><span className="text-lime">Hall of Fame</span>
           </h2>
         </Reveal>
-        <Reveal delay={80}>
-          <p className="text-cream/70 max-w-sm leading-7">
-            Vom <strong className="text-cream">Frontend</strong> über APIs und <strong className="text-cream">KI</strong> bis zum Deployment in der Cloud. Alles aus echten Projekten.
-          </p>
-        </Reveal>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 grid-flow-row-dense gap-4">
         {skillGroups.map((g, i) => (
