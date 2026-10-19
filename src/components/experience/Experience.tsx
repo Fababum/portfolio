@@ -71,31 +71,64 @@ function Skills() {
         </Reveal>
         <Reveal delay={80}>
           <p className="text-cream/70 max-w-sm leading-7">
-            Vom <strong className="text-cream">Frontend</strong> über APIs bis zur <strong className="text-cream">Datenbank</strong>, mit einem Auge für saubere und sichere Lösungen.
+            Vom <strong className="text-cream">Frontend</strong> über APIs und <strong className="text-cream">KI</strong> bis zum Deployment in der Cloud. Alles aus echten Projekten.
           </p>
         </Reveal>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 grid-flow-row-dense gap-4">
         {skillGroups.map((g, i) => (
-          <Reveal key={g.category} delay={i * 60}>
-            <div className="group relative h-full min-h-[280px] rounded-3xl border border-[var(--line-dark)] p-6 overflow-hidden transition-colors duration-500 hover:border-lime">
-              <div
-                className="absolute inset-0 bg-lime translate-y-full group-hover:translate-y-0 transition-transform duration-700"
-                style={{ transitionTimingFunction: "var(--ease)" }}
-              />
-              <div className="relative flex flex-col h-full transition-colors duration-500 group-hover:text-ink">
-                <p className="eyebrow opacity-60">0{i + 1}</p>
-                <h3 className="font-display text-4xl mt-3 mb-6">{g.category}</h3>
-                <ul className="mt-auto space-y-1.5 text-sm">
-                  {g.items.map((s) => (
-                    <li key={s} className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-current opacity-60" />
-                      {s}
-                    </li>
-                  ))}
-                </ul>
+          <Reveal key={g.category} delay={i * 60} className={g.featured ? "sm:col-span-2 h-full" : "h-full"}>
+            {g.featured ? (
+              <div className="group relative h-full min-h-[280px] rounded-3xl bg-lime text-ink p-6 sm:p-8 overflow-hidden grid grid-cols-[1fr_auto] gap-6">
+                <div className="flex flex-col">
+                  <p className="eyebrow opacity-60">0{i + 1} · Highlight</p>
+                  <h3 className="font-display text-4xl sm:text-5xl mt-3 mb-2">{g.category}</h3>
+                  {g.note && <p className="text-sm text-ink/70 max-w-[26ch] mb-6">{g.note}</p>}
+                  <ul className="mt-auto flex flex-wrap gap-2">
+                    {g.items.map((s) => (
+                      <li key={s} className="rounded-full bg-ink text-cream px-3 py-1 text-xs">{s}</li>
+                    ))}
+                  </ul>
+                </div>
+                {/* Handy-Mockup */}
+                <div
+                  aria-hidden="true"
+                  className="hidden sm:block relative w-[120px] lg:w-[130px] self-center rotate-6 transition-transform duration-700 group-hover:rotate-0 group-hover:-translate-y-2"
+                  style={{ transitionTimingFunction: "var(--ease)" }}
+                >
+                  <div className="rounded-[1.6rem] bg-ink p-[6px] shadow-2xl">
+                    <div className="relative rounded-[1.25rem] overflow-hidden bg-olive" style={{ aspectRatio: "9 / 19" }}>
+                      <div className="absolute top-1.5 left-1/2 -translate-x-1/2 h-3 w-10 rounded-full bg-ink z-10" />
+                      <img src="/images/landscapes/landscape-ocean-sunset.jpg" alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+                      <div className="absolute inset-x-2 bottom-2 space-y-1.5">
+                        <p className="font-display text-cream text-lg leading-none">freetly</p>
+                        <div className="rounded-lg bg-cream/90 px-2 py-1.5 text-[9px] text-ink font-semibold">3 Freunde haben Zeit</div>
+                        <div className="rounded-lg bg-lime px-2 py-1.5 text-[9px] text-ink font-semibold">Heute Abend? →</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="group relative h-full min-h-[280px] rounded-3xl border border-[var(--line-dark)] p-6 overflow-hidden transition-colors duration-500 hover:border-lime">
+                <div
+                  className="absolute inset-0 bg-lime translate-y-full group-hover:translate-y-0 transition-transform duration-700"
+                  style={{ transitionTimingFunction: "var(--ease)" }}
+                />
+                <div className="relative flex flex-col h-full transition-colors duration-500 group-hover:text-ink">
+                  <p className="eyebrow opacity-60">0{i + 1}</p>
+                  <h3 className="font-display text-4xl mt-3 mb-6">{g.category}</h3>
+                  <ul className="mt-auto space-y-1.5 text-sm">
+                    {g.items.map((s) => (
+                      <li key={s} className="flex items-center gap-2">
+                        <span className="h-1 w-1 rounded-full bg-current opacity-60" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
           </Reveal>
         ))}
       </div>
@@ -143,10 +176,10 @@ function Projects() {
     <div>
       <Reveal>
         <h2 className="font-display mb-12" style={{ fontSize: "clamp(3rem, 8vw, 7.5rem)" }}>
-          Neben<span className="text-lime">projekte</span>
+          Pro<span className="text-lime">jekte</span>
         </h2>
       </Reveal>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-14">
         {projects.map((p, i) => {
           const inner = (
             <>
@@ -165,6 +198,11 @@ function Projects() {
               </div>
               <h3 className="font-display text-3xl sm:text-4xl group-hover:text-lime transition-colors">{p.name}</h3>
               <p className="text-cream/70 mt-2 leading-7">{p.description}</p>
+              <ul className="flex flex-wrap gap-2 mt-4">
+                {p.stack.map((t) => (
+                  <li key={t} className="rounded-full border border-[var(--line-dark)] px-3 py-1 text-xs text-cream/80">{t}</li>
+                ))}
+              </ul>
             </>
           );
           return (

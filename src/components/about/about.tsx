@@ -62,8 +62,10 @@ function About() {
               <div className="space-y-5 text-[var(--muted-light)] leading-7 max-w-xl text-base sm:text-lg">
                 <p>
                   Ich bin Fabian Spiri, Informatik Applikationsentwickler Lehrling im dritten Lehrjahr bei{" "}
-                  <strong className="text-ink">Swisscom</strong>. Am liebsten entwickle ich Web-Applikationen von A bis Z: vom React-Frontend über
-                  APIs mit NestJS bis zur Datenbank. Zusätzlich habe ich mir durch Immersive-Labs-Kurse und den
+                  <strong className="text-ink">Swisscom</strong>. Am liebsten entwickle ich Web-Applikationen von A bis Z: vom React-, Next.js- oder Vue-Frontend
+                  über APIs mit NestJS, Express oder FastAPI bis zur Datenbank und dem Deployment in der Cloud. Sogar eine eigene Handy-App
+                  mit React Native habe ich gebaut. Immer öfter
+                  mit dabei: KI, etwa über die Swiss AI Platform oder eigene MCP-Server. Zusätzlich habe ich mir durch Immersive-Labs-Kurse und den
                   SPARC-Kurs des Militärs Wissen in Cybersecurity angeeignet.
                 </p>
                 <p>
@@ -87,7 +89,7 @@ function About() {
             { n: "2024", l: "Start der Lehre" },
             { n: "3.", l: "Lehrjahr" },
             { n: "6", l: "Stationen bei Swisscom" },
-            { n: "5", l: "Immersive Labs Kurse" },
+            { n: "7", l: "Projekte gebaut" },
           ].map((s, i) => (
             <Reveal key={s.l} delay={i * 60}>
               <div className={"py-8 pr-4 " + (i > 0 ? "lg:border-l lg:pl-8 border-[var(--line-light)]" : "")}>

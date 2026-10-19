@@ -30,17 +30,19 @@ export const photos: Photo[] = [
   { src: "/images/landscapes/landscape-mountain-lake.jpg", alt: "Bergsee-Panorama", caption: "Bergsee", position: "50% 55%" },
 ];
 
-export const skillGroups = [
-  { category: "Frontend", items: ["React", "TypeScript", "JavaScript", "HTML / CSS"] },
-  { category: "Backend", items: ["NestJS", "Node.js", "Java", "Python", "Docker"] },
-  { category: "Datenbanken", items: ["Prisma ORM", "PostgreSQL", "SQL"] },
-  { category: "Tools", items: ["Git", "REST APIs", "Agile / Scrum"] },
-  { category: "Security", items: ["OWASP Top 10", "Secure Coding", "Phishing-Erkennung"] },
+export const skillGroups: { category: string; items: string[]; featured?: boolean; note?: string }[] = [
+  { category: "Frontend", items: ["React", "Next.js", "Vue 3", "TypeScript", "Tailwind CSS"] },
+  { category: "Mobile Apps", featured: true, note: "Eigene Handy-App für iOS & Android mit freetly entwickelt.", items: ["React Native", "Expo & Expo Router", "NativeWind", "Secure Storage", "iOS & Android"] },
+  { category: "Backend", items: ["NestJS", "Node.js / Express", "FastAPI (Python)", "WebSockets / Socket.IO", "REST APIs", "Java"] },
+  { category: "Datenbanken", items: ["MySQL / MariaDB", "PostgreSQL / Supabase", "Prisma ORM", "Redis", "SQLite"] },
+  { category: "KI & LLM", items: ["OpenAI SDK / Swiss AI", "MCP Server", "AWS Bedrock", "Ollama", "Prompt Engineering"] },
+  { category: "DevOps & Cloud", items: ["Docker / Compose", "GitLab CI/CD", "Cloud Foundry", "AWS + Terraform", "Kubernetes", "Fly.io / Vercel"] },
+  { category: "Security & Auth", items: ["SSO / OIDC", "JWT Auth", "OWASP Top 10", "Rate Limiting"] },
 ];
 
 export const marqueeWords = [
-  "React", "TypeScript", "NestJS", "Node.js", "Java", "Python", "Docker",
-  "PostgreSQL", "Prisma", "REST APIs", "Git", "Scrum",
+  "React", "Next.js", "Vue", "TypeScript", "NestJS", "FastAPI", "Node.js", "Python",
+  "React Native", "Expo", "Docker", "MySQL", "Prisma", "Redis", "AWS", "Terraform", "MCP", "GitLab CI",
 ];
 
 export const certifications = [
@@ -49,25 +51,57 @@ export const certifications = [
   { name: "Security Fundamentals & Tooling", issuer: "Immersive Labs", note: "Secure Fundamentals, Secure Testing, Secure Tooling, Browser Developer Tools." },
 ];
 
-export const projects: { name: string; tag: string; description: string; href?: string; image: string }[] = [
+export const projects: { name: string; tag: string; description: string; stack: string[]; href?: string; image: string }[] = [
   {
-    name: "Security Awareness Game",
-    tag: "SSO · Security · Web-App",
-    description: "Ein spielerisches Tool zur Sensibilisierung für Cybersecurity-Themen, inkl. SSO-Integration.",
+    name: "Human or AI?",
+    tag: "Team Halo · Multiplayer-Game",
+    description: "Echtzeit-Chatgame: Zwei Spieler chatten 90 Sekunden und raten, ob ein Mensch oder eine KI antwortet. Inkl. SSO-Login.",
+    stack: ["Vue 3", "Socket.IO", "Redis", "Swiss AI", "Cloud Foundry"],
     href: "https://humanorai.dev-scapp.swisscom.com/",
     image: "/images/landscapes/landscape-night-beach.jpg",
   },
   {
-    name: "Startup",
-    tag: "Nebenprojekt",
-    description: "Mitarbeit an einem eigenen Startup-Projekt neben der Ausbildung.",
+    name: "SpTrack",
+    tag: "Full-Stack · KI",
+    description: "Kalorien- und Ernährungstracker mit KI-Chatbot, der das Tagebuch per MCP-Tools liest und bearbeitet. Infrastruktur als Code auf AWS.",
+    stack: ["React", "FastAPI", "Prisma", "MySQL", "AWS Bedrock", "Terraform"],
     image: "/images/landscapes/landscape-peak-sun.jpg",
   },
   {
-    name: "Webseite Kirche",
-    tag: "Webdesign · Ehrenamt",
-    description: "Unterstützung beim Webdesign und Aufbau einer Webseite für eine Kirchgemeinde.",
+    name: "freetly",
+    tag: "Startup · Web & Handy-App",
+    description: "Social-Planning-App, um Freunde zu finden, die gerade Zeit haben. Web-App, eigene Handy-App für iOS & Android und API in einem Monorepo.",
+    stack: ["React Native", "Expo", "NestJS", "Next.js", "Prisma", "Kubernetes"],
+    image: "/images/landscapes/landscape-ocean-sunset.jpg",
+  },
+  {
+    name: "Osterweg Wyland",
+    tag: "Website · Buchungssystem",
+    description: "Website und Online-Reservationssystem für den Osterweg einer Kirchgemeinde, mit Admin-Bereich und Excel-Export.",
+    stack: ["React", "Express", "SQLite", "Leaflet", "Fly.io"],
+    href: "https://osterweg-wyland.com",
     image: "/images/landscapes/landscape-garden-ruins.jpg",
+  },
+  {
+    name: "Hack the AI",
+    tag: "Team Halo · Prompt-Game",
+    description: "Prompt-Engineering-Spiel: Bring die KI SENTINEL in drei Schwierigkeitsstufen dazu, ihre Zugangscodes zu verraten.",
+    stack: ["Vue 3", "Express", "Redis", "Swiss AI", "Docker"],
+    image: "/images/landscapes/landscape-cove.jpg",
+  },
+  {
+    name: "Team Halo Website",
+    tag: "Team Halo · Web-App",
+    description: "Öffentliche Team-Website plus Admin-Bereich zur Verwaltung von Lernenden-Feedback, ersetzt eine Excel-Liste.",
+    stack: ["Next.js", "Express", "Prisma", "MariaDB", "OIDC"],
+    image: "/images/landscapes/landscape-ridge.jpg",
+  },
+  {
+    name: "AI Report Engine",
+    tag: "Team Halo · KI",
+    description: "Erstellt mit KI Entwürfe für Bildungsberichte von Lernenden, inklusive Bearbeitung und PDF-Export.",
+    stack: ["FastAPI", "SQLModel", "Swiss AI", "pytest", "GitLab CI"],
+    image: "/images/landscapes/landscape-mountain-lake.jpg",
   },
 ];
 
