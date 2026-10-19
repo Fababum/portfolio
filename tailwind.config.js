@@ -13,6 +13,10 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       colors: {
+        ink: '#13150f',
+        olive: { DEFAULT: '#1f2219', 2: '#282c20' },
+        cream: { DEFAULT: '#f4f4ed', 2: '#e8e8dc' },
+        lime: { DEFAULT: '#d2ff00', dim: '#b5db00' },
         background: 'hsl(var(--background))',
         foreground: 'var(--foreground)',
         'foreground-2': 'var(--foreground-2)',

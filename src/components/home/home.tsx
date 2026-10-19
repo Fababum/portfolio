@@ -1,137 +1,169 @@
 import { useEffect, useState } from "react";
-import Reveal from "@/components/reveal/Reveal";
+import { scrollToId } from "@/lib/content";
 
-const ROLES = ["Full-Stack Developer", "Security Enthusiast"];
+const ROLES = ["Full-Stack Developer", "Cybersecurity Enthusiast", "React & NestJS", "Host · Team Halo"];
 
-function useTypingEffect(words: string[], speed = 55, pause = 2600) {
-  const [display, setDisplay] = useState("");
+function useTyping(words: string[], speed = 70, pause = 1600) {
   const [wordIdx, setWordIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
+  const [len, setLen] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setDisplay(words[0]);
-      return;
+    const word = words[wordIdx];
+    let t: number;
+    if (!deleting && len < word.length) t = window.setTimeout(() => setLen(len + 1), speed);
+    else if (!deleting) t = window.setTimeout(() => setDeleting(true), pause);
+    else if (len > 0) t = window.setTimeout(() => setLen(len - 1), speed / 2);
+    else {
+      t = window.setTimeout(() => {
+        setDeleting(false);
+        setWordIdx((w) => (w + 1) % words.length);
+      }, 0);
     }
-    const current = words[wordIdx];
-    let timeout: number;
-    if (!deleting && charIdx < current.length) {
-      timeout = window.setTimeout(() => setCharIdx((c) => c + 1), speed);
-    } else if (!deleting && charIdx === current.length) {
-      timeout = window.setTimeout(() => setDeleting(true), pause);
-    } else if (deleting && charIdx > 0) {
-      timeout = window.setTimeout(() => setCharIdx((c) => c - 1), speed / 2.2);
-    } else {
-      setDeleting(false);
-      setWordIdx((w) => (w + 1) % words.length);
-    }
-    setDisplay(current.slice(0, charIdx));
-    return () => clearTimeout(timeout);
-  }, [charIdx, deleting, wordIdx, words, speed, pause]);
+    return () => clearTimeout(t);
+  }, [len, deleting, wordIdx, words, speed, pause]);
 
-  return display;
+  return words[wordIdx].slice(0, len);
 }
 
-function Home() {
-  const typedRole = useTypingEffect(ROLES);
+function Home({ ready }: { ready: boolean }) {
+  const typed = useTyping(ROLES);
+  const [offset, setOffset] = useState(0);
+
+  // leichter Parallax auf dem Hero-Bild
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setOffset(Math.min(window.scrollY, window.innerHeight)));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const lineStyle = (delay: number) => ({
+    transform: ready ? "none" : "translateY(110%)",
+    transition: `transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+  });
+
+  const fade = (delay: number) => ({
+    opacity: ready ? 1 : 0,
+    transform: ready ? "none" : "translateY(20px)",
+    transition: `opacity 1s ease ${delay}ms, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+  });
 
   return (
-    <div className="relative min-h-[100svh] flex items-end text-foreground">
-      {/* Local scrim behind the text column for legibility on bright photos */}
-      <div
+    <div className="relative h-[100svh] min-h-[600px] overflow-hidden bg-ink text-cream">
+      {/* Unscharfe Fläche als Hintergrund (füllt breite Screens) */}
+      <img
+        src="/images/portraits/profil_bild.jpg"
+        alt=""
         aria-hidden="true"
-        className="absolute inset-y-0 left-0 w-full lg:w-[70%] pointer-events-none"
-        style={{ background: "var(--hero-scrim)" }}
+        className="absolute inset-0 h-full w-full object-cover scale-125 blur-2xl opacity-40"
+        style={{ objectPosition: "50% 40%" }}
       />
+
+      {/* Titelbild: scharf, zoomt beim Laden rein und beim Scrollen weiter */}
       <div
-        className="relative w-full mx-auto max-w-content pb-16 sm:pb-24 grid grid-cols-1 lg:grid-cols-[1.4fr_0.6fr] gap-10 lg:gap-16 items-end"
-        style={{ paddingInline: "clamp(20px, 4vw, 64px)" }}
+        className="absolute inset-0 lg:left-auto lg:w-[58%] overflow-hidden lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_28%)] lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_28%)]"
       >
-        {/* Text block */}
-        <div>
-          <Reveal>
-            <p className="eyebrow mb-5">Fabian Spiri / Portfolio</p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h1
-              className="text-hero font-medium text-foreground mb-6"
-              style={{ textShadow: "var(--title-shadow)" }}
-            >
-              Applikations-
-              <br />
-              entwickler.
+        <div
+          className="h-full w-full"
+          style={{
+            transform: `translateY(${offset * 0.25}px) scale(${1 + offset / 2500})`,
+            transformOrigin: "50% 32%",
+          }}
+        >
+          <img
+            src="/images/portraits/profil_bild.jpg"
+            alt="Fabian Spiri"
+            fetchPriority="high"
+            className="h-full w-full object-cover"
+            style={{
+              objectPosition: "50% 30%",
+              transformOrigin: "50% 35%",
+              animation: ready ? "hero-zoom-in 2.6s cubic-bezier(0.22, 1, 0.36, 1) both" : undefined,
+              transform: ready ? undefined : "scale(1.35)",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Abdunkeln für Lesbarkeit */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(19,21,15,0.6) 0%, rgba(19,21,15,0.25) 30%, rgba(19,21,15,0.55) 65%, rgba(19,21,15,0.98) 100%), linear-gradient(90deg, rgba(19,21,15,0.7) 0%, rgba(19,21,15,0.1) 60%)",
+        }}
+      />
+      <div className="absolute inset-0 grain" />
+
+      {/* Vertikaler Seitentext */}
+      <div className="hidden md:block absolute left-[clamp(20px,4vw,64px)] top-1/2 z-10" style={fade(900)}>
+        <p
+          className="eyebrow text-cream/70"
+          style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)" }}
+        >
+          Swisscom seit 2024
+        </p>
+      </div>
+
+      {/* Inhalt */}
+      <div className="relative z-10 container-x h-full flex flex-col justify-end pb-10 sm:pb-14">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div>
+            <p className="eyebrow text-lime mb-4 flex items-center gap-2" style={fade(500)}>
+              <span className="h-2 w-2 rounded-full bg-lime" style={{ animation: "pulse-dot 2s infinite" }} />
+              Informatik Applikationsentwickler EFZ
+            </p>
+            <h1 className="font-display" style={{ fontSize: "clamp(4.5rem, 17vw, 17rem)" }}>
+              <span className="line-mask"><span style={lineStyle(0)}>Fabian</span></span>
+              <span className="line-mask"><span style={lineStyle(120)}>Spiri</span></span>
             </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p
-              className="text-base sm:text-lg text-muted-foreground mb-2 min-h-[1.6em] font-medium"
-              style={{ textShadow: "var(--label-shadow)" }}
-            >
-              {typedRole}
-              <span
-                className="inline-block w-0.5 h-[1em] bg-white/60 ml-0.5 align-middle"
-                style={{ animation: "blink 1.1s step-end infinite" }}
-              />
+            <p className="font-sign text-lime text-3xl sm:text-5xl mt-3 min-h-[1.2em]" style={fade(700)}>
+              {typed}
+              <span className="inline-block w-[3px] h-[0.8em] bg-lime ml-1 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
             </p>
-          </Reveal>
-          <Reveal delay={220}>
-            <p
-              className="max-w-md text-muted-foreground leading-7 text-sm sm:text-base mt-4 mb-8"
-              style={{ textShadow: "var(--label-shadow)" }}
-            >
-              Lernender Full-Stack-Entwickler bei{" "}
-              <strong className="text-foreground font-semibold">Swisscom</strong>, mit
-              Fokus auf Cybersecurity. Ich baue robuste Web-Applikationen mit modernen
-              Technologien.
-            </p>
-          </Reveal>
-          <Reveal delay={280}>
-            <div className="flex items-center gap-8 flex-wrap">
-              <a
-                href="#contact"
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                  e.preventDefault();
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group inline-flex items-center gap-1.5 text-sm font-semibold text-foreground"
-                style={{ textShadow: "var(--label-shadow)" }}
-              >
-                Kontakt aufnehmen
-                <span className="inline-block transition-transform duration-200 ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                  →
-                </span>
-              </a>
-              <a
-                href="#about"
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                  e.preventDefault();
-                  document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                style={{ textShadow: "var(--label-shadow)" }}
-              >
-                Mehr über mich
-                <span className="inline-block transition-transform duration-200 ease-editorial group-hover:translate-y-0.5">
-                  ↓
-                </span>
-              </a>
+          </div>
+
+          {/* "Next Race"-Karte */}
+          <div style={fade(800)} className="w-full max-w-[320px] self-start lg:self-end">
+          <button
+            type="button"
+            onClick={() => scrollToId("experience")}
+            className="group text-left w-full rounded-2xl bg-cream/10 backdrop-blur-xl border border-cream/15 p-5 hover:bg-lime hover:text-ink transition-colors duration-500"
+          >
+            <p className="eyebrow opacity-70 mb-3">Aktuell</p>
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="font-display text-4xl">Team Halo</p>
+                <p className="text-sm opacity-80 mt-1">Host · Swisscom</p>
+              </div>
+              <span className="grid place-items-center h-11 w-11 rounded-full bg-lime text-ink group-hover:bg-ink group-hover:text-lime transition-all duration-500 group-hover:-rotate-45">
+                →
+              </span>
             </div>
-          </Reveal>
+          </button>
+          </div>
         </div>
 
-        {/* Editorial portrait block */}
-        <Reveal delay={200} className="hidden lg:block">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-md ring-1 ring-white/10 shadow-2xl">
-            <img
-              src="/images/portraits/portrait-night.jpg"
-              alt="Fabian Spiri"
-              className="h-full w-full object-cover"
-              style={{ objectPosition: "50% 20%" }}
-            />
-          </div>
-        </Reveal>
+        <div className="mt-8 flex items-center justify-between border-t border-cream/15 pt-5" style={fade(1000)}>
+          <p className="eyebrow text-cream/70">Zürich, Schweiz</p>
+          <button
+            type="button"
+            onClick={() => scrollToId("about")}
+            className="eyebrow flex items-center gap-3 text-cream/70 hover:text-lime transition-colors"
+          >
+            Scrollen
+            <span className="relative block h-8 w-[1px] bg-cream/25 overflow-hidden">
+              <span className="absolute inset-x-0 top-0 h-1/2 bg-lime" style={{ animation: "scroll-line 1.8s cubic-bezier(0.76,0,0.24,1) infinite" }} />
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );
