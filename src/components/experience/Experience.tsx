@@ -71,7 +71,7 @@ function Skills() {
         </Reveal>
         <Reveal delay={80}>
           <p className="text-cream/70 max-w-sm leading-7">
-            Vom Frontend bis zur Datenbank, mit einem Fokus, der mich nie loslässt: <strong className="text-cream">Sicherheit</strong>.
+            Vom <strong className="text-cream">Frontend</strong> über APIs bis zur <strong className="text-cream">Datenbank</strong>, mit einem Auge für saubere und sichere Lösungen.
           </p>
         </Reveal>
       </div>
@@ -190,7 +190,7 @@ function Certifications() {
         <div>
           <p className="eyebrow mb-4">Zertifikate</p>
           <h2 className="font-display mb-8" style={{ fontSize: "clamp(3rem, 7vw, 6.5rem)" }}>
-            Security<br />Credentials
+            Zertifikate &amp;<br />Kurse
           </h2>
           <div className="border-t border-ink/20">
             {certifications.map((c) => (

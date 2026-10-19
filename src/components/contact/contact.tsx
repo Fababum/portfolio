@@ -27,7 +27,7 @@ function Contact() {
             <Reveal delay={120}>
               <p className="text-cream/70 leading-7 max-w-md mt-8">
                 Melde dich für Kollaborationen, Fragen oder ein kurzes Gespräch. Ich helfe gerne bei Web-Apps, APIs,
-                sicherheitsorientierten Features und der Verbesserung bestehender Produkte.
+                Frontends und der Verbesserung bestehender Produkte.
               </p>
             </Reveal>
             <Reveal delay={180}>

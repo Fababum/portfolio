@@ -13,7 +13,7 @@ const items: Item[] = [
   { kind: "photo", index: 2 },
   { kind: "photo", index: 3 },
   { kind: "photo", index: 4 },
-  { kind: "quote", text: "Code schreiben ist Handwerk. Sicheren Code schreiben ist Haltung.", dark: true },
+  { kind: "quote", text: "Guter Code ist wie ein guter Pfad: klar, durchdacht und für andere leicht zu gehen.", dark: true },
   { kind: "photo", index: 5 },
   { kind: "photo", index: 6 },
   { kind: "photo", index: 7 },

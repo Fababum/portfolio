@@ -17,8 +17,8 @@ function About() {
             className="font-medium tracking-tight max-w-[18ch] sm:max-w-[22ch]"
             style={{ fontSize: "clamp(2.2rem, 5.6vw, 5.5rem)", lineHeight: 1.02, letterSpacing: "-0.035em" }}
           >
-            <Hl>Neugierig</Hl> auf Code, <Hl>besessen</Hl> von Sicherheit. Ich baue Software, die{" "}
-            <Hl>hält</Hl>, was sie verspricht.
+            <Hl>Neugierig</Hl> auf neue Technologien, <Hl>begeistert</Hl> von gutem Code. Ich baue Web-Apps, die{" "}
+            <Hl>funktionieren</Hl> und Freude machen.
           </p>
         </Reveal>
 
@@ -44,7 +44,7 @@ function About() {
                     <path id="circle" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" />
                   </defs>
                   <text fontSize="9.5" fontWeight="700" letterSpacing="2.4" fill="currentColor">
-                    <textPath href="#circle">SWISSCOM · CYBERSECURITY · FULL-STACK ·</textPath>
+                    <textPath href="#circle">SWISSCOM · FULL-STACK · REACT · NESTJS ·</textPath>
                   </text>
                 </svg>
                 <span className="font-display text-3xl">FS</span>
@@ -62,12 +62,12 @@ function About() {
               <div className="space-y-5 text-[var(--muted-light)] leading-7 max-w-xl text-base sm:text-lg">
                 <p>
                   Ich bin Fabian Spiri, Informatik Applikationsentwickler Lehrling im dritten Lehrjahr bei{" "}
-                  <strong className="text-ink">Swisscom</strong>. Ich interessiere mich sehr für Cybersecurity und habe mir
-                  neben Backend- und Frontend-Development auch Kenntnisse durch verschiedene Immersive-Labs-Kurse und den
-                  SPARC-Kurs des Militärs angeeignet.
+                  <strong className="text-ink">Swisscom</strong>. Am liebsten entwickle ich Web-Applikationen von A bis Z: vom React-Frontend über
+                  APIs mit NestJS bis zur Datenbank. Zusätzlich habe ich mir durch Immersive-Labs-Kurse und den
+                  SPARC-Kurs des Militärs Wissen in Cybersecurity angeeignet.
                 </p>
                 <p>
-                  Ich bin wissbegierig, kenne die Meeting-Kultur und SCRUM aus eigener Erfahrung in der Cybersecurity bei
+                  Ich bin wissbegierig, kenne die Meeting-Kultur und SCRUM aus verschiedenen Teams bei
                   Swisscom und arbeite sehr gerne im Team, aktuell als Host im Team Halo. Früher war ich auch als
                   Hilfsleiter im Sommerlager aktiv. Ich bin offen, hilfsbereit und teamfähig, kann aber genauso gut
                   selbständig arbeiten.

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { scrollToId } from "@/lib/content";
 
-const ROLES = ["Full-Stack Developer", "Cybersecurity Enthusiast", "React & NestJS", "Host · Team Halo"];
+const ROLES = ["Full-Stack Developer", "React & TypeScript", "APIs mit NestJS", "Host · Team Halo"];
 
 function useTyping(words: string[], speed = 70, pause = 1600) {
   const [wordIdx, setWordIdx] = useState(0);

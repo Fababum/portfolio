@@ -35,12 +35,12 @@ export const skillGroups = [
   { category: "Backend", items: ["NestJS", "Node.js", "Java", "Python", "Docker"] },
   { category: "Datenbanken", items: ["Prisma ORM", "PostgreSQL", "SQL"] },
   { category: "Tools", items: ["Git", "REST APIs", "Agile / Scrum"] },
-  { category: "Security", items: ["Cybersecurity", "Phishing Detection", "Threat Analysis", "OWASP Top 10"] },
+  { category: "Security", items: ["OWASP Top 10", "Secure Coding", "Phishing-Erkennung"] },
 ];
 
 export const marqueeWords = [
   "React", "TypeScript", "NestJS", "Node.js", "Java", "Python", "Docker",
-  "PostgreSQL", "Prisma", "Cybersecurity", "OWASP", "Scrum",
+  "PostgreSQL", "Prisma", "REST APIs", "Git", "Scrum",
 ];
 
 export const certifications = [
