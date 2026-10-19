@@ -235,7 +235,15 @@ function Certifications() {
               <div key={c.name} className="py-5 border-b border-ink/20 grid grid-cols-1 sm:grid-cols-[160px_1fr] gap-1 sm:gap-6">
                 <p className="eyebrow opacity-60 pt-1">{c.issuer}</p>
                 <div>
-                  <p className="font-semibold text-lg">{c.name}</p>
+                  <p className="font-semibold text-lg flex items-center gap-2 flex-wrap">
+                    {c.name}
+                    {c.inProgress && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/40 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest">
+                        <span className="h-1.5 w-1.5 rounded-full bg-ink animate-pulse" />
+                        Work in Progress
+                      </span>
+                    )}
+                  </p>
                   <p className="text-ink/70 text-sm leading-6">{c.note}</p>
                 </div>
               </div>

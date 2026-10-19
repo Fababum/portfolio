@@ -45,8 +45,8 @@ export const marqueeWords = [
   "React Native", "Expo", "Docker", "MySQL", "Prisma", "Redis", "AWS", "Terraform", "MCP", "GitLab CI",
 ];
 
-export const certifications = [
-  { name: "SPARC-Kurs", issuer: "Schweizer Armee", note: "Vertiefte Cybersecurity-Ausbildung." },
+export const certifications: { name: string; issuer: string; note: string; inProgress?: boolean }[] = [
+  { name: "SPARC-Kurs", issuer: "Schweizer Armee", note: "Cybersecurity-Ausbildung der Armee, aktuell noch in Absolvierung.", inProgress: true },
   { name: "OWASP Top 10", issuer: "Immersive Labs", note: "Web-Sicherheitslücken & Gegenmassnahmen." },
   { name: "Security Fundamentals & Tooling", issuer: "Immersive Labs", note: "Secure Fundamentals, Secure Testing, Secure Tooling, Browser Developer Tools." },
 ];

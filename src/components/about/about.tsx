@@ -65,8 +65,8 @@ function About() {
                   <strong className="text-ink">Swisscom</strong>. Am liebsten entwickle ich Web-Applikationen von A bis Z: vom React-, Next.js- oder Vue-Frontend
                   über APIs mit NestJS, Express oder FastAPI bis zur Datenbank und dem Deployment in der Cloud. Sogar eine eigene Handy-App
                   mit React Native habe ich gebaut. Immer öfter
-                  mit dabei: KI, etwa über die Swiss AI Platform oder eigene MCP-Server. Zusätzlich habe ich mir durch Immersive-Labs-Kurse und den
-                  SPARC-Kurs des Militärs Wissen in Cybersecurity angeeignet.
+                  mit dabei: KI, etwa über die Swiss AI Platform oder eigene MCP-Server. Zusätzlich habe ich mir durch Immersive-Labs-Kurse Wissen in Cybersecurity angeeignet
+                  und absolviere aktuell den SPARC-Kurs der Armee.
                 </p>
                 <p>
                   Ich bin wissbegierig, kenne die Meeting-Kultur und SCRUM aus verschiedenen Teams bei
