@@ -1,7 +1,7 @@
 export const EMAIL = "fabian.spiri@gmx.ch";
 
 export const socials = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/fabian-spiri" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/fabian-spiri-297969338/" },
   { label: "GitHub", href: "https://github.com/Fababum" },
   { label: "E-Mail", href: `mailto:${EMAIL}` },
 ];

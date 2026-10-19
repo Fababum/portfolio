@@ -33,7 +33,7 @@ function Contact() {
             <Reveal delay={180}>
               <div className="flex flex-wrap gap-3 mt-10">
                 <a href={`mailto:${EMAIL}`} className="btn-pill btn-lime">Schreib mir <span aria-hidden="true">↗</span></a>
-                <a href="https://www.linkedin.com/in/fabian-spiri" target="_blank" rel="noopener noreferrer" className="btn-pill btn-ghost">
+                <a href="https://www.linkedin.com/in/fabian-spiri-297969338/" target="_blank" rel="noopener noreferrer" className="btn-pill btn-ghost">
                   LinkedIn <span aria-hidden="true">↗</span>
                 </a>
               </div>
