@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import Magnetic from "@/components/ui/magnetic";
 import { EMAIL, navItems, scrollToId, socials } from "@/lib/content";
 
 function NavBar() {
@@ -58,13 +59,12 @@ function NavBar() {
           </a>
 
           <div className="flex items-center gap-3">
-            <a
-              href={`mailto:${EMAIL}`}
-              className="btn-pill btn-lime hidden sm:inline-flex"
-            >
-              Kontakt
-              <span aria-hidden="true">↗</span>
-            </a>
+            <Magnetic className="hidden sm:inline-block">
+              <a href={`mailto:${EMAIL}`} className="btn-pill btn-lime">
+                Kontakt
+                <span aria-hidden="true">↗</span>
+              </a>
+            </Magnetic>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}

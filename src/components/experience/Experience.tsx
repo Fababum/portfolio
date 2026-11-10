@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Reveal from "@/components/reveal/Reveal";
+import SpotlightCard from "@/components/ui/spotlight-card";
 import { certifications, marqueeWords, projects, scrollToId, skillGroups, timeline } from "@/lib/content";
 
 function Marquee({ words, reverse = false }: { words: string[]; reverse?: boolean }) {
@@ -105,12 +106,12 @@ function Skills() {
                 </div>
               </div>
             ) : (
-              <div className="group relative h-full min-h-[280px] rounded-3xl border border-[var(--line-dark)] p-6 overflow-hidden transition-colors duration-500 hover:border-lime">
+              <SpotlightCard className="group h-full min-h-[280px] rounded-3xl border border-[var(--line-dark)] p-6 overflow-hidden transition-colors duration-500 hover:border-lime">
                 <div
                   className="absolute inset-0 bg-lime translate-y-full group-hover:translate-y-0 transition-transform duration-700"
                   style={{ transitionTimingFunction: "var(--ease)" }}
                 />
-                <div className="relative flex flex-col h-full transition-colors duration-500 group-hover:text-ink">
+                <div className="relative z-[3] flex flex-col h-full transition-colors duration-500 group-hover:text-ink">
                   <p className="eyebrow opacity-60">0{i + 1}</p>
                   <h3 className="font-display text-4xl mt-3 mb-6">{g.category}</h3>
                   <ul className="mt-auto space-y-1.5 text-sm">
@@ -122,7 +123,7 @@ function Skills() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </SpotlightCard>
             )}
           </Reveal>
         ))}
@@ -178,7 +179,11 @@ function Projects() {
         {projects.map((p, i) => {
           const inner = (
             <>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl mb-5">
+              <SpotlightCard
+                className="aspect-[4/3] overflow-hidden rounded-2xl mb-5"
+                glow="rgba(210, 255, 0, 0.22)"
+                border="rgba(210, 255, 0, 0.9)"
+              >
                 <img
                   src={p.image}
                   alt=""
@@ -186,11 +191,11 @@ function Projects() {
                   className="h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-110"
                   style={{ transitionTimingFunction: "var(--ease)" }}
                 />
-                <span className="absolute top-4 left-4 rounded-full bg-ink/70 backdrop-blur px-3 py-1.5 eyebrow text-cream">{p.tag}</span>
+                <span className="absolute z-[3] top-4 left-4 rounded-full bg-ink/70 backdrop-blur px-3 py-1.5 eyebrow text-cream">{p.tag}</span>
                 {p.href && (
-                  <span className="absolute bottom-4 right-4 grid place-items-center h-12 w-12 rounded-full bg-lime text-ink transition-transform duration-500 group-hover:-rotate-45">→</span>
+                  <span className="absolute z-[3] bottom-4 right-4 grid place-items-center h-12 w-12 rounded-full bg-lime text-ink transition-transform duration-500 group-hover:-rotate-45">→</span>
                 )}
-              </div>
+              </SpotlightCard>
               <h3 className="font-display text-3xl sm:text-4xl group-hover:text-lime transition-colors">{p.name}</h3>
               <p className="text-cream/70 mt-2 leading-7">{p.description}</p>
               <ul className="flex flex-wrap gap-2 mt-4">
@@ -280,9 +285,12 @@ function Certifications() {
 function Experience() {
   return (
     <div className="relative bg-ink text-cream overflow-hidden">
-      <div className="container-x space-y-28 sm:space-y-40" style={{ paddingBlock: "clamp(96px, 12vw, 180px)" }}>
-        <SplitCards />
-        <Skills />
+      <div className="relative">
+        <div className="dot-pattern" aria-hidden="true" />
+        <div className="relative container-x space-y-28 sm:space-y-40" style={{ paddingBlock: "clamp(96px, 12vw, 180px)" }}>
+          <SplitCards />
+          <Skills />
+        </div>
       </div>
 
       <div className="border-y border-[var(--line-dark)] py-8 space-y-4">

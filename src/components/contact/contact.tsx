@@ -1,4 +1,5 @@
 import Reveal from "@/components/reveal/Reveal";
+import Magnetic from "@/components/ui/magnetic";
 import { EMAIL, navItems, scrollToId, socials } from "@/lib/content";
 
 const WORK_EMAIL = "fabian.spiri@swisscom.com";
@@ -12,6 +13,7 @@ const availability = [
 function Contact() {
   return (
     <footer className="relative bg-olive text-cream overflow-hidden grain">
+      <div className="dot-pattern" aria-hidden="true" />
       <div className="container-x relative z-10" style={{ paddingTop: "clamp(96px, 12vw, 180px)" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-14 lg:gap-24">
           <div>
@@ -32,10 +34,14 @@ function Contact() {
             </Reveal>
             <Reveal delay={180}>
               <div className="flex flex-wrap gap-3 mt-10">
-                <a href={`mailto:${EMAIL}`} className="btn-pill btn-lime">Schreib mir <span aria-hidden="true">↗</span></a>
-                <a href="https://www.linkedin.com/in/fabian-spiri-297969338/" target="_blank" rel="noopener noreferrer" className="btn-pill btn-ghost">
-                  LinkedIn <span aria-hidden="true">↗</span>
-                </a>
+                <Magnetic>
+                  <a href={`mailto:${EMAIL}`} className="btn-pill btn-lime">Schreib mir <span aria-hidden="true">↗</span></a>
+                </Magnetic>
+                <Magnetic>
+                  <a href="https://www.linkedin.com/in/fabian-spiri-297969338/" target="_blank" rel="noopener noreferrer" className="btn-pill btn-ghost">
+                    LinkedIn <span aria-hidden="true">↗</span>
+                  </a>
+                </Magnetic>
               </div>
             </Reveal>
           </div>

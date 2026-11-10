@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Reveal from "@/components/reveal/Reveal";
+import NumberTicker from "@/components/ui/number-ticker";
 
 function About() {
   return (
@@ -85,14 +86,16 @@ function About() {
         {/* Kennzahlen */}
         <div className="mt-24 sm:mt-32 grid grid-cols-2 lg:grid-cols-4 border-t border-[var(--line-light)]">
           {[
-            { n: "2024", l: "Start der Lehre" },
-            { n: "3.", l: "Lehrjahr" },
-            { n: "6", l: "Stationen bei Swisscom" },
-            { n: "7", l: "Projekte gebaut" },
+            { n: 2024, from: 2000, suffix: "", l: "Start der Lehre" },
+            { n: 3, from: 0, suffix: ".", l: "Lehrjahr" },
+            { n: 6, from: 0, suffix: "", l: "Stationen bei Swisscom" },
+            { n: 7, from: 0, suffix: "", l: "Projekte gebaut" },
           ].map((s, i) => (
             <Reveal key={s.l} delay={i * 60}>
               <div className={"py-8 pr-4 " + (i > 0 ? "lg:border-l lg:pl-8 border-[var(--line-light)]" : "")}>
-                <p className="font-display" style={{ fontSize: "clamp(3.5rem, 7vw, 6rem)" }}>{s.n}</p>
+                <p className="font-display" style={{ fontSize: "clamp(3.5rem, 7vw, 6rem)" }}>
+                  <NumberTicker value={s.n} from={s.from} suffix={s.suffix} />
+                </p>
                 <p className="eyebrow text-[var(--muted-light)] mt-2">{s.l}</p>
               </div>
             </Reveal>

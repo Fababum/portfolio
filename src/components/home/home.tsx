@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import Magnetic from "@/components/ui/magnetic";
+import Streams from "@/components/ui/streams";
+
+const REAL_SRC = "/images/portraits/profil_bild_hd.jpg";
 import { scrollToId } from "@/lib/content";
 
 const ROLES = ["Full-Stack Developer", "React & TypeScript", "APIs mit NestJS", "Host · Team Halo"];
@@ -26,11 +30,93 @@ function useTyping(words: string[], speed = 70, pause = 1600) {
   return words[wordIdx].slice(0, len);
 }
 
+/**
+ * Text, der exakt die volle Breite des Elternelements füllt (21st.dev "fit text").
+ * Misst nach dem Laden der Schriften und bei jeder Grössenänderung neu.
+ */
+function FitLine({ text, base, animate, spot = false, className }: { text: string; base: number; animate: boolean; spot?: boolean; className?: string }) {
+  const wrap = useRef<HTMLSpanElement>(null);
+  const inner = useRef<HTMLSpanElement>(null);
+  const [size, setSize] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    const w = wrap.current;
+    const i = inner.current;
+    if (!w || !i) return;
+    const fit = () => {
+      i.style.fontSize = "100px";
+      const natural = i.scrollWidth;
+      const avail = w.clientWidth;
+      if (natural > 0 && avail > 0) {
+        const px = (avail / natural) * 100 * 0.995;
+        i.style.fontSize = `${px}px`;
+        setSize(px);
+      }
+    };
+    fit();
+    document.fonts?.ready.then(fit);
+    const ro = new ResizeObserver(fit);
+    ro.observe(w);
+    return () => ro.disconnect();
+  }, [text]);
+
+  return (
+    <span ref={wrap} className="line-mask w-full">
+      <span
+        ref={inner}
+        className={"relative block w-max whitespace-nowrap " + (className ?? "")}
+        style={{ transform: "none", fontSize: size ? `${size}px` : "100px", visibility: size ? "visible" : "hidden" }}
+      >
+        {text.split("").map((c, i) =>
+          animate ? (
+            <span key={i} className="hero-char" style={{ "--d": `${base + i * 50}ms` } as CSSProperties}>
+              {c === " " ? "\u00a0" : c}
+            </span>
+          ) : (
+            <span key={i} className="inline-block">{c === " " ? "\u00a0" : c}</span>
+          )
+        )}
+        {/* Lime-Kopie im selben Box-Kontext: gleiche Schriftgrösse, gleiche Position */}
+        {spot && (
+          <span
+            aria-hidden="true"
+            className="name-spot absolute inset-0 text-lime pointer-events-none opacity-0 group-hover/hero:opacity-100 transition-opacity duration-500"
+            style={{ WebkitMaskImage: "linear-gradient(transparent, transparent)", maskImage: "linear-gradient(transparent, transparent)" }}
+          >
+            {text.split("").map((c, i) => (
+              <span key={i} className="inline-block">{c === " " ? "\u00a0" : c}</span>
+            ))}
+          </span>
+        )}
+      </span>
+    </span>
+  );
+}
+
+function Name({ animate, spot }: { animate: boolean; spot: boolean }) {
+  return (
+    <>
+      {/* Desktop: eine Zeile */}
+      <span className="hidden sm:block">
+        <FitLine text="Fabian Spiri" base={0} animate={animate} spot={spot} />
+      </span>
+      {/* Mobile: zwei Zeilen, jede volle Breite */}
+      <span className="block sm:hidden">
+        <FitLine text="Fabian" base={0} animate={animate} spot={spot} />
+        <FitLine text="Spiri" base={200} animate={animate} spot={spot} />
+      </span>
+    </>
+  );
+}
+
 function Home({ ready }: { ready: boolean }) {
   const typed = useTyping(ROLES);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
   const [offset, setOffset] = useState(0);
+  const [spot, setSpot] = useState(false);
 
-  // leichter Parallax auf dem Hero-Bild
+  // Parallax beim Scrollen
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
@@ -44,125 +130,131 @@ function Home({ ready }: { ready: boolean }) {
     };
   }, []);
 
-  const lineStyle = (delay: number) => ({
-    transform: ready ? "none" : "translateY(110%)",
-    transition: `transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
-  });
+  // Lime-Spotlight im Namen: folgt der Maus mit derselben Verzögerung wie der Bild-Reveal
+  useEffect(() => {
+    const name = nameRef.current;
+    if (!name) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let tx = -9999, ty = -9999, x = -9999, y = -9999, raf = 0;
+    const onMove = (e: PointerEvent) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      if (x < -999) {
+        x = tx;
+        y = ty;
+      }
+    };
+    const loop = () => {
+      raf = requestAnimationFrame(loop);
+      if (tx < -999) return;
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
+      // Maske direkt auf der Lime-Kopie setzen (relativ zu genau diesem Element,
+      // ohne CSS-Variablen, die manche Browser in mask-image nicht neu zeichnen)
+      name.querySelectorAll<HTMLElement>(".name-spot").forEach((overlay) => {
+        const r = overlay.getBoundingClientRect();
+        if (!r.width) return;
+        const m = `radial-gradient(150px circle at ${(x - r.left).toFixed(1)}px ${(y - r.top).toFixed(1)}px, #000 0%, #000 55%, transparent 100%)`;
+        overlay.style.webkitMaskImage = m;
+        overlay.style.maskImage = m;
+      });
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    raf = requestAnimationFrame(loop);
+    setSpot(true);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, []);
 
-  const fade = (delay: number) => ({
+  const fade = (delay: number): CSSProperties => ({
     opacity: ready ? 1 : 0,
-    transform: ready ? "none" : "translateY(20px)",
+    transform: ready ? "none" : "translateY(16px)",
     transition: `opacity 1s ease ${delay}ms, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
   });
 
-  return (
-    <div className="relative h-[100svh] min-h-[600px] overflow-hidden bg-ink text-cream">
-      {/* Unscharfe Fläche als Hintergrund (füllt breite Screens) */}
-      <img
-        src="/images/portraits/profil_bild.jpg"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover scale-125 blur-2xl opacity-40"
-        style={{ objectPosition: "50% 40%" }}
-      />
 
-      {/* Titelbild: scharf, zoomt beim Laden rein und beim Scrollen weiter */}
+  return (
+    <div
+      ref={rootRef}
+      className={"group/hero relative h-[100svh] min-h-[600px] overflow-hidden bg-ink text-cream" + (ready ? " is-ready" : "")}
+    >
+      {/* Fullscreen-Foto */}
       <div
-        className="absolute inset-0 lg:left-auto lg:w-[58%] overflow-hidden lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_28%)] lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_28%)]"
+        className="absolute inset-0"
+        style={{ transform: `translateY(${offset * 0.3}px) scale(${1 + offset / 3000})`, transformOrigin: "50% 30%" }}
       >
-        <div
-          className="h-full w-full"
+        <img
+          src={REAL_SRC}
+          alt="Fabian Spiri"
+          fetchPriority="high"
+          className="h-full w-full object-cover"
           style={{
-            transform: `translateY(${offset * 0.25}px) scale(${1 + offset / 2500})`,
-            transformOrigin: "50% 32%",
+            objectPosition: "50% 28%",
+            transform: ready ? "scale(1.04)" : "scale(1.3)",
+            filter: ready ? "brightness(1)" : "brightness(0.3)",
+            transition: "transform 3s cubic-bezier(0.22, 1, 0.36, 1), filter 2s ease",
           }}
-        >
-          <img
-            src="/images/portraits/profil_bild.jpg"
-            alt="Fabian Spiri"
-            fetchPriority="high"
-            className="h-full w-full object-cover"
-            style={{
-              objectPosition: "50% 30%",
-              transformOrigin: "50% 35%",
-              animation: ready ? "hero-zoom-in 2.6s cubic-bezier(0.22, 1, 0.36, 1) both" : undefined,
-              transform: ready ? undefined : "scale(1.35)",
-            }}
-          />
-        </div>
+        />
       </div>
 
-      {/* Abdunkeln für Lesbarkeit */}
+      {/* Abdunkeln: oben für den Namen, unten für die Buttons */}
       <div
+        aria-hidden="true"
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(19,21,15,0.6) 0%, rgba(19,21,15,0.25) 30%, rgba(19,21,15,0.55) 65%, rgba(19,21,15,0.98) 100%), linear-gradient(90deg, rgba(19,21,15,0.7) 0%, rgba(19,21,15,0.1) 60%)",
+            "linear-gradient(180deg, rgba(19,21,15,0.8) 0%, rgba(19,21,15,0.45) 25%, rgba(19,21,15,0) 48%, rgba(19,21,15,0) 70%, rgba(19,21,15,0.85) 100%)",
         }}
       />
-      <div className="absolute inset-0 grain" />
+      <div aria-hidden="true" className="absolute inset-0 grain" />
+      {/* Grüne Lichtstreifen, weichen dem Cursor aus */}
+      <Streams
+        className="absolute inset-0 h-full w-full pointer-events-none mix-blend-screen transition-opacity duration-[2s]"
+        count={9}
+      />
 
-      {/* Vertikaler Seitentext */}
-      <div className="hidden md:block absolute left-[clamp(20px,4vw,64px)] top-1/2 z-10" style={fade(900)}>
-        <p
-          className="eyebrow text-cream/70"
-          style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)" }}
-        >
-          Swisscom seit 2024
-        </p>
+      {/* Name oben */}
+      <div className="absolute inset-x-0 top-[13%] sm:top-[12%] z-10">
+        <div className="container-x">
+          {/* Riesen-Name über dem Kopf */}
+          <h1 ref={nameRef} className="relative font-display leading-[0.8]" style={{ transform: `translateY(${offset * 0.2}px)` }}>
+            <span className="sr-only">Fabian Spiri</span>
+            <span aria-hidden="true" className="block">
+              <Name animate spot={spot && ready} />
+            </span>
+          </h1>
+        </div>
       </div>
 
-      {/* Inhalt */}
-      <div className="relative z-10 container-x h-full flex flex-col justify-end pb-10 sm:pb-14">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-          <div>
-            <p className="eyebrow text-lime mb-4 flex items-center gap-2" style={fade(500)}>
-              <span className="h-2 w-2 rounded-full bg-lime" style={{ animation: "pulse-dot 2s infinite" }} />
-              Informatik Applikationsentwickler EFZ
-            </p>
-            <h1 className="font-display" style={{ fontSize: "clamp(4.5rem, 17vw, 17rem)" }}>
-              <span className="line-mask"><span style={lineStyle(0)}>Fabian</span></span>
-              <span className="line-mask"><span style={lineStyle(120)}>Spiri</span></span>
-            </h1>
-            <p className="font-sign text-lime text-3xl sm:text-5xl mt-3 min-h-[1.2em]" style={fade(700)}>
+      {/* Inhalt unten */}
+      <div className="absolute inset-x-0 bottom-0 z-10">
+        <div className="container-x pb-5 sm:pb-8">
+          {/* Meta-Zeile */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
+            <p className="text-lg sm:text-2xl font-medium tracking-tight min-h-[1.5em]" style={fade(1000)}>
+              <span className="text-lime font-mono mr-2">&gt;</span>
               {typed}
-              <span className="inline-block w-[3px] h-[0.8em] bg-lime ml-1 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
+              <span className="inline-block w-[2px] h-[1em] bg-lime ml-1 align-[-0.15em]" style={{ animation: "blink 1s step-end infinite" }} />
             </p>
-          </div>
-
-          {/* "Next Race"-Karte */}
-          <div style={fade(800)} className="w-full max-w-[320px] self-start lg:self-end">
-          <button
-            type="button"
-            onClick={() => scrollToId("experience")}
-            className="group text-left w-full rounded-2xl bg-cream/10 backdrop-blur-xl border border-cream/15 p-5 hover:bg-lime hover:text-ink transition-colors duration-500"
-          >
-            <p className="eyebrow opacity-70 mb-3">Aktuell</p>
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="font-display text-4xl">Team Halo</p>
-                <p className="text-sm opacity-80 mt-1">Host · Swisscom</p>
-              </div>
-              <span className="grid place-items-center h-11 w-11 rounded-full bg-lime text-ink group-hover:bg-ink group-hover:text-lime transition-all duration-500 group-hover:-rotate-45">
-                →
-              </span>
+            <div className="flex items-center gap-5" style={fade(1150)}>
+              <button
+                type="button"
+                onClick={() => scrollToId("skills")}
+                className="eyebrow text-cream/80 hover:text-lime transition-colors link-line"
+              >
+                Skills anzeigen
+              </button>
+              <Magnetic>
+                <button type="button" onClick={() => scrollToId("experience")} className="btn-pill btn-lime">
+                  Projekte ansehen <span aria-hidden="true">→</span>
+                </button>
+              </Magnetic>
             </div>
-          </button>
           </div>
-        </div>
 
-        <div className="mt-8 flex items-center justify-between border-t border-cream/15 pt-5" style={fade(1000)}>
-          <p className="eyebrow text-cream/70">Zürich, Schweiz</p>
-          <button
-            type="button"
-            onClick={() => scrollToId("about")}
-            className="eyebrow flex items-center gap-3 text-cream/70 hover:text-lime transition-colors"
-          >
-            Scrollen
-            <span className="relative block h-8 w-[1px] bg-cream/25 overflow-hidden">
-              <span className="absolute inset-x-0 top-0 h-1/2 bg-lime" style={{ animation: "scroll-line 1.8s cubic-bezier(0.76,0,0.24,1) infinite" }} />
-            </span>
-          </button>
         </div>
       </div>
     </div>

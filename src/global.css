@@ -247,6 +247,103 @@
     animation-play-state: paused;
   }
 
+  /* Spotlight-Card (21st.dev): Lichtkegel + leuchtender Rand folgen der Maus */
+  .spotlight {
+    --mx: 50%;
+    --my: 50%;
+    isolation: isolate;
+  }
+  .spotlight::before,
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+  }
+  .spotlight::before {
+    z-index: 1;
+    background: radial-gradient(
+      var(--spot-size, 360px) circle at var(--mx) var(--my),
+      var(--spot-glow),
+      transparent 70%
+    );
+  }
+  .spotlight::after {
+    z-index: 2;
+    padding: 1px;
+    background: radial-gradient(
+      calc(var(--spot-size, 360px) * 0.7) circle at var(--mx) var(--my),
+      var(--spot-border),
+      transparent 70%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .spotlight:hover::before,
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .spotlight::before,
+    .spotlight::after {
+      display: none;
+    }
+  }
+
+  /* Dot-Grid-Pattern (21st.dev) mit radialer Ausblendung */
+  .dot-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(var(--dot-color, rgba(244, 244, 237, 0.12)) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  }
+
+  /* Shiny-Text (21st.dev): Glanzlicht läuft über den Text */
+  .shiny-text {
+    background: linear-gradient(
+        110deg,
+        currentColor 35%,
+        rgba(255, 255, 255, 0.95) 50%,
+        currentColor 65%
+      )
+      0 0 / 250% 100% repeat-x;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shiny 4s linear infinite;
+  }
+
+  /* Border-Beam (21st.dev): Lichtstrahl wandert um den Rand */
+  .border-beam {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    pointer-events: none;
+    background: conic-gradient(from var(--beam-angle), transparent 0deg, transparent 280deg, var(--lime) 330deg, transparent 360deg);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: beam-spin 5s linear infinite;
+  }
+
+  /* Hero-Buchstaben: gestaffeltes Einblenden */
+  .hero-char {
+    display: inline-block;
+    transform: translateY(110%) rotate(8deg);
+    transition: transform 1.2s var(--ease) var(--d, 0ms);
+  }
+  .is-ready .hero-char {
+    transform: none;
+  }
+
   .grain::after {
     content: "";
     position: absolute;
@@ -260,6 +357,32 @@
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-100%); }
+}
+
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+
+@keyframes aurora {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(6%, -8%, 0) scale(1.15); }
+  66% { transform: translate3d(-6%, 6%, 0) scale(0.92); }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shiny {
+  from { background-position: 166.667% 0; }
+  to { background-position: 0 0; }
 }
 
 @keyframes blink {
@@ -288,6 +411,7 @@
     transition-duration: 0.001ms !important;
   }
   .reveal, .line-mask > span { opacity: 1; transform: none; }
+  .shiny-text { animation: none; }
 }
 
 @keyframes scroll-line {
