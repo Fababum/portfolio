@@ -238,7 +238,7 @@ function Certifications() {
                   <p className="font-semibold text-lg flex items-center gap-2 flex-wrap">
                     {c.name}
                     {c.inProgress && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/40 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest">
+                      <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest">
                         <span className="h-1.5 w-1.5 rounded-full bg-ink animate-pulse" />
                         Work in Progress
                       </span>
